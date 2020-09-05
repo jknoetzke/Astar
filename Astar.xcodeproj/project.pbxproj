@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D0D329092503BF2B003CC73A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D329082503BF2B003CC73A /* AppDelegate.swift */; };
-		D0D3290B2503BF2B003CC73A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D3290A2503BF2B003CC73A /* SceneDelegate.swift */; };
 		D0D3290D2503BF2B003CC73A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D3290C2503BF2B003CC73A /* ViewController.swift */; };
 		D0D329102503BF2B003CC73A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D3290E2503BF2B003CC73A /* Main.storyboard */; };
 		D0D329122503BF2B003CC73A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0D329112503BF2B003CC73A /* Assets.xcassets */; };
@@ -18,7 +17,6 @@
 /* Begin PBXFileReference section */
 		D0D329052503BF2B003CC73A /* Astar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Astar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0D329082503BF2B003CC73A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D0D3290A2503BF2B003CC73A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D0D3290C2503BF2B003CC73A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D0D3290F2503BF2B003CC73A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D0D329112503BF2B003CC73A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -57,7 +55,6 @@
 			isa = PBXGroup;
 			children = (
 				D0D329082503BF2B003CC73A /* AppDelegate.swift */,
-				D0D3290A2503BF2B003CC73A /* SceneDelegate.swift */,
 				D0D3290C2503BF2B003CC73A /* ViewController.swift */,
 				D0D3290E2503BF2B003CC73A /* Main.storyboard */,
 				D0D329112503BF2B003CC73A /* Assets.xcassets */,
@@ -139,7 +136,6 @@
 			files = (
 				D0D3290D2503BF2B003CC73A /* ViewController.swift in Sources */,
 				D0D329092503BF2B003CC73A /* AppDelegate.swift in Sources */,
-				D0D3290B2503BF2B003CC73A /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +285,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -308,6 +305,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
