@@ -1,10 +1,3 @@
-//
-//
-//  AppDelegate.swift
-//  Astar
-//
-//  Created by Justin Knoetzke on 2020-09-05.
-//
 
 import UIKit
 
