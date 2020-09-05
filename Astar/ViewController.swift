@@ -22,6 +22,7 @@ class ViewController: UIViewController {
   }
 }
 
+
 extension ViewController: CBCentralManagerDelegate {
   func centralManagerDidUpdateState(_ central: CBCentralManager) {
     switch central.state {
