@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0C757F02508FA1200C923C4 /* AStar.xcdatamodeld */; };
 		D0D329092503BF2B003CC73A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D329082503BF2B003CC73A /* AppDelegate.swift */; };
 		D0D3290D2503BF2B003CC73A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D3290C2503BF2B003CC73A /* ViewController.swift */; };
 		D0D329102503BF2B003CC73A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D3290E2503BF2B003CC73A /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D0C757F12508FA1200C923C4 /* AStar.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AStar.xcdatamodel; sourceTree = "<group>"; };
 		D0D329052503BF2B003CC73A /* Astar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Astar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0D329082503BF2B003CC73A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0D3290C2503BF2B003CC73A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -35,6 +37,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D0C757F32509234E00C923C4 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				D0C757F02508FA1200C923C4 /* AStar.xcdatamodeld */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
 		D0D328FC2503BF2B003CC73A = {
 			isa = PBXGroup;
 			children = (
@@ -59,6 +69,7 @@
 				D0D3290E2503BF2B003CC73A /* Main.storyboard */,
 				D0D329112503BF2B003CC73A /* Assets.xcassets */,
 				D0D329132503BF2B003CC73A /* LaunchScreen.storyboard */,
+				D0C757F32509234E00C923C4 /* DataModel */,
 				D0D329162503BF2B003CC73A /* Info.plist */,
 			);
 			path = Astar;
@@ -135,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0D3290D2503BF2B003CC73A /* ViewController.swift in Sources */,
+				D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */,
 				D0D329092503BF2B003CC73A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,6 +351,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D0C757F02508FA1200C923C4 /* AStar.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D0C757F12508FA1200C923C4 /* AStar.xcdatamodel */,
+			);
+			currentVersion = D0C757F12508FA1200C923C4 /* AStar.xcdatamodel */;
+			path = AStar.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D0D328FD2503BF2B003CC73A /* Project object */;
 }
