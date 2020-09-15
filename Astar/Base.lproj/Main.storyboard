@@ -277,7 +277,7 @@
                                                             <action selector="startClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lzW-O9-x9C"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ymd-Nl-WPf">
+                                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ymd-Nl-WPf">
                                                         <rect key="frame" x="164.5" y="9" width="146.5" height="93"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                                         <color key="tintColor" systemColor="systemYellowColor"/>
@@ -286,7 +286,7 @@
                                                             <imageReference key="image" image="shuffle" catalog="system" symbolScale="large"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="lapClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Z4u-QB-AJb"/>
+                                                            <action selector="lapClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cIf-zq-ZgW"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -318,6 +318,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="btnLap" destination="ymd-Nl-WPf" id="x3Q-YG-ONk"/>
                         <outlet property="btnStart" destination="ytD-Xz-yNN" id="i6K-cc-PLZ"/>
                         <outlet property="lblClock" destination="Whq-M6-F5j" id="hcE-sI-a3f"/>
                         <outlet property="lblHeartRate" destination="zbJ-dJ-jj6" id="boZ-dv-fB9"/>

@@ -22,6 +22,8 @@ class ViewController: UIViewController {
     private var speed = 0.0;
     private var startTime: DispatchTime?
     private var watts = 0
+    private var timerIsPaused = false
+    private var lapCounter = 0
     
     private var container: NSPersistentContainer!
     
@@ -33,6 +35,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var lblLap: UILabel!
     @IBOutlet weak var lblLapWatts: UILabel!
     @IBOutlet weak var btnStart: UIButton!
+    @IBOutlet weak var btnLap: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,49 +65,61 @@ class ViewController: UIViewController {
         locationManager.stopUpdatingLocation()
     }
     
-    @IBAction func startClicked(_ sender: Any) {
-        print("Start Clicked")
-        
+    func startTimer() {
+        timerIsPaused = false
         rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
-        startLocationUpdates()
+
+    }
+    
+    func stopTimer() {
+        timerIsPaused = true
+        rideTimer?.invalidate()
+        rideTimer = nil
+    }
+    
+    @IBAction func lapClicked(_ sender: Any) {
         
-        if btnStart.titleLabel!.text == "Start" {
+        lapCounter = lapCounter + 1
+        lblLap.text = String(lapCounter)
+    }
+    @IBAction func startClicked(_ sender: Any) {
+
+        
+        if timerIsPaused {
+            startTimer()
+            startLocationUpdates()
             startTime = DispatchTime.now()
             let hours = 0
             let minutes = 0
             let seconds = 0
             lblRideTime.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
             
+            btnLap.isEnabled = true
+            
             if let stopImage = UIImage(systemName: "stop") {
                 btnStart.setImage(stopImage, for: .normal)
                 btnStart.setTitle("Stop", for: .normal)
             }
         } else {
-            //Button was already started
-            rideTimer?.invalidate()
-            rideTimer = nil
+            stopTimer()
             if let startImage = UIImage(systemName: "play") {
                 btnStart.setImage(startImage, for: .normal)
                 btnStart.setTitle("Start", for: .normal)
-                
+                locationManager.stopUpdatingLocation()
             }
-            
+            btnLap.isEnabled = false
+
         }
         
     }
     
-    @IBAction func lapClicked(_ sender: Any) {
-        print("Lap Clicked")
-    }
-    
-    
+   
     func onHeartRateReceived(_ heartRate: Int) {
         print("BPM: \(heartRate)")
         self.heartRate = heartRate
     }
     
     @objc func runTimedCode() {
-        
         
         let end = DispatchTime.now()
         
