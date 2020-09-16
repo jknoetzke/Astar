@@ -41,7 +41,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         clock = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(clockCode), userInfo: nil, repeats: true)
-        clockCode() //Set the time
+        clockCode()
         
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
@@ -53,8 +53,8 @@ class ViewController: UIViewController {
 
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short
-        dateFormatter.dateFormat = "HH:MM"
-
+        dateFormatter.dateFormat = "HH:mm"
+        
         lblClock.text = "\(dateFormatter.string(from: currentDateTime))"
 
     }
