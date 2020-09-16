@@ -22,7 +22,7 @@ class ViewController: UIViewController {
     private var speed = 0.0;
     private var startTime: DispatchTime?
     private var watts = 0
-    private var timerIsPaused = false
+    private var timerIsPaused = true
     private var lapCounter = 0
     
     private var container: NSPersistentContainer!
