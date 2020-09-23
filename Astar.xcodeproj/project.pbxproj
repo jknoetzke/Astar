@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77B251A4AE200241E7E /* PeripheralData.swift */; };
+		D093A77F251A4C4400241E7E /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77E251A4C4400241E7E /* DeviceManager.swift */; };
+		D093A783251A50FC00241E7E /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A782251A50FC00241E7E /* LocationManager.swift */; };
 		D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0C757F02508FA1200C923C4 /* AStar.xcdatamodeld */; };
 		D0D329092503BF2B003CC73A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D329082503BF2B003CC73A /* AppDelegate.swift */; };
 		D0D3290D2503BF2B003CC73A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D3290C2503BF2B003CC73A /* ViewController.swift */; };
@@ -16,6 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D093A77B251A4AE200241E7E /* PeripheralData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralData.swift; sourceTree = "<group>"; };
+		D093A77E251A4C4400241E7E /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
+		D093A782251A50FC00241E7E /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		D0C757F12508FA1200C923C4 /* AStar.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AStar.xcdatamodel; sourceTree = "<group>"; };
 		D0D329052503BF2B003CC73A /* Astar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Astar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0D329082503BF2B003CC73A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +72,9 @@
 			children = (
 				D0D329082503BF2B003CC73A /* AppDelegate.swift */,
 				D0D3290C2503BF2B003CC73A /* ViewController.swift */,
+				D093A782251A50FC00241E7E /* LocationManager.swift */,
+				D093A77B251A4AE200241E7E /* PeripheralData.swift */,
+				D093A77E251A4C4400241E7E /* DeviceManager.swift */,
 				D0D3290E2503BF2B003CC73A /* Main.storyboard */,
 				D0D329112503BF2B003CC73A /* Assets.xcassets */,
 				D0D329132503BF2B003CC73A /* LaunchScreen.storyboard */,
@@ -146,6 +155,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0D3290D2503BF2B003CC73A /* ViewController.swift in Sources */,
+				D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */,
+				D093A783251A50FC00241E7E /* LocationManager.swift in Sources */,
+				D093A77F251A4C4400241E7E /* DeviceManager.swift in Sources */,
 				D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */,
 				D0D329092503BF2B003CC73A /* AppDelegate.swift in Sources */,
 			);
