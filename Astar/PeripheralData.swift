@@ -16,7 +16,7 @@ public enum DeviceType: String {
 
 public class PeripheralData: NSObject {
     var row:Int = 0; // row index is the same as PeripheralManager.devices index
-    var currentValue:Int16 = 0;
+    var currentValue = 0;
     var speed:Double = 0.0;
     var cadence:Int16 = 0;
     var instantTimestamp:Double = 0.0;

@@ -30,7 +30,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         clock = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(clockCode), userInfo: nil, repeats: true)
+        rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         clockCode()
+        locationManager.startLocationUpdates()
     }
     
     @objc func clockCode() {
@@ -48,19 +50,15 @@ class ViewController: UIViewController {
         super.viewWillDisappear(animated)
         rideTimer?.invalidate()
         locationManager.stopUpdatingLocation()
-    
-    }
-    
-    func startTimer() {
-        timerIsPaused = false
-        rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         
     }
     
+    func startTimer() {
+    }
+    
     func stopTimer() {
-        timerIsPaused = true
-        rideTimer?.invalidate()
-        rideTimer = nil
+        //        rideTimer?.invalidate()
+        //        rideTimer = nil
     }
     
     @IBAction func lapClicked(_ sender: Any) {
@@ -69,11 +67,7 @@ class ViewController: UIViewController {
         lblLap.text = String(lapCounter)
     }
     @IBAction func startClicked(_ sender: Any) {
-        
-        
         if timerIsPaused {
-            startTimer()
-            locationManager.startLocationUpdates()
             startTime = DispatchTime.now()
             let hours = 0
             let minutes = 0
@@ -82,42 +76,44 @@ class ViewController: UIViewController {
             
             btnLap.isEnabled = true
             
-            if let stopImage = UIImage(systemName: "stop") {
+            if #available(iOS 13, *) {
+                let stopImage = UIImage(systemName: "stop")
                 btnStart.setImage(stopImage, for: .normal)
-                btnStart.setTitle("Stop", for: .normal)
             }
+            btnStart.setTitle("Stop", for: .normal)
+            timerIsPaused = false
         } else {
             stopTimer()
-            if let startImage = UIImage(systemName: "play") {
-                btnStart.setImage(startImage, for: .normal)
-                btnStart.setTitle("Start", for: .normal)
-                locationManager.stopUpdatingLocation()
-            }
             btnLap.isEnabled = false
-            
+            if #available(iOS 13, *) {
+                let startImage = UIImage(systemName: "play")
+                btnStart.setImage(startImage, for: .normal)
+            }
+            btnStart.setTitle("Start", for: .normal)
+            timerIsPaused = true
         }
-        
     }
     
     @objc func runTimedCode() {
         
         let end = DispatchTime.now()
-        
-        if let tmpStartTime = startTime {
-            let nanoTime = end.uptimeNanoseconds - tmpStartTime.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
-            let timeInterval = Double(nanoTime) / 1_000_000_000
-            
-            let hours = Int(timeInterval) / 3600
-            let minutes = Int(timeInterval) / 60 % 60
-            let seconds = Int(timeInterval) % 60
-            lblRideTime.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
-        }
-        
+
         lblWatts.text = String(deviceManager.watts)
         lblHeartRate.text = String(deviceManager.heartRate)
         lblSpeed.text = String(locationManager.speed)
         
-        saveRide()
+        if timerIsPaused == false {
+            saveRide()
+            if let tmpStartTime = startTime {
+                let nanoTime = end.uptimeNanoseconds - tmpStartTime.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
+                let timeInterval = Double(nanoTime) / 1_000_000_000
+                
+                let hours = Int(timeInterval) / 3600
+                let minutes = Int(timeInterval) / 60 % 60
+                let seconds = Int(timeInterval) % 60
+                lblRideTime.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
+            }
+        }
     }
     
     private func saveRide() {
