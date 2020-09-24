@@ -128,20 +128,11 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func updatePower(from characteristic: CBCharacteristic) -> Int16 {
        
-        print("Updating Power...")
         // the first 16bits contains the data for the flags
         // The next 16bits make up the power reading
         guard let characteristicData = characteristic.value else { return -1 }
         let byteArray = [UInt8](characteristicData)
         let watts:Int16 = Int16(byteArray[2])
-
-     //   for element in byteArray {
-      //      print(element)
-      //  }
-        
-        //let watts = characteristicData.withUnsafeBytes {
-        //    $0.load(as: Int.self)
-       // }
 
         reading.currentValue = Int(watts)
         reading.deviceType = DeviceType.PowerMeter

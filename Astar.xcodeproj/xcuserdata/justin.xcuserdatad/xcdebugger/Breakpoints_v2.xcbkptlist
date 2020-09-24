@@ -62,58 +62,10 @@
             filePath = "Astar/DeviceManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
             landmarkName = "updatePower(from:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A99BCDC2-9356-4CA7-B618-3723234634E1"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Astar/DeviceManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
-            landmarkName = "updatePower(from:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "A99BCDC2-9356-4CA7-B618-3723234634E1 - 722ef5203c84abde"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Astar.DeviceManager.updatePower(from: __C.CBCharacteristic) -&gt; Swift.Int16"
-                  moduleName = "Astar"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/justin/Projects/Astar/Astar/DeviceManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "138"
-                  endingLineNumber = "138"
-                  offsetFromSymbolStart = "1012">
-               </Location>
-               <Location
-                  uuid = "A99BCDC2-9356-4CA7-B618-3723234634E1 - 478a1302076fe568"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.UnsafeRawBufferPointer) -&gt; Swift.Int in Astar.DeviceManager.updatePower(from: __C.CBCharacteristic) -&gt; Swift.Int16"
-                  moduleName = "Astar"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/justin/Projects/Astar/Astar/DeviceManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "139"
-                  endingLineNumber = "139"
-                  offsetFromSymbolStart = "36">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
