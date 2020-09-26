@@ -27,12 +27,20 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     var heartRate = 0
     var watts = 0;
     
+    var cadence: Int16 = 0
+    
+    var ts1: UInt16 = 0
+    var ts2: UInt16 = 0
+    
+    var cad1: UInt16 = 0
+    var cad2: UInt16 = 0
+    
     var distance = Measurement(value: 0, unit: UnitLength.meters)
     
     override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
-
+        
     }
     
     
@@ -64,13 +72,13 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         peripheral.delegate = self
         //centralManager.stopScan()
         centralManager.connect(peripheral)
-
+        
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("Connected!")
         peripheral.discoverServices([heartRateServiceCBUUID, powerMeterServiceCBUUID])
-
+        
     }
     
     
@@ -106,18 +114,24 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             // we should update the saved devices
             //self.updateDevice(peripheral, deviceTyp: DeviceType.PowerMeter);
             for characteristic in service.characteristics! as [CBCharacteristic] {
+                print(characteristic)
                 switch characteristic.uuid.uuidString {
                 case POWER_CONTROL:
                     var rawArray:[UInt8] = [0x01];
                     let data = NSData(bytes: &rawArray, length: rawArray.count)
                     peripheral.writeValue(data as Data, for: characteristic, type: CBCharacteristicWriteType.withResponse)
-                //    print("POWER CONTROL")
+                    print("POWER CONTROL")
                 case POWER_MEASUREMENT:
-              //     print("POWER MEASUREMENT")
-                    peripheral.setNotifyValue(true, for: characteristic);
+                    if characteristic.properties.contains(.notify) {
+                        print("POWER MEASUREMENT")
+                        peripheral.setNotifyValue(true, for: characteristic);
+                    }
                 // this should set the cumulative count back to zero
                 case POWER_FEATURE:
-                    peripheral.setNotifyValue(true, for: characteristic);
+                    if characteristic.properties.contains(.notify) {
+                        print("POWER FEATURE")
+                        peripheral.setNotifyValue(true, for: characteristic);
+                    }
                 default:
                     peripheral.setNotifyValue(true, for: characteristic);
                 }
@@ -126,14 +140,60 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
     }
     
-    func updatePower(from characteristic: CBCharacteristic) -> Int16 {
-       
+    func updatePower(from characteristic: CBCharacteristic) -> Int {
+        
+        guard let characteristicData = characteristic.value else { return -1 }
+        
         // the first 16bits contains the data for the flags
         // The next 16bits make up the power reading
-        guard let characteristicData = characteristic.value else { return -1 }
         let byteArray = [UInt8](characteristicData)
-        let watts:Int16 = Int16(byteArray[2])
+        let watts:Int = Int(byteArray[2]) + Int((byteArray[3]) * 255)
+        
+        let crankRev = (UInt16(byteArray[8]) << 8) + UInt16(byteArray[7])
+        let crankTime = (UInt16(byteArray[10]) << 8) + UInt16(byteArray[9])
 
+        
+       // print("Crank: \(crankRev)")
+      //  print("Time: \(crankTime)")
+        
+        var cumulativeRevs = 0.0
+        var cumulativeTime = 0.0
+
+        if crankRev < cad1 {
+            let dCad1 = Double(cad1)
+            let dCrankRev = Double(crankRev)
+            cumulativeRevs =  dCad1 - dCrankRev
+        } else {
+            cumulativeRevs = 0
+        }
+        if crankTime < ts1 {
+            let dTs1 = Double(ts1)
+            let dCrankTime = Double(crankTime)
+            cumulativeTime = dTs1 - dCrankTime
+        } else {
+            cumulativeTime = 0
+        }
+        
+       // print("cumRevs: \(cumulativeRevs)")
+       // print("cumTime: \(cumulativeTime)")
+        
+        if cumulativeTime != 0 {
+            let raw = Double(cumulativeRevs / cumulativeTime)
+            let cadence = Int16(Int(raw * 60))
+            
+            //print("Cadence: \(cadence)")
+        }
+        
+        if ts2 != crankTime {
+            ts2 = crankTime
+            //ts1 = ts1 + crankTime
+        }
+        
+        if cad2 != crankRev {
+            cad2 = crankRev
+            cad1 = cad1 + crankRev
+        }
+        
         reading.currentValue = Int(watts)
         reading.deviceType = DeviceType.PowerMeter
         reading.instantTimestamp = NSDate().timeIntervalSince1970
@@ -142,12 +202,12 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         return watts
     }
-
+    
     
     func onHeartRateReceived(_ heartRate: Int) {
-            print("BPM: \(heartRate)")
-            self.heartRate = heartRate
-        }
+        print("BPM: \(heartRate)")
+        self.heartRate = heartRate
+    }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         switch characteristic.uuid {
@@ -162,8 +222,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
     }
     
-    private func onPowerReceived(_ tmpWatts: Int16) {
-        self.watts = Int(tmpWatts)
+    private func onPowerReceived(_ tmpWatts: Int) {
+        self.watts = tmpWatts
     }
     
     private func heartRate(from characteristic: CBCharacteristic) -> Int {
