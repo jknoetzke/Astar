@@ -15,12 +15,14 @@ public enum DeviceType: String {
 }
 
 public class PeripheralData: NSObject {
-    var row:Int = 0; // row index is the same as PeripheralManager.devices index
-    var currentValue = 0;
     var speed:Double = 0.0;
-    var cadence:Int16 = 0;
+    var heartRate = 0
+    var power: Int = 0
+    var cadence:Int = 0;
     var instantTimestamp:Double = 0.0;
     var deviceType = DeviceType.PowerMeter;
-    //var batteryLevel:UInt8 = 0; // not all sensors support battery level, since it is optional
-    var name:String?
+    var previousCrankTimeEvent  = 0.0
+    var previousCrankCount = 0.0
+    var distance = Measurement(value: 0, unit: UnitLength.meters)
+
 }

@@ -2,16 +2,20 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, RideDelegate {
+    
+    func didNewRideData(_ sender: DeviceManager, ride: PeripheralData) {
+        reading = ride
+    }
+    
     private var rideTimer: Timer?
-    private var clock: Timer?
     private var seconds = 0
     private var startTime: DispatchTime?
     private var timerIsPaused = true
     private var lapCounter = 0
     private var locationManager = LocationManager()
     private var deviceManager = DeviceManager()
-    
+    private var rideArray: [PeripheralData]!
     //var devTypeMap = [CBPeripheral:DeviceType]();
     
     private var container: NSPersistentContainer!
@@ -20,45 +24,35 @@ class ViewController: UIViewController {
     @IBOutlet weak var lblHeartRate: UILabel!
     @IBOutlet weak var lblSpeed: UILabel!
     @IBOutlet weak var lblRideTime: UILabel!
-    @IBOutlet weak var lblClock: UILabel!
     @IBOutlet weak var lblLap: UILabel!
     @IBOutlet weak var lblLapWatts: UILabel!
     @IBOutlet weak var btnStart: UIButton!
     @IBOutlet weak var btnLap: UIButton!
+    @IBOutlet weak var lblCadence: UILabel!
+    
+    private var reading: PeripheralData!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        clock = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(clockCode), userInfo: nil, repeats: true)
         rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
-        clockCode()
         locationManager.startLocationUpdates()
-    }
-    
-    @objc func clockCode() {
-        let currentDateTime = Date()
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        dateFormatter.dateFormat = "HH:mm"
-        
-        lblClock.text = "\(dateFormatter.string(from: currentDateTime))"
-        
+        deviceManager.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        rideTimer?.invalidate()
+        stopTimer()
         locationManager.stopUpdatingLocation()
-        
     }
     
     func startTimer() {
     }
     
     func stopTimer() {
-        //        rideTimer?.invalidate()
-        //        rideTimer = nil
+        rideTimer?.invalidate()
+        rideTimer = nil
     }
     
     @IBAction func lapClicked(_ sender: Any) {
@@ -67,6 +61,7 @@ class ViewController: UIViewController {
         lblLap.text = String(lapCounter)
     }
     @IBAction func startClicked(_ sender: Any) {
+
         if timerIsPaused {
             startTime = DispatchTime.now()
             let hours = 0
@@ -97,13 +92,14 @@ class ViewController: UIViewController {
     @objc func runTimedCode() {
         
         let end = DispatchTime.now()
-
-        lblWatts.text = String(deviceManager.watts)
-        lblHeartRate.text = String(deviceManager.heartRate)
+        
+        if reading == nil { return }
+        lblWatts.text = String(reading.power)
+        lblHeartRate.text = String(reading.heartRate)
         lblSpeed.text = String(locationManager.speed)
+        lblCadence.text = String(reading.cadence)
         
         if timerIsPaused == false {
-            saveRide()
             if let tmpStartTime = startTime {
                 let nanoTime = end.uptimeNanoseconds - tmpStartTime.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
                 let timeInterval = Double(nanoTime) / 1_000_000_000
@@ -125,7 +121,8 @@ class ViewController: UIViewController {
         newRide.distance = locationManager.distance.value
         newRide.duration = Int16(seconds)
         newRide.timestamp = Date()
-        newRide.heartrate = Int16(deviceManager.heartRate)
+        newRide.heartrate = Int16(reading.heartRate)
+        newRide.cadence = Int16(reading.cadence)
         newRide.lap = Int16(lapCounter)
         
         for location in locationManager.locationList {

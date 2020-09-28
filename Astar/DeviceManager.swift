@@ -14,36 +14,26 @@ let heartRateMeasurementCharacteristicCBUUID = CBUUID(string: "2A37")
 let powerMeterMeasurementCharacteristicCBUUID = CBUUID(string: POWER_MEASUREMENT)
 let bodySensorLocationCharacteristicCBUUID = CBUUID(string: "2A38")
 let powerMeterServiceCBUUID = CBUUID(string: "1818")
-let POWER_CONTROL = "2A66";
-let POWER_MEASUREMENT = "2A63";
-let POWER_FEATURE = "2A65";
+let POWER_CONTROL = "2A66"
+let POWER_MEASUREMENT = "2A63"
+let POWER_FEATURE = "2A65"
+let UINT16_MAX = 65536.0
 
 
 class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     private var peripheral: CBPeripheral!
     private var centralManager: CBCentralManager!
-    private var reading = PeripheralData();
-    var heartRate = 0
-    var watts = 0;
+    private var reading: PeripheralData!;
     
-    var cadence: Int16 = 0
+    var delegate: RideDelegate?
     
-    var ts1: UInt16 = 0
-    var ts2: UInt16 = 0
-    
-    var cad1: UInt16 = 0
-    var cad2: UInt16 = 0
-    
-    var distance = Measurement(value: 0, unit: UnitLength.meters)
     
     override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
-        
+        reading = PeripheralData();
     }
-    
-    
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
@@ -136,99 +126,73 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                     peripheral.setNotifyValue(true, for: characteristic);
                 }
             }
-            
         }
     }
     
-    func updatePower(from characteristic: CBCharacteristic) -> Int {
+    func updatePower(from characteristic: CBCharacteristic) {
         
-        guard let characteristicData = characteristic.value else { return -1 }
+        var cadence = 0.0
+        guard let characteristicData = characteristic.value else { return }
         
         // the first 16bits contains the data for the flags
         // The next 16bits make up the power reading
         let byteArray = [UInt8](characteristicData)
         let watts:Int = Int(byteArray[2]) + Int((byteArray[3]) * 255)
         
-        let crankRev = (UInt16(byteArray[8]) << 8) + UInt16(byteArray[7])
-        let crankTime = (UInt16(byteArray[10]) << 8) + UInt16(byteArray[9])
-
+        let crankRev:Double = Double(byteArray[11]) + Double((byteArray[12]) * 255)
+        let crankTime:Double = Double((UInt16(byteArray[14]) << 8) + UInt16(byteArray[13]))
         
-       // print("Crank: \(crankRev)")
-      //  print("Time: \(crankTime)")
+        let cumulativeRevs = rollOver(current: crankRev, previous: reading.previousCrankCount, max: UINT16_MAX)
+        let cumulativeTime = rollOver(current: crankTime, previous: reading.previousCrankTimeEvent, max: UINT16_MAX)
         
-        var cumulativeRevs = 0.0
-        var cumulativeTime = 0.0
-
-        if crankRev < cad1 {
-            let dCad1 = Double(cad1)
-            let dCrankRev = Double(crankRev)
-            cumulativeRevs =  dCad1 - dCrankRev
-        } else {
-            cumulativeRevs = 0
-        }
-        if crankTime < ts1 {
-            let dTs1 = Double(ts1)
-            let dCrankTime = Double(crankTime)
-            cumulativeTime = dTs1 - dCrankTime
-        } else {
-            cumulativeTime = 0
+        if (reading.previousCrankTimeEvent != crankTime) || (reading.previousCrankCount != crankRev) {
+            if cumulativeTime != 0 {
+                cadence = Double((60 * cumulativeRevs / cumulativeTime) * 1024 )
+                print("Cadence: \(cadence)")
+            }
         }
         
-       // print("cumRevs: \(cumulativeRevs)")
-       // print("cumTime: \(cumulativeTime)")
-        
-        if cumulativeTime != 0 {
-            let raw = Double(cumulativeRevs / cumulativeTime)
-            let cadence = Int16(Int(raw * 60))
-            
-            //print("Cadence: \(cadence)")
+        if crankRev > reading.previousCrankCount {
+            reading.previousCrankCount = crankRev
+            reading.previousCrankTimeEvent = crankTime
         }
         
-        if ts2 != crankTime {
-            ts2 = crankTime
-            //ts1 = ts1 + crankTime
-        }
-        
-        if cad2 != crankRev {
-            cad2 = crankRev
-            cad1 = cad1 + crankRev
-        }
-        
-        reading.currentValue = Int(watts)
+        reading.power = Int(watts)
+        reading.cadence = Int(cadence)
         reading.deviceType = DeviceType.PowerMeter
         reading.instantTimestamp = NSDate().timeIntervalSince1970
         
-        print("Watts: \(watts)")
-        
-        return watts
+        updateRide(ride: reading)
     }
     
+    func rollOver(current: Double, previous: Double, max: Double) -> Double {
+        if current >= previous {
+            return current - previous
+        } else {
+            return (max - previous) + current
+        }
+    }
     
     func onHeartRateReceived(_ heartRate: Int) {
         print("BPM: \(heartRate)")
-        self.heartRate = heartRate
+        reading.heartRate = heartRate
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         switch characteristic.uuid {
         case heartRateMeasurementCharacteristicCBUUID:
-            let bpm = heartRate(from: characteristic)
-            onHeartRateReceived(bpm)
+            updateHeartRate(from: characteristic)
         case powerMeterMeasurementCharacteristicCBUUID:
-            let watts = updatePower(from: characteristic)
-            onPowerReceived(watts)
+            updatePower(from: characteristic)
         default:
             print("Unhandled Characteristic UUID: \(characteristic.uuid)")
         }
     }
     
-    private func onPowerReceived(_ tmpWatts: Int) {
-        self.watts = tmpWatts
-    }
-    
-    private func heartRate(from characteristic: CBCharacteristic) -> Int {
-        guard let characteristicData = characteristic.value else { return -1 }
+    private func updateHeartRate(from characteristic: CBCharacteristic) {
+        guard let characteristicData = characteristic.value else { return }
         let byteArray = [UInt8](characteristicData)
+        var heartRate = 0
         
         // See: https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.heart_rate_measurement.xml
         // The heart rate mesurement is in the 2nd, or in the 2nd and 3rd bytes, i.e. one one or in two bytes
@@ -236,10 +200,17 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         let firstBitValue = byteArray[0] & 0x01
         if firstBitValue == 0 {
             // Heart Rate Value Format is in the 2nd byte
-            return Int(byteArray[1])
+            heartRate = Int(byteArray[1])
         } else {
             // Heart Rate Value Format is in the 2nd and 3rd bytes
-            return (Int(byteArray[1]) << 8) + Int(byteArray[2])
+            heartRate = (Int(byteArray[1]) << 8) + Int(byteArray[2])
         }
+        
+        reading.heartRate = heartRate
+        updateRide(ride: reading)
+    }
+    
+    func updateRide(ride: PeripheralData) {
+        delegate?.didNewRideData(self, ride: ride)
     }
 }

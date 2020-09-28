@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D06CCB1B25224E0200534904 /* RideDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06CCB1A25224E0200534904 /* RideDelegate.swift */; };
 		D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77B251A4AE200241E7E /* PeripheralData.swift */; };
 		D093A77F251A4C4400241E7E /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77E251A4C4400241E7E /* DeviceManager.swift */; };
 		D093A783251A50FC00241E7E /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A782251A50FC00241E7E /* LocationManager.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D06CCB1A25224E0200534904 /* RideDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDelegate.swift; sourceTree = "<group>"; };
 		D093A77B251A4AE200241E7E /* PeripheralData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralData.swift; sourceTree = "<group>"; };
 		D093A77E251A4C4400241E7E /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		D093A782251A50FC00241E7E /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				D0D329132503BF2B003CC73A /* LaunchScreen.storyboard */,
 				D0C757F32509234E00C923C4 /* DataModel */,
 				D0D329162503BF2B003CC73A /* Info.plist */,
+				D06CCB1A25224E0200534904 /* RideDelegate.swift */,
 			);
 			path = Astar;
 			sourceTree = "<group>";
@@ -157,6 +160,7 @@
 				D0D3290D2503BF2B003CC73A /* ViewController.swift in Sources */,
 				D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */,
 				D093A783251A50FC00241E7E /* LocationManager.swift in Sources */,
+				D06CCB1B25224E0200534904 /* RideDelegate.swift in Sources */,
 				D093A77F251A4C4400241E7E /* DeviceManager.swift in Sources */,
 				D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */,
 				D0D329092503BF2B003CC73A /* AppDelegate.swift in Sources */,

@@ -145,7 +145,7 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Clock" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="HvW-iZ-oS6">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cadence" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="HvW-iZ-oS6">
                                                         <rect key="frame" x="211" y="8" width="195" height="67.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -174,7 +174,7 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="13:35" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="Whq-M6-F5j">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="Whq-M6-F5j" userLabel="lblCadence">
                                                         <rect key="frame" x="211" y="8" width="195" height="67.666666666666671"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="48"/>
                                                         <nil key="textColor"/>
@@ -320,7 +320,7 @@
                     <connections>
                         <outlet property="btnLap" destination="ymd-Nl-WPf" id="x3Q-YG-ONk"/>
                         <outlet property="btnStart" destination="ytD-Xz-yNN" id="i6K-cc-PLZ"/>
-                        <outlet property="lblClock" destination="Whq-M6-F5j" id="hcE-sI-a3f"/>
+                        <outlet property="lblCadence" destination="Whq-M6-F5j" id="x0X-IZ-7KC"/>
                         <outlet property="lblHeartRate" destination="zbJ-dJ-jj6" id="boZ-dv-fB9"/>
                         <outlet property="lblLap" destination="DT2-ag-gWo" id="Gfz-XC-Bw5"/>
                         <outlet property="lblLapWatts" destination="6x9-cR-M5E" id="zqj-LQ-JNH"/>
