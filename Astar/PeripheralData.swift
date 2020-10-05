@@ -19,10 +19,11 @@ public class PeripheralData: NSObject {
     var heartRate = 0
     var power: Int = 0
     var cadence:Int = 0;
-    var instantTimestamp:Double = 0.0;
-    var deviceType = DeviceType.PowerMeter;
+    var instantTimestamp:Date!
+    var deviceType = DeviceType.PowerMeter
     var previousCrankTimeEvent  = 0.0
     var previousCrankCount = 0.0
-    var distance = Measurement(value: 0, unit: UnitLength.meters)
-
+    var distance = 0.0
+    var location:Location!
+    var altitude = 0.0
 }

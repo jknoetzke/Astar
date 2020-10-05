@@ -19,6 +19,9 @@ let POWER_MEASUREMENT = "2A63"
 let POWER_FEATURE = "2A65"
 let UINT16_MAX = 65536.0
 
+let POWER_PEDAL = 44
+let POWER_TRAINER= 39
+
 
 class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
@@ -134,16 +137,36 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         var cadence = 0.0
         guard let characteristicData = characteristic.value else { return }
         
+        var crankRev = 0.0
+        var crankTime = 0.0
+        var watts = 0
+        
+        
         // the first 16bits contains the data for the flags
         // The next 16bits make up the power reading
         let byteArray = [UInt8](characteristicData)
-        let watts:Int = Int(byteArray[2]) + Int((byteArray[3]) * 255)
         
-        let crankRev:Double = Double(byteArray[11]) + Double((byteArray[12]) * 255)
-        let crankTime:Double = Double((UInt16(byteArray[14]) << 8) + UInt16(byteArray[13]))
+        if byteArray[0] == POWER_PEDAL {
+            
+            watts = Int(byteArray[2]) + Int((byteArray[3]) * 255)
+            
+            crankRev = Double(byteArray[6]) + (Double(byteArray[7]) * 255.0)
+            crankTime = Double((UInt16(byteArray[9]) << 8) + UInt16(byteArray[8]))
+            
+        } else if byteArray[0] == POWER_TRAINER {
+            // the first 16bits contains the data for the flags
+            watts = Int(byteArray[2]) + Int((byteArray[3]) * 255)
+            
+            crankRev = Double(byteArray[11]) + Double((byteArray[12]) * 255)
+            crankTime = Double((UInt16(byteArray[14]) << 8) + UInt16(byteArray[13]))
+        } else {
+            return
+        }
+        
         
         let cumulativeRevs = rollOver(current: crankRev, previous: reading.previousCrankCount, max: UINT16_MAX)
         let cumulativeTime = rollOver(current: crankTime, previous: reading.previousCrankTimeEvent, max: UINT16_MAX)
+        
         
         if (reading.previousCrankTimeEvent != crankTime) || (reading.previousCrankCount != crankRev) {
             if cumulativeTime != 0 {
@@ -160,8 +183,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         reading.power = Int(watts)
         reading.cadence = Int(cadence)
         reading.deviceType = DeviceType.PowerMeter
-        reading.instantTimestamp = NSDate().timeIntervalSince1970
-        
+        reading.instantTimestamp = Date()
         updateRide(ride: reading)
     }
     

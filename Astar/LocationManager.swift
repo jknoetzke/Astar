@@ -15,6 +15,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     var locationList: [CLLocation] = []
     var distance = Measurement(value: 0, unit: UnitLength.meters)
     var speed = 0.0;
+    var altitude = 0.0
 
     func startLocationUpdates() {
         locationManager.delegate = self
@@ -45,6 +46,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             }
             
             speed = newLocation.speed
+            altitude = newLocation.altitude
         }
     }
 

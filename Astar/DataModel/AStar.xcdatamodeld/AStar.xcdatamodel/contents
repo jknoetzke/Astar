@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="20A5374i" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="20A5384c" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Location" representedClassName=".Location" syncable="YES" codeGenerationType="class">
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -7,18 +7,20 @@
         <relationship name="ride" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ride" inverseName="locations" inverseEntity="Ride"/>
     </entity>
     <entity name="Ride" representedClassName=".Ride" syncable="YES" codeGenerationType="class">
+        <attribute name="altitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="cadence" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="distance" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="duration" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="heartrate" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="lap" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="ride_number" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="speed" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="watts" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Location" inverseName="ride" inverseEntity="Location"/>
     </entity>
     <elements>
-        <element name="Location" positionX="-63" positionY="-18" width="128" height="89"/>
-        <element name="Ride" positionX="-54" positionY="-9" width="128" height="164"/>
+        <element name="Location" positionX="-942.3719482421875" positionY="-216.6278076171875" width="128" height="89"/>
+        <element name="Ride" positionX="-1779.652709960938" positionY="-331.2987365722656" width="185.45068359375" height="208"/>
     </elements>
 </model>

@@ -3,11 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2AA39BFEA396EB459BD868B8 /* Pods_Astar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED44B6417E23A0211499F92 /* Pods_Astar.framework */; };
 		D06CCB1B25224E0200534904 /* RideDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06CCB1A25224E0200534904 /* RideDelegate.swift */; };
+		D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D79852527BCE4001961E3 /* TCXHandler.swift */; };
 		D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77B251A4AE200241E7E /* PeripheralData.swift */; };
 		D093A77F251A4C4400241E7E /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77E251A4C4400241E7E /* DeviceManager.swift */; };
 		D093A783251A50FC00241E7E /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A782251A50FC00241E7E /* LocationManager.swift */; };
@@ -20,7 +22,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4E9F9E60D9FDA5E0B96F0730 /* Pods-Astar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Astar.debug.xcconfig"; path = "Target Support Files/Pods-Astar/Pods-Astar.debug.xcconfig"; sourceTree = "<group>"; };
+		955A3ACC2F09105D7B44DCD3 /* Pods-Astar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Astar.release.xcconfig"; path = "Target Support Files/Pods-Astar/Pods-Astar.release.xcconfig"; sourceTree = "<group>"; };
 		D06CCB1A25224E0200534904 /* RideDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDelegate.swift; sourceTree = "<group>"; };
+		D06D79852527BCE4001961E3 /* TCXHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCXHandler.swift; sourceTree = "<group>"; };
 		D093A77B251A4AE200241E7E /* PeripheralData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralData.swift; sourceTree = "<group>"; };
 		D093A77E251A4C4400241E7E /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		D093A782251A50FC00241E7E /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -32,6 +37,7 @@
 		D0D329112503BF2B003CC73A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D0D329142503BF2B003CC73A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D0D329162503BF2B003CC73A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DED44B6417E23A0211499F92 /* Pods_Astar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Astar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,16 +45,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AA39BFEA396EB459BD868B8 /* Pods_Astar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4854A358B909476D69A44E28 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DED44B6417E23A0211499F92 /* Pods_Astar.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		684E8D4AE32CB70B9326692D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4E9F9E60D9FDA5E0B96F0730 /* Pods-Astar.debug.xcconfig */,
+				955A3ACC2F09105D7B44DCD3 /* Pods-Astar.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		D0C757F32509234E00C923C4 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
 				D0C757F02508FA1200C923C4 /* AStar.xcdatamodeld */,
+				D06D79852527BCE4001961E3 /* TCXHandler.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -58,6 +83,8 @@
 			children = (
 				D0D329072503BF2B003CC73A /* Astar */,
 				D0D329062503BF2B003CC73A /* Products */,
+				684E8D4AE32CB70B9326692D /* Pods */,
+				4854A358B909476D69A44E28 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,9 +121,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D0D329192503BF2B003CC73A /* Build configuration list for PBXNativeTarget "Astar" */;
 			buildPhases = (
+				B576FBDAE4427E1E597C2048 /* [CP] Check Pods Manifest.lock */,
 				D0D329012503BF2B003CC73A /* Sources */,
 				D0D329022503BF2B003CC73A /* Frameworks */,
 				D0D329032503BF2B003CC73A /* Resources */,
+				601C9D0C287CC56965317F47 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -122,7 +151,7 @@
 				};
 			};
 			buildConfigurationList = D0D329002503BF2B003CC73A /* Build configuration list for PBXProject "Astar" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -152,11 +181,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		601C9D0C287CC56965317F47 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Astar/Pods-Astar-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Astar/Pods-Astar-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Astar/Pods-Astar-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B576FBDAE4427E1E597C2048 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Astar-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		D0D329012503BF2B003CC73A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */,
 				D0D3290D2503BF2B003CC73A /* ViewController.swift in Sources */,
 				D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */,
 				D093A783251A50FC00241E7E /* LocationManager.swift in Sources */,
@@ -307,13 +379,14 @@
 		};
 		D0D3291A2503BF2B003CC73A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4E9F9E60D9FDA5E0B96F0730 /* Pods-Astar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -327,13 +400,14 @@
 		};
 		D0D3291B2503BF2B003CC73A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 955A3ACC2F09105D7B44DCD3 /* Pods-Astar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
