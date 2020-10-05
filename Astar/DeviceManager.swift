@@ -20,7 +20,7 @@ let POWER_FEATURE = "2A65"
 let UINT16_MAX = 65536.0
 
 let POWER_PEDAL = 44
-let POWER_TRAINER= 39
+let POWER_TRAINER = 39
 
 
 class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
