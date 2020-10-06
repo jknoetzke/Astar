@@ -26,4 +26,5 @@ public class PeripheralData: NSObject {
     var distance = 0.0
     var location:Location!
     var altitude = 0.0
+    var lap = 0
 }

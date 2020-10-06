@@ -38,6 +38,9 @@ class ViewController: UIViewController, RideDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let tcxHandler = TCXHandler()
+        tcxHandler.testEncode()
+        
         rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         locationManager.startLocationUpdates()
         
@@ -136,6 +139,7 @@ class ViewController: UIViewController, RideDelegate {
                     reading.location = locationObject
                     
                     reading.distance = locationManager.distance.value
+                    reading.altitude = locationManager.altitude
                     
                 }
                 rideArray.append(reading)
