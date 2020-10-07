@@ -23,8 +23,6 @@ public class PeripheralData: NSObject {
     var deviceType = DeviceType.PowerMeter
     var previousCrankTimeEvent  = 0.0
     var previousCrankCount = 0.0
-    var distance = 0.0
-    var location:Location!
-    var altitude = 0.0
     var lap = 0
+    var gps: GPSData = GPSData()
 }

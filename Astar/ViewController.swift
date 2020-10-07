@@ -2,13 +2,8 @@
 import UIKit
 import CoreData
 
-
-
-class ViewController: UIViewController, RideDelegate {
+class ViewController: UIViewController, RideDelegate, GPSDelegate {
     
-    func didNewRideData(_ sender: DeviceManager, ride: PeripheralData) {
-        reading = ride
-    }
     
     private var rideTimer: Timer?
     private var seconds = 0
@@ -17,7 +12,7 @@ class ViewController: UIViewController, RideDelegate {
     private var lapCounter = 0
     private var locationManager = LocationManager()
     private var deviceManager = DeviceManager()
-    private var rideArray: [PeripheralData]!
+    private var rideArray =  [PeripheralData]()
     
     private var currentRideID = 0
     
@@ -33,18 +28,17 @@ class ViewController: UIViewController, RideDelegate {
     @IBOutlet weak var btnLap: UIButton!
     @IBOutlet weak var lblCadence: UILabel!
     
-    private var reading: PeripheralData!
+    private var reading = PeripheralData()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tcxHandler = TCXHandler()
-        tcxHandler.testEncode()
-        
+        readUserPrefs()
         rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         locationManager.startLocationUpdates()
         
-        deviceManager.delegate = self
+        deviceManager.rideDelegate = self
+        locationManager.gpsDelegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -58,12 +52,19 @@ class ViewController: UIViewController, RideDelegate {
         rideTimer = nil
     }
     
-   
+    func didNewRideData(_ sender: DeviceManager, ride: PeripheralData) {
+        reading = ride
+    }
+    
+    func didNewGPSData(_ sender: LocationManager, gps: GPSData) {
+        reading.gps = gps
+    }
     
     @IBAction func lapClicked(_ sender: Any) {
         
         lapCounter = lapCounter + 1
         lblLap.text = String(lapCounter)
+        reading.lap = lapCounter
     }
     @IBAction func startClicked(_ sender: Any) {
         
@@ -84,7 +85,6 @@ class ViewController: UIViewController, RideDelegate {
             timerIsPaused = false
             
         } else {
-            stopTimer()
             btnLap.isEnabled = false
             if #available(iOS 13, *) {
                 let startImage = UIImage(systemName: "play")
@@ -97,23 +97,22 @@ class ViewController: UIViewController, RideDelegate {
             let alert = UIAlertController(title: "Save and Upload Ride ?", message: "Saving will save this ride to your iPhone and upload to the sites you have configured.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { action in
                 print("Clicked Save")
+                self.saveRide()
             }))
-            alert.addAction(UIAlertAction(title: "Don't save", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Don't save", style: .cancel, handler: { action in
+                print("Clicked Cancel")
+            }))
             
+            lapCounter = 0
+            lblLap.text = "0"
             self.present(alert, animated: true)
             
-        }
-        
-        if timerIsPaused == false {
-            saveRide()
         }
     }
     
     @objc func runTimedCode() {
         
         let end = DispatchTime.now()
-        
-        if reading == nil { return }
         
         lblWatts.text = String(reading.power)
         lblHeartRate.text = String(reading.heartRate)
@@ -136,13 +135,15 @@ class ViewController: UIViewController, RideDelegate {
                     locationObject.timestamp = location.timestamp
                     locationObject.latitude = location.coordinate.latitude
                     locationObject.longitude = location.coordinate.longitude
-                    reading.location = locationObject
-                    
-                    reading.distance = locationManager.distance.value
-                    reading.altitude = locationManager.altitude
                     
                 }
+                
+                if reading.gps.location == nil { //Don't add if we haven't gotten a location yet
+                    reading.gps.location = locationManager.currentPosition
+                }
                 rideArray.append(reading)
+                reading = PeripheralData()
+
             }
         }
     }
@@ -164,25 +165,27 @@ class ViewController: UIViewController, RideDelegate {
     private func saveRide() {
         
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        if reading == nil { return }
-        
         let dataRide = Ride(context: context)
         
         for ride in rideArray {
             
             dataRide.cadence = Int16(ride.cadence)
             dataRide.watts = Int16(ride.power)
-            dataRide.distance = Double(ride.distance)
-            dataRide.addToLocations(ride.location)
-            
-            dataRide.speed = ride.speed
+            dataRide.distance = ride.gps.distance.value
+            let location:Location = Location(context: context)
+            location.latitude = ride.gps.location!.latitude
+            location.longitude = ride.gps.location!.longitude
+            location.timestamp = ride.gps.timeStamp
+            dataRide.addToLocations(location)
+            dataRide.speed = Double(ride.gps.speed)
             dataRide.heartrate = Int16(ride.heartRate)
             dataRide.timestamp =  ride.instantTimestamp
             dataRide.ride_number = Int16(currentRideID + 1)
-            dataRide.altitude = ride.altitude
-            
-            currentRideID = currentRideID + 1
+            dataRide.altitude = Double(ride.gps.altitude)
+            dataRide.ride_number = Int16(currentRideID)
         }
+        currentRideID = currentRideID + 1
+        saveUserPrefs()
         
         
         do {
@@ -190,7 +193,10 @@ class ViewController: UIViewController, RideDelegate {
         }catch {
             
         }
-    }
+        
+        let tcxHandler = TCXHandler()
+        tcxHandler.encodeTCX(rideArray: rideArray)
+    }    
 }
 
 extension NSLayoutConstraint {

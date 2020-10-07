@@ -29,7 +29,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var centralManager: CBCentralManager!
     private var reading: PeripheralData!;
     
-    var delegate: RideDelegate?
+    var rideDelegate: RideDelegate?
     
     
     override init() {
@@ -60,7 +60,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func centralManager(_ central: CBCentralManager, didDiscover tmpPeripheral: CBPeripheral,
                         advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        print(tmpPeripheral)
         peripheral = tmpPeripheral
         peripheral.delegate = self
         //centralManager.stopScan()
@@ -233,6 +232,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
     func updateRide(ride: PeripheralData) {
-        delegate?.didNewRideData(self, ride: ride)
+        rideDelegate?.didNewRideData(self, ride: ride)
     }
 }

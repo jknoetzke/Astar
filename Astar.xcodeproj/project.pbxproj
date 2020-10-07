@@ -10,6 +10,8 @@
 		2AA39BFEA396EB459BD868B8 /* Pods_Astar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED44B6417E23A0211499F92 /* Pods_Astar.framework */; };
 		D06CCB1B25224E0200534904 /* RideDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06CCB1A25224E0200534904 /* RideDelegate.swift */; };
 		D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D79852527BCE4001961E3 /* TCXHandler.swift */; };
+		D06D7995252CE7EC001961E3 /* GPSDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D7994252CE7EC001961E3 /* GPSDelegate.swift */; };
+		D06D7998252CED17001961E3 /* GPSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D7997252CED17001961E3 /* GPSData.swift */; };
 		D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77B251A4AE200241E7E /* PeripheralData.swift */; };
 		D093A77F251A4C4400241E7E /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77E251A4C4400241E7E /* DeviceManager.swift */; };
 		D093A783251A50FC00241E7E /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A782251A50FC00241E7E /* LocationManager.swift */; };
@@ -26,6 +28,8 @@
 		955A3ACC2F09105D7B44DCD3 /* Pods-Astar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Astar.release.xcconfig"; path = "Target Support Files/Pods-Astar/Pods-Astar.release.xcconfig"; sourceTree = "<group>"; };
 		D06CCB1A25224E0200534904 /* RideDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDelegate.swift; sourceTree = "<group>"; };
 		D06D79852527BCE4001961E3 /* TCXHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCXHandler.swift; sourceTree = "<group>"; };
+		D06D7994252CE7EC001961E3 /* GPSDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSDelegate.swift; sourceTree = "<group>"; };
+		D06D7997252CED17001961E3 /* GPSData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSData.swift; sourceTree = "<group>"; };
 		D093A77B251A4AE200241E7E /* PeripheralData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralData.swift; sourceTree = "<group>"; };
 		D093A77E251A4C4400241E7E /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		D093A782251A50FC00241E7E /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -100,9 +104,11 @@
 			isa = PBXGroup;
 			children = (
 				D0D329082503BF2B003CC73A /* AppDelegate.swift */,
+				D06D7994252CE7EC001961E3 /* GPSDelegate.swift */,
 				D0D3290C2503BF2B003CC73A /* ViewController.swift */,
 				D093A782251A50FC00241E7E /* LocationManager.swift */,
 				D093A77B251A4AE200241E7E /* PeripheralData.swift */,
+				D06D7997252CED17001961E3 /* GPSData.swift */,
 				D093A77E251A4C4400241E7E /* DeviceManager.swift */,
 				D0D3290E2503BF2B003CC73A /* Main.storyboard */,
 				D0D329112503BF2B003CC73A /* Assets.xcassets */,
@@ -230,10 +236,12 @@
 			files = (
 				D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */,
 				D0D3290D2503BF2B003CC73A /* ViewController.swift in Sources */,
+				D06D7998252CED17001961E3 /* GPSData.swift in Sources */,
 				D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */,
 				D093A783251A50FC00241E7E /* LocationManager.swift in Sources */,
 				D06CCB1B25224E0200534904 /* RideDelegate.swift in Sources */,
 				D093A77F251A4C4400241E7E /* DeviceManager.swift in Sources */,
+				D06D7995252CE7EC001961E3 /* GPSDelegate.swift in Sources */,
 				D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */,
 				D0D329092503BF2B003CC73A /* AppDelegate.swift in Sources */,
 			);

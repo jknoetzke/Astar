@@ -22,14 +22,14 @@ class TCXHandler {
         var cadence:UInt8 = 0
     }
     
-    func toPosition(location: Location) -> Position {
-        return Position(latitudeDegrees: location.latitude, longitudeDegrees: location.longitude)
+    func toPosition(lat: Double, lon: Double) -> Position {
+        return Position(latitudeDegrees: lat, longitudeDegrees: lon)
     }
     
     func generateExtensionArray(ride: PeripheralData) -> [Extension] {
         
         var extensionArray: [Extension] = []
-
+        
         extensionArray.append(Extension(activityTrackpointExtension: ActivityTrackpointExtension(speed: ride.speed, runCadence: UInt8(ride.cadence), watts: UInt16(ride.power), cadenceSensor: nil), activityLapExtension: nil, activityGoals: nil))
         
         return extensionArray
@@ -46,22 +46,22 @@ class TCXHandler {
         var cadence = 0.0
         var heartRate = 0.0
         
-        var firstRecordedTime = rideArray.first?.instantTimestamp
-        var lastRecordedTime = rideArray.last?.instantTimestamp
+        var firstRecordedTime = rideArray.first?.gps.timeStamp
+        var lastRecordedTime = rideArray.last?.gps.timeStamp
         var totalElapsedTime = lastRecordedTime?.timeIntervalSince(firstRecordedTime!)
         var totalDistance = 0.0
         var totalCadence = 0.0
         
         
         var previousLap = 0
-        var activityLap: [ActivityLap]?
+        var activityLap = [ActivityLap]()
         var tracks: [Trackpoint] = [Trackpoint]()
         var allTracks = [Track]()
         
         for ride in rideArray {
             if previousLap == ride.lap {
                 if counter == 0 {
-                    firstRecordedTime = ride.instantTimestamp
+                    firstRecordedTime = ride.gps.timeStamp
                 }
                 
                 if ride.speed > maxSpeed {
@@ -70,37 +70,53 @@ class TCXHandler {
                 totalWatts += ride.power
                 totalHR += Double(ride.heartRate)
                 totalSpeed += ride.speed
-                totalDistance += ride.distance
+                totalDistance += ride.gps.distance.value
                 totalCadence += Double(ride.cadence)
                 
-                let trackPoint = Trackpoint(time: ride.instantTimestamp, position: toPosition(location: ride.location), altitude: ride.altitude, distance: ride.distance, heartRate: HeartRateInBeatsPerMinute(heartRate: UInt8(ride.heartRate)), cadence: UInt8(ride.cadence), sensorState: nil, extensions: generateExtensionArray(ride: ride))
-               
+                let trackPoint = Trackpoint(time: ride.gps.timeStamp, position: toPosition(lat: ride.gps.location!.latitude, lon: ride.gps.location!.latitude), altitude: Double(ride.gps.altitude), distance: ride.gps.distance.value, heartRate: HeartRateInBeatsPerMinute(heartRate: UInt8(ride.heartRate)), cadence: UInt8(ride.cadence), sensorState: nil, extensions: generateExtensionArray(ride: ride))
+                
                 tracks.append(trackPoint)
                 
-                lastRecordedTime = ride.instantTimestamp
-                
+                lastRecordedTime = ride.gps.timeStamp
                 counter += 1
-            }
-            else { //Do some math..
-                previousLap = ride.lap
-                totalElapsedTime = lastRecordedTime?.timeIntervalSince(firstRecordedTime!)
+                
+            } else { //Do some math..
+                
+                //We completed a lap, add it.
                 allTracks.append(Track(trackPoint: tracks))
-
+                
+                //Get the averages
                 distance = totalDistance / counter
                 cadence = totalCadence / counter
                 heartRate = totalHR / counter
-
+                
                 let heartBeatsPerMinute = HeartRateInBeatsPerMinute(heartRate: UInt8(heartRate))
                 let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime!), distance: distance, maximumSpeed: maxSpeed, calories: 0, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(cadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
-
                 
-                activityLap?.append(lap)
-                counter = 0
-
+                
+                activityLap.append(lap)
+                
+                //Reset
+                counter = 1
+                previousLap = ride.lap
             }
         }
         
-        return activityLap!
+        //Finish up the last row in the array
+        totalElapsedTime = lastRecordedTime?.timeIntervalSince(firstRecordedTime!)
+        allTracks.append(Track(trackPoint: tracks))
+        
+        distance = totalDistance / counter
+        cadence = totalCadence / counter
+        heartRate = totalHR / counter
+        
+        let heartBeatsPerMinute = HeartRateInBeatsPerMinute(heartRate: UInt8(heartRate))
+        let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime!), distance: distance, maximumSpeed: maxSpeed, calories: 0, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(cadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
+        activityLap.append(lap)
+        
+        
+        
+        return activityLap
         
     }
     
@@ -111,7 +127,7 @@ class TCXHandler {
         
         
         let activity = Activity(sport: .biking, identification: Date(), lap: activityLaps(rideArray: rideArray), notes: nil, training: nil, creator: nil)
-
+        
         let activities = ActivityList(activities: [activity], multiSportSession: nil)
         
         let database = TrainingCenterDatabase(activities: activities, courses: nil, author: author)
