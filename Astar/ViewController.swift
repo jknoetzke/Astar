@@ -21,14 +21,13 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate {
     @IBOutlet weak var lblWatts: UILabel!
     @IBOutlet weak var lblHeartRate: UILabel!
     @IBOutlet weak var lblSpeed: UILabel!
-    @IBOutlet weak var lblRideTime: UILabel!
     @IBOutlet weak var lblAvgWatts: UILabel!
     @IBOutlet weak var btnStart: UIButton!
     @IBOutlet weak var btnLap: UIButton!
     @IBOutlet weak var lblLap: UILabel!
     @IBOutlet weak var lblCadence: UILabel!
-
-
+    @IBOutlet weak var lblRideTime: UILabel!
+    
     private var reading = PeripheralData()
     
     override func viewDidLoad() {
