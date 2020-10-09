@@ -7,6 +7,13 @@
 
 import Foundation
 
+
+struct DeviceInfo {
+    var uuid:String?
+    var name:String?
+    var description:String?
+}
+
 public enum DeviceType: String {
     case HeartRate = "HeartRate";
     case SpeedCadence = "SpeedCadence";

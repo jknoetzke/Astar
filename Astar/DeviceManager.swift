@@ -27,7 +27,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     private var peripheral: CBPeripheral!
     private var centralManager: CBCentralManager!
-    private var reading: PeripheralData!;
+    private var reading: PeripheralData!
+    private var devices: [DeviceInfo]!
     
     var rideDelegate: RideDelegate?
     
@@ -36,6 +37,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
         reading = PeripheralData();
+        devices = [DeviceInfo]()
     }
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -60,6 +62,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func centralManager(_ central: CBCentralManager, didDiscover tmpPeripheral: CBPeripheral,
                         advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        
         peripheral = tmpPeripheral
         peripheral.delegate = self
         //centralManager.stopScan()
@@ -76,9 +79,11 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        
         guard let services = peripheral.services else { return }
+  
         for service in services {
-            print(service)
+            print("Services: \(service)")
             peripheral.discoverCharacteristics(nil, for: service)
         }
     }
@@ -86,7 +91,16 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
         
+        
+        
         if service.uuid == heartRateServiceCBUUID {
+
+            var deviceInfo = DeviceInfo()
+            deviceInfo.uuid = service.uuid.uuidString
+            deviceInfo.description = "Heart Rate Monitor"
+            deviceInfo.name = peripheral.name
+            devices.append(deviceInfo)
+            
             for characteristic in characteristics {
                 print(characteristic)
                 
@@ -100,6 +114,13 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 }
             }
         } else if service.uuid == powerMeterServiceCBUUID {
+
+            var deviceInfo = DeviceInfo()
+            deviceInfo.uuid = service.uuid.uuidString
+            deviceInfo.description = "Power Meter"
+            deviceInfo.name = peripheral.name
+            devices.append(deviceInfo)
+
             
             print("Found a power meter")
             //self.devTypeMap[peripheral] = DeviceType.PowerMeter;
@@ -234,4 +255,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     func updateRide(ride: PeripheralData) {
         rideDelegate?.didNewRideData(self, ride: ride)
     }
+}
+
+extension DefaultStringInterpolation {
+  mutating func appendInterpolation<T>(optional: T?) {
+    appendInterpolation(String(describing: optional))
+  }
 }

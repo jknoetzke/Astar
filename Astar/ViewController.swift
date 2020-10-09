@@ -22,12 +22,13 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate {
     @IBOutlet weak var lblHeartRate: UILabel!
     @IBOutlet weak var lblSpeed: UILabel!
     @IBOutlet weak var lblRideTime: UILabel!
-    @IBOutlet weak var lblLap: UILabel!
-    @IBOutlet weak var lblLapWatts: UILabel!
+    @IBOutlet weak var lblAvgWatts: UILabel!
     @IBOutlet weak var btnStart: UIButton!
     @IBOutlet weak var btnLap: UIButton!
+    @IBOutlet weak var lblLap: UILabel!
     @IBOutlet weak var lblCadence: UILabel!
-    
+
+
     private var reading = PeripheralData()
     
     override func viewDidLoad() {
@@ -203,6 +204,6 @@ extension NSLayoutConstraint {
     
     override public var description: String {
         let id = identifier ?? ""
-        return "id: \(id), constant: \(constant)" //you may print whatever you want here
+        return "Bug ! id: \(id), constant: \(constant)" //you may print whatever you want here
     }
 }
