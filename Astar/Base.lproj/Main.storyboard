@@ -253,10 +253,10 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8BB-EA-rLo">
                                                 <rect key="frame" x="0.0" y="0.0" width="187" height="119.5"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n9S-iO-BK5">
+                                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n9S-iO-BK5">
                                                         <rect key="frame" x="33" y="8" width="122" height="103.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                                        <state key="normal" title="Start"/>
+                                                        <state key="normal" title="Start" backgroundImage="start"/>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.089470408860000003" green="0.66279357670000005" blue="0.99595385790000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -270,10 +270,10 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OQC-K0-MQx">
                                                 <rect key="frame" x="188" y="0.0" width="187" height="119.5"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z62-HF-01r">
+                                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z62-HF-01r">
                                                         <rect key="frame" x="25" y="8" width="138" height="103.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="34"/>
-                                                        <state key="normal" title="Lap"/>
+                                                        <state key="normal" title="Lap" backgroundImage="lap"/>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.089470408860000003" green="0.66279357670000005" blue="0.99595385790000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -298,7 +298,7 @@
                             <constraint firstItem="ImL-8S-Em9" firstAttribute="trailing" secondItem="iBI-5k-LyB" secondAttribute="trailing" identifier="101" id="igi-ky-tVe"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" image="1.circle" catalog="system" id="L7R-yn-hZA"/>
+                    <tabBarItem key="tabBarItem" title="Item" image="1.circle" catalog="system" badgeValue="Main" selectedImage="1.circle" id="L7R-yn-hZA"/>
                     <connections>
                         <outlet property="btnLap" destination="Z62-HF-01r" id="YUj-NS-tfN"/>
                         <outlet property="btnStart" destination="n9S-iO-BK5" id="6Xt-Uo-axi"/>
@@ -306,13 +306,46 @@
                         <outlet property="lblCadence" destination="zen-7q-Ins" id="5Mm-dL-hwC"/>
                         <outlet property="lblHeartRate" destination="HqF-qi-6Z2" id="IhU-2I-foB"/>
                         <outlet property="lblLap" destination="Xyv-G5-VJK" id="jBy-Rl-mPa"/>
+                        <outlet property="lblRideTime" destination="6QD-EE-XaW" id="tw8-bg-bHY"/>
                         <outlet property="lblSpeed" destination="ypT-iN-Anx" id="NB2-aw-wkq"/>
                         <outlet property="lblWatts" destination="f30-mw-p9g" id="ijQ-eo-JLD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aMC-cH-BBG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2168.8000000000002" y="78.710644677661179"/>
+            <point key="canvasLocation" x="1153" y="329"/>
+        </scene>
+        <!--Maps-->
+        <scene sceneID="FlA-mQ-Hpi">
+            <objects>
+                <viewController id="q59-We-f4Y" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IIT-U5-bSw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Bkd-aq-Wzi"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Maps" image="map" catalog="system" badgeValue="Maps" selectedImage="map" id="jYd-uo-pFM"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hv6-p2-W93" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1084" y="-462"/>
+        </scene>
+        <!--Devices-->
+        <scene sceneID="IpA-vl-1lh">
+            <objects>
+                <viewController id="LN3-vZ-CZy" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QVQ-WQ-k2U">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="56D-8b-Ufh"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Devices" image="cpu" badgeValue="Devices" selectedImage="cpu" catalog="system" id="IMI-bw-6Cw"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ot-yI-D59" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1864" y="-106"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="ABa-vr-AEb">
@@ -325,15 +358,22 @@
                     </tabBar>
                     <connections>
                         <segue destination="ohW-W5-lud" kind="relationship" relationship="viewControllers" id="iFg-yV-gyT"/>
+                        <segue destination="q59-We-f4Y" kind="relationship" relationship="viewControllers" id="C6c-Bj-as5"/>
+                        <segue destination="LN3-vZ-CZy" kind="relationship" relationship="viewControllers" id="wJW-7X-RkP"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c26-Sp-PD0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1107.2463768115942" y="103.79464285714285"/>
+            <point key="canvasLocation" x="353" y="-54"/>
         </scene>
     </scenes>
     <resources>
         <image name="1.circle" catalog="system" width="128" height="121"/>
+        <image name="cpu" catalog="system" width="128" height="113"/>
+        <image name="cpu" width="128" height="128"/>
+        <image name="lap" width="512" height="512"/>
+        <image name="map" catalog="system" width="128" height="110"/>
+        <image name="start" width="1000" height="1000"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
