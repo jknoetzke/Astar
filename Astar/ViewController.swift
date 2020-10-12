@@ -2,15 +2,15 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController, RideDelegate, GPSDelegate {
-    
+
+class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarControllerDelegate {
     
     private var rideTimer: Timer?
     private var seconds = 0
     private var startTime: DispatchTime?
     private var timerIsPaused = true
     private var lapCounter = 0
-    private var locationManager = LocationManager()
+    private var locationManager = LocationManager.sharedLocationManager
     private var deviceManager = DeviceManager()
     private var rideArray =  [PeripheralData]()
     
@@ -33,19 +33,32 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIApplication.shared.isIdleTimerDisabled = true
+        
         readUserPrefs()
         rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         locationManager.startLocationUpdates()
         
         deviceManager.rideDelegate = self
         locationManager.gpsDelegate = self
+        
+        self.tabBarController?.delegate = self
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        stopTimer()
-        locationManager.stopUpdatingLocation()
     }
+    
+    public func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if tabBarController.selectedIndex == 1 {
+            let mapViewController = tabBarController.viewControllers![1] as! MapViewController // or whatever tab index you're trying to access
+            mapViewController.locationManager = locationManager
+            mapViewController.updateCurrentLocation(newLocation: locationManager.currentLocation!)
+
+        }
+    }
+   
     
     func stopTimer() {
         rideTimer?.invalidate()
@@ -66,6 +79,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate {
         lblLap.text = String(lapCounter)
         reading.lap = lapCounter
     }
+    
     @IBAction func startClicked(_ sender: Any) {
         
         if timerIsPaused {

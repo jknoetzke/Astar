@@ -8,9 +8,13 @@
 import Foundation
 import CoreLocation
 import TcxDataProtocol
+import MapKit
 
+class LocationManager: NSObject, CLLocationManagerDelegate  {
+    
+    
 
-class LocationManager: NSObject, CLLocationManagerDelegate {
+    static let sharedLocationManager = LocationManager()
     
     private let locationManager = CLLocationManager()
     var locationList: [CLLocation] = []
@@ -18,10 +22,11 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     var speed = 0.0;
     var altitude = 0.0
     var currentPosition: CLLocationCoordinate2D?
+    var currentLocation: CLLocation?
     
     var gpsDelegate: GPSDelegate?
+    var locationDelegate: LocationDelegate?
 
-    
     func startLocationUpdates() {
         locationManager.delegate = self
         locationManager.activityType = .fitness
@@ -31,7 +36,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
    
     override init() {
         locationManager.requestWhenInUseAuthorization()
+        locationManager.allowsBackgroundLocationUpdates = true
         locationManager.startUpdatingLocation()
+        
     }
 
     func stopUpdatingLocation() {
@@ -39,11 +46,17 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
+        let gpsData = GPSData()
+        print("Location Manager: didUpdateLocations")
+
         currentPosition = manager.location?.coordinate
 
         
         for newLocation in locations {
+            
+            gpsData.currentLocation = newLocation
+            currentLocation = newLocation
+            
             let howRecent = newLocation.timestamp.timeIntervalSinceNow
             guard newLocation.horizontalAccuracy < 20 && abs(howRecent) < 10 else {
                 continue
@@ -53,20 +66,35 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
                 let delta = newLocation.distance(from: lastLocation)
                 distance = distance + Measurement(value: delta, unit: UnitLength.meters)
                 speed = newLocation.speed
+                gpsData.lastLocation = lastLocation
             }
+            locationList.append(newLocation)
             altitude = newLocation.altitude
         }
         
-        let gpsData = GPSData()
+        
         gpsData.altitude = altitude
         gpsData.speed = speed
         gpsData.distance = distance
         gpsData.location = currentPosition
+
         gpsData.timeStamp = Date()
-        updateGPS(gps: gpsData)
+        updateGPSData(gps: gpsData)
+        
+        if currentLocation != nil && gpsData.lastLocation != nil {
+            updateNewLocationData(newLocation: gpsData.currentLocation!, oldLocation: gpsData.lastLocation!)
+        }
     }
     
-    func updateGPS(gps: GPSData) {
+    
+    func updateGPSData(gps: GPSData) {
         gpsDelegate?.didNewGPSData(self, gps: gps)
     }
+
+    func updateNewLocationData(newLocation: CLLocation, oldLocation: CLLocation) {
+        locationDelegate?.didNewLocationData(self, newLocation: newLocation, oldLocation: oldLocation)
+    }
+
+    
+    
 }

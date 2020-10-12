@@ -14,6 +14,8 @@ public class GPSData: NSObject {
     var altitude = 0.0
     var distance = Measurement(value: 0, unit: UnitLength.meters)
     var location: CLLocationCoordinate2D?
+    var lastLocation: CLLocation?
+    var currentLocation: CLLocation?
     var timeStamp = Date()
     
     override init() {
