@@ -13,15 +13,12 @@ import CoreLocation
 
 class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     
-    
-    
     @IBOutlet weak var mapContainerView: UIView!
     @IBOutlet weak var mapView: MKMapView!
     
     private var currentRegion: MKCoordinateRegion!
     
     var locationManager: LocationManager?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +50,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     }
     
     func updateCurrentLocation(newLocation: CLLocation) {
-        print("updateCurrentLocation")
         currentRegion = MKCoordinateRegion(center: newLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
         mapView.setRegion(currentRegion, animated: true)
     }

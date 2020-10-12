@@ -47,10 +47,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let gpsData = GPSData()
-        print("Location Manager: didUpdateLocations")
 
         currentPosition = manager.location?.coordinate
-
         
         for newLocation in locations {
             

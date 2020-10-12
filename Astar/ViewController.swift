@@ -10,7 +10,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var startTime: DispatchTime?
     private var timerIsPaused = true
     private var lapCounter = 0
-    private var locationManager = LocationManager.sharedLocationManager
+    private var locationManager = LocationManager()
     private var deviceManager = DeviceManager()
     private var rideArray =  [PeripheralData]()
     
