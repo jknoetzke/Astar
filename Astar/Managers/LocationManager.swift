@@ -12,8 +12,6 @@ import MapKit
 
 class LocationManager: NSObject, CLLocationManagerDelegate  {
     
-    
-
     static let sharedLocationManager = LocationManager()
     
     private let locationManager = CLLocationManager()
@@ -26,28 +24,28 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
     
     var gpsDelegate: GPSDelegate?
     var locationDelegate: LocationDelegate?
-
+    
     func startLocationUpdates() {
         locationManager.delegate = self
         locationManager.activityType = .fitness
         locationManager.distanceFilter = 3
         locationManager.startUpdatingLocation()
     }
-   
+    
     override init() {
         locationManager.requestWhenInUseAuthorization()
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.startUpdatingLocation()
         
     }
-
+    
     func stopUpdatingLocation() {
         locationManager.stopUpdatingLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let gpsData = GPSData()
-
+        
         currentPosition = manager.location?.coordinate
         
         for newLocation in locations {
@@ -75,7 +73,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
         gpsData.speed = speed
         gpsData.distance = distance
         gpsData.location = currentPosition
-
+        
         gpsData.timeStamp = Date()
         updateGPSData(gps: gpsData)
         
@@ -88,11 +86,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
     func updateGPSData(gps: GPSData) {
         gpsDelegate?.didNewGPSData(self, gps: gps)
     }
-
+    
     func updateNewLocationData(newLocation: CLLocation, oldLocation: CLLocation) {
         locationDelegate?.didNewLocationData(self, newLocation: newLocation, oldLocation: oldLocation)
     }
-
-    
-    
 }
