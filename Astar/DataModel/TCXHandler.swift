@@ -120,11 +120,10 @@ class TCXHandler {
         
     }
     
-    func encodeTCX(rideArray: [PeripheralData]) {
+    func encodeTCX(rideArray: [PeripheralData]) -> String {
         
         let build = Build(version: Version(major: 0, minor: 1, buildMajor: 0, buildMinor: 0), time: nil, builder: nil, type: .alpha)
         let author = Author(name: "TcxDataProtocol", build: build, language: nil, partNumber: "11-22-33")
-        
         
         let activity = Activity(sport: .biking, identification: Date(), lap: activityLaps(rideArray: rideArray), notes: nil, training: nil, creator: nil)
         
@@ -137,16 +136,17 @@ class TCXHandler {
         let encodedData = try? TCXFile.encode(prettyPrinted: true)
         
         if let encodedData = encodedData {
-            let xml = String(bytes: encodedData, encoding: .utf8)
-            print(xml!)
+            if let xml = String(bytes: encodedData, encoding: .utf8) {
+                return xml
+            }
         }
+        
+        return ""
     }
     
     func testEncode() {
         let build = Build(version: Version(major: 0, minor: 1, buildMajor: 0, buildMinor: 0), time: nil, builder: nil, type: .alpha)
         let author = Author(name: "TcxDataProtocol", build: build, language: nil, partNumber: "11-22-33")
-        
-        
         
         let activityTrackpointExtension = ActivityTrackpointExtension(speed: 23.4, runCadence: 68, watts: 232, cadenceSensor: nil)
         
