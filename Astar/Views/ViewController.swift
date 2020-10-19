@@ -30,11 +30,17 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     private var reading = PeripheralData()
     
+    private var token: String?
+    
+    private var totalWatts = 0
+    private var wattCounter = 0
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         UIApplication.shared.isIdleTimerDisabled = true
-        
+
         readUserPrefs()
         rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         locationManager.startLocationUpdates()
@@ -55,10 +61,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             let mapViewController = tabBarController.viewControllers![1] as! MapViewController // or whatever tab index you're trying to access
             mapViewController.locationManager = locationManager
             mapViewController.updateCurrentLocation(newLocation: locationManager.currentLocation!)
-
+            
         }
     }
-   
     
     func stopTimer() {
         rideTimer?.invalidate()
@@ -78,9 +83,14 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         lapCounter = lapCounter + 1
         lblLap.text = String(lapCounter)
         reading.lap = lapCounter
+        
+        totalWatts = 0
+        wattCounter = 0
     }
     
     @IBAction func startClicked(_ sender: Any) {
+        
+        deviceManager.stopScanning()
         
         if timerIsPaused {
             startTime = DispatchTime.now()
@@ -94,6 +104,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             if #available(iOS 13, *) {
                 let stopImage = UIImage(systemName: "stop")
                 btnStart.setImage(stopImage, for: .normal)
+                btnStart.setBackgroundImage(stopImage, for: .normal)
             }
             btnStart.setTitle("Stop", for: .normal)
             timerIsPaused = false
@@ -103,6 +114,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             if #available(iOS 13, *) {
                 let startImage = UIImage(systemName: "play")
                 btnStart.setImage(startImage, for: .normal)
+                
+                btnStart.setBackgroundImage(startImage, for: .normal)
             }
             btnStart.setTitle("Start", for: .normal)
             timerIsPaused = true
@@ -110,7 +123,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             //Prompt user to save or not
             let alert = UIAlertController(title: "Save and Upload Ride ?", message: "Saving will save this ride to your iPhone and upload to the sites you have configured.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { action in
-                print("Clicked Save")
                 self.saveRide()
             }))
             alert.addAction(UIAlertAction(title: "Don't save", style: .cancel, handler: { action in
@@ -127,15 +139,15 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     @objc func runTimedCode() {
         
         let end = DispatchTime.now()
-        
-        lblWatts.text = String(reading.power)
-        lblHeartRate.text = String(reading.heartRate)
-        lblSpeed.text = String(locationManager.speed)
-        lblCadence.text = String(reading.cadence)
+        var averageWatts = 0
         
         if timerIsPaused == false {
+            totalWatts = totalWatts + reading.power
+            wattCounter = wattCounter + 1
+            averageWatts = totalWatts / wattCounter
+        
             if let tmpStartTime = startTime {
-                let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+  //              let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
                 let nanoTime = end.uptimeNanoseconds - tmpStartTime.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
                 let timeInterval = Double(nanoTime) / 1_000_000_000
                 
@@ -144,22 +156,32 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 let seconds = Int(timeInterval) % 60
                 lblRideTime.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
                 
+/*
                 for location in locationManager.locationList {
                     let locationObject = Location(context: context)
                     locationObject.timestamp = location.timestamp
                     locationObject.latitude = location.coordinate.latitude
                     locationObject.longitude = location.coordinate.longitude
+                    reading.gps.currentLocation
                     
                 }
-                
+*/
                 if reading.gps.location == nil { //Don't add if we haven't gotten a location yet
                     reading.gps.location = locationManager.currentPosition
                 }
                 rideArray.append(reading)
                 reading = PeripheralData()
-
+                
             }
         }
+
+        lblWatts.text = String(reading.power)
+        lblHeartRate.text = String(reading.heartRate)
+        lblSpeed.text = String(locationManager.speed)
+        lblCadence.text = String(reading.cadence)
+        lblAvgWatts.text = String(averageWatts)
+
+
     }
     
     private func saveUserPrefs() {
@@ -209,8 +231,21 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         }
         
         let tcxHandler = TCXHandler()
-        tcxHandler.encodeTCX(rideArray: rideArray)
-    }    
+        let xml = tcxHandler.encodeTCX(rideArray: rideArray)
+        let cyclingAnalytics = CyclingAnalyticsManager()
+        
+        if token == nil {
+            cyclingAnalytics.auth() { (CyclingAnalyticsData) in
+                //guard case self.token = CyclingAnalyticsData.access_token else { fatalError() }
+                self.token = CyclingAnalyticsData.access_token
+                DispatchQueue.main.async{
+                    cyclingAnalytics.uploadRide(xml: xml, accessToken: self.token!)
+                }
+            }
+        } else {
+            cyclingAnalytics.uploadRide(xml: xml, accessToken: self.token!)
+        }
+    }
 }
 
 extension NSLayoutConstraint {
