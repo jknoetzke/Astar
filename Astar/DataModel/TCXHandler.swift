@@ -114,25 +114,29 @@ class TCXHandler {
         let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime!), distance: distance, maximumSpeed: maxSpeed, calories: 0, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(cadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
         activityLap.append(lap)
         
-        
-        
         return activityLap
         
     }
     
+    func version() -> String {
+        let dictionary = Bundle.main.infoDictionary!
+        let version = dictionary["CFBundleShortVersionString"] as! String
+        let build = dictionary["CFBundleVersion"] as! String
+        return "\(version) build \(build)"
+    }
+    
+    
     func encodeTCX(rideArray: [PeripheralData]) -> String {
         
         let build = Build(version: Version(major: 0, minor: 1, buildMajor: 0, buildMinor: 0), time: nil, builder: nil, type: .alpha)
-        let author = Author(name: "TcxDataProtocol", build: build, language: nil, partNumber: "11-22-33")
-        
-        let activity = Activity(sport: .biking, identification: Date(), lap: activityLaps(rideArray: rideArray), notes: nil, training: nil, creator: nil)
-        
+        let author = Author(name: "Astar iPhone App", build: build, language: nil, partNumber: "11-22-33")
+        let version = Version(major: 0, minor: 1, buildMajor: 0, buildMinor: 0)
+        let creator = Creator(name: "Astar iPhone App", version: version, unitIdentification: nil, productIdentification: "Astar iPhone Cycle Computer")
+        let activity = Activity(sport: .biking, identification: Date(), lap: activityLaps(rideArray: rideArray), notes: nil, training: nil, creator: creator)
         let activities = ActivityList(activities: [activity], multiSportSession: nil)
-        
         let database = TrainingCenterDatabase(activities: activities, courses: nil, author: author)
-        
+
         let TCXFile = TcxFile(database: database)
-        
         let encodedData = try? TCXFile.encode(prettyPrinted: true)
         
         if let encodedData = encodedData {
@@ -144,6 +148,7 @@ class TCXHandler {
         return ""
     }
     
+    /*
     func testEncode() {
         let build = Build(version: Version(major: 0, minor: 1, buildMajor: 0, buildMinor: 0), time: nil, builder: nil, type: .alpha)
         let author = Author(name: "TcxDataProtocol", build: build, language: nil, partNumber: "11-22-33")
@@ -188,5 +193,6 @@ class TCXHandler {
             print(xml!)
         }
     }
+ */
     
 }

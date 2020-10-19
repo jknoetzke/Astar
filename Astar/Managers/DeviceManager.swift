@@ -17,7 +17,7 @@ let powerMeterServiceCBUUID = CBUUID(string: "1818")
 let POWER_CONTROL = "2A66"
 let POWER_MEASUREMENT = "2A63"
 let POWER_FEATURE = "2A65"
-let UINT16_MAX = 65536.0
+let UINT16_MAX = 65535.0
 
 let POWER_PEDAL = 44
 let POWER_TRAINER = 39
@@ -68,6 +68,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         //centralManager.stopScan()
         centralManager.connect(peripheral)
         
+    }
+    
+    func stopScanning() {
+        centralManager.stopScan()
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
@@ -182,7 +186,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         } else {
             return
         }
-        
         
         let cumulativeRevs = rollOver(current: crankRev, previous: reading.previousCrankCount, max: UINT16_MAX)
         let cumulativeTime = rollOver(current: crankTime, previous: reading.previousCrankTimeEvent, max: UINT16_MAX)

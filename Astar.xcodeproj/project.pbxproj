@@ -15,7 +15,7 @@
 		D05374462536467700C6FB91 /* CyclingAnalyticsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */; };
 		D055FA2E252F907000D5ECA4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D055FA2D252F907000D5ECA4 /* Constants.swift */; };
 		D06B08A12535F82400553105 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B089E2535F82400553105 /* MapViewController.swift */; };
-		D06B08A22535F82400553105 /* DeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B089F2535F82400553105 /* DeviceViewController.swift */; };
+		D06B08A22535F82400553105 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B089F2535F82400553105 /* SettingsViewController.swift */; };
 		D06B08A32535F82400553105 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B08A02535F82400553105 /* ViewController.swift */; };
 		D06B08A92535F84400553105 /* CyclingAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B08A62535F84400553105 /* CyclingAnalyticsManager.swift */; };
 		D06B08AA2535F84400553105 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B08A72535F84400553105 /* LocationManager.swift */; };
@@ -38,9 +38,8 @@
 		D034189B2535F7DA001AD367 /* GPSDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GPSDelegate.swift; path = Delegates/GPSDelegate.swift; sourceTree = "<group>"; };
 		D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclingAnalyticsData.swift; sourceTree = "<group>"; };
 		D055FA2D252F907000D5ECA4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		D055FA612534B7AE00D5ECA4 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		D06B089E2535F82400553105 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Views/MapViewController.swift; sourceTree = "<group>"; };
-		D06B089F2535F82400553105 /* DeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceViewController.swift; path = Views/DeviceViewController.swift; sourceTree = "<group>"; };
+		D06B089F2535F82400553105 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Views/SettingsViewController.swift; sourceTree = "<group>"; };
 		D06B08A02535F82400553105 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = Views/ViewController.swift; sourceTree = "<group>"; };
 		D06B08A62535F84400553105 /* CyclingAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CyclingAnalyticsManager.swift; sourceTree = "<group>"; };
 		D06B08A72535F84400553105 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -100,7 +99,7 @@
 		D055FA4A2534946000D5ECA4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				D06B089F2535F82400553105 /* DeviceViewController.swift */,
+				D06B089F2535F82400553105 /* SettingsViewController.swift */,
 				D06B089E2535F82400553105 /* MapViewController.swift */,
 				D06B08A02535F82400553105 /* ViewController.swift */,
 			);
@@ -132,7 +131,6 @@
 				D06B08A62535F84400553105 /* CyclingAnalyticsManager.swift */,
 				D06B08AE2535F85C00553105 /* DeviceManager.swift */,
 				D06B08A72535F84400553105 /* LocationManager.swift */,
-				D055FA612534B7AE00D5ECA4 /* LocationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -307,7 +305,7 @@
 				D06B08A92535F84400553105 /* CyclingAnalyticsManager.swift in Sources */,
 				D06B08A12535F82400553105 /* MapViewController.swift in Sources */,
 				D06D7998252CED17001961E3 /* GPSData.swift in Sources */,
-				D06B08A22535F82400553105 /* DeviceViewController.swift in Sources */,
+				D06B08A22535F82400553105 /* SettingsViewController.swift in Sources */,
 				D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */,
 				D06B08AA2535F84400553105 /* LocationManager.swift in Sources */,
 				D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */,
@@ -462,9 +460,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -473,6 +472,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -483,9 +483,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -494,6 +495,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};

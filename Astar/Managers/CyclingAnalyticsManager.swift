@@ -8,6 +8,7 @@
 import Foundation
 
 
+
 class CyclingAnalyticsManager {
     
     //let domainUrlString = "https://www.cyclinganalytics.com/api/token?"
@@ -19,7 +20,9 @@ class CyclingAnalyticsManager {
         let parameters = [
             [
                 "key": "data",
-                "type": "file"
+                "type": "file",
+                "format": "tcx",
+                "title" : Date().description
             ]] as [[String : Any]]
         
         let boundary = "Boundary-\(UUID().uuidString)"
@@ -38,7 +41,7 @@ class CyclingAnalyticsManager {
                     var data = Data()
                     data.append(xml.data(using: .utf8)!)
                     let fileContent = String(data: data, encoding: .utf8)!
-                    body += "; filename=\"Foobar.tcx\r\n" + "Content-Type: \"content-type header\"\r\n\r\n\(fileContent)\r\n"
+                    body += "; filename=\"Astar.tcx\r\n" + "Content-Type: \"content-type header\"\r\n\r\n\(fileContent)\r\n"
                 }
             }
         }
@@ -89,7 +92,7 @@ class CyclingAnalyticsManager {
             
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode) else {
-                print("Unexpected response status code: \(response)")
+                print("Unexpected response status code: \(String(describing: response))")
                 return
             }
             

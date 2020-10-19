@@ -61,7 +61,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
             if let lastLocation = locationList.last {
                 let delta = newLocation.distance(from: lastLocation)
                 distance = distance + Measurement(value: delta, unit: UnitLength.meters)
-                speed = newLocation.speed
+                speed = (newLocation.speed * 3600) / 1000
                 gpsData.lastLocation = lastLocation
             }
             locationList.append(newLocation)

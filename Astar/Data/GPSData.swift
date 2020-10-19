@@ -22,3 +22,9 @@ public class GPSData: NSObject {
         super.init()
     }
 }
+
+struct Devices {
+    var name: String?
+    var id: String?
+    var description: String?
+}
