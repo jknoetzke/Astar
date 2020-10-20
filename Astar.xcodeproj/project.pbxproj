@@ -27,6 +27,7 @@
 		D0D329102503BF2B003CC73A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D3290E2503BF2B003CC73A /* Main.storyboard */; };
 		D0D329122503BF2B003CC73A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0D329112503BF2B003CC73A /* Assets.xcassets */; };
 		D0D329152503BF2B003CC73A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D329132503BF2B003CC73A /* LaunchScreen.storyboard */; };
+		D0FF579A253F3F5800265638 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF5799253F3F5800265638 /* SpinnerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		D0D329112503BF2B003CC73A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D0D329142503BF2B003CC73A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D0D329162503BF2B003CC73A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0FF5799253F3F5800265638 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		DED44B6417E23A0211499F92 /* Pods_Astar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Astar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -102,6 +104,7 @@
 				D06B089F2535F82400553105 /* SettingsViewController.swift */,
 				D06B089E2535F82400553105 /* MapViewController.swift */,
 				D06B08A02535F82400553105 /* ViewController.swift */,
+				D0FF5799253F3F5800265638 /* SpinnerViewController.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				D034189F2535F7DA001AD367 /* GPSDelegate.swift in Sources */,
 				D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */,
 				D034189D2535F7DA001AD367 /* AppDelegate.swift in Sources */,
+				D0FF579A253F3F5800265638 /* SpinnerViewController.swift in Sources */,
 				D06B08A92535F84400553105 /* CyclingAnalyticsManager.swift in Sources */,
 				D06B08A12535F82400553105 /* MapViewController.swift in Sources */,
 				D06D7998252CED17001961E3 /* GPSData.swift in Sources */,

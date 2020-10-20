@@ -14,9 +14,8 @@ class CyclingAnalyticsManager {
     //let domainUrlString = "https://www.cyclinganalytics.com/api/token?"
     let url = URL(string: "https://www.cyclinganalytics.com/api/token")
     
-    
-    func uploadRide(xml: String, accessToken: String) {
-        
+    func uploadRide(xml:String, accessToken: String) {
+
         let parameters = [
             [
                 "key": "data",

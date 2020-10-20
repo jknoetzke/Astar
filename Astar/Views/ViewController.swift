@@ -1,6 +1,7 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 
 class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarControllerDelegate {
@@ -28,6 +29,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     @IBOutlet weak var lblCadence: UILabel!
     @IBOutlet weak var lblRideTime: UILabel!
     
+    let child = SpinnerViewController()
+    
     private var reading = PeripheralData()
     
     private var token: String?
@@ -40,7 +43,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         super.viewDidLoad()
         
         UIApplication.shared.isIdleTimerDisabled = true
-
+        
         readUserPrefs()
         rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         locationManager.startLocationUpdates()
@@ -49,12 +52,13 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         locationManager.gpsDelegate = self
         
         self.tabBarController?.delegate = self
-        
+   
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
+    
     
     public func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if tabBarController.selectedIndex == 1 {
@@ -91,7 +95,40 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         totalWatts = 0
         wattCounter = 0
+        
     }
+    
+    func startSpinnerView() {
+        
+
+        // add the spinner view controller
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
+    }
+    
+    func stopSpinnerView()
+    {
+        child.willMove(toParent: nil)
+        child.view.removeFromSuperview()
+        child.removeFromParent()
+
+        // the alert view
+        let alert = UIAlertController(title: "", message: "Ride Uploaded", preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+
+        // change to desired number of seconds (in this case 5 seconds)
+        let when = DispatchTime.now() + 3
+        DispatchQueue.main.asyncAfter(deadline: when){
+          // your code with delay
+          alert.dismiss(animated: true, completion: nil)
+        }
+        
+        
+        
+    }
+    
     
     @IBAction func startClicked(_ sender: Any) {
         
@@ -145,20 +182,13 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         let end = DispatchTime.now()
         
-       // lblWatts.text = String(reading.power)
-       // lblHeartRate.text = String(reading.heartRate)
-       // lblSpeed.text = String(format: "%.0f", locationManager.speed)
-       // lblCadence.text = String(reading.cadence)
-        
-        
         if timerIsPaused == false {
             totalWatts = totalWatts + reading.power
             wattCounter = wattCounter + 1
             let averageWatts = totalWatts / wattCounter
             lblAvgWatts.text = String(averageWatts)
-        
+            
             if let tmpStartTime = startTime {
-  //              let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
                 let nanoTime = end.uptimeNanoseconds - tmpStartTime.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
                 let timeInterval = Double(nanoTime) / 1_000_000_000
                 
@@ -167,16 +197,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 let seconds = Int(timeInterval) % 60
                 lblRideTime.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
                 
-/*
-                for location in locationManager.locationList {
-                    let locationObject = Location(context: context)
-                    locationObject.timestamp = location.timestamp
-                    locationObject.latitude = location.coordinate.latitude
-                    locationObject.longitude = location.coordinate.longitude
-                    reading.gps.currentLocation
-                    
-                }
-*/
                 if reading.gps.location == nil { //Don't add if we haven't gotten a location yet
                     reading.gps.location = locationManager.currentPosition
                 }
@@ -184,11 +204,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 rideArray.append(reading)
             }
         }
-
-        
-        
-
-
     }
     
     private func saveUserPrefs() {
@@ -242,15 +257,19 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         let cyclingAnalytics = CyclingAnalyticsManager()
         
         if token == nil {
+            startSpinnerView()
             cyclingAnalytics.auth() { (CyclingAnalyticsData) in
-                //guard case self.token = CyclingAnalyticsData.access_token else { fatalError() }
+                print("Done Upload 0")
                 self.token = CyclingAnalyticsData.access_token
-                DispatchQueue.main.async{
+                DispatchQueue.main.async {
                     cyclingAnalytics.uploadRide(xml: xml, accessToken: self.token!)
+                    self.stopSpinnerView()
+                    
                 }
             }
         } else {
             cyclingAnalytics.uploadRide(xml: xml, accessToken: self.token!)
+            stopSpinnerView()
         }
     }
 }

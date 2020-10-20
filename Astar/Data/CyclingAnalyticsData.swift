@@ -10,5 +10,4 @@ import Foundation
 struct CyclingAnalyticsData: Decodable {
     
     let access_token: String
-    
 }
