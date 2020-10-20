@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-public class GPSData: NSObject {
+public class GPSData {
  
     var speed = 0.0
     var altitude = 0.0
@@ -17,10 +17,6 @@ public class GPSData: NSObject {
     var lastLocation: CLLocation?
     var currentLocation: CLLocation?
     var timeStamp = Date()
-    
-    override init() {
-        super.init()
-    }
 }
 
 struct Devices {

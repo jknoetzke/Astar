@@ -28,7 +28,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var peripheral: CBPeripheral!
     private var centralManager: CBCentralManager!
     private var reading: PeripheralData!
-    private var devices: [DeviceInfo]!
+    private var devices: [CBPeripheral]!
     
     var rideDelegate: RideDelegate?
     
@@ -37,7 +37,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
         reading = PeripheralData();
-        devices = [DeviceInfo]()
+        devices = [CBPeripheral]()
     }
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -54,7 +54,9 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             print("central.state is .poweredOff")
         case .poweredOn:
             print("central.state is .poweredOn")
-            centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID, powerMeterServiceCBUUID])
+            //centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID, powerMeterServiceCBUUID])
+            centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID])
+
         @unknown default:
             print("Unknown case")
         }
@@ -64,8 +66,12 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                         advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
         peripheral = tmpPeripheral
+        devices.append(peripheral)
         peripheral.delegate = self
-        //centralManager.stopScan()
+        
+        if(devices.count == 2) {
+            centralManager.stopScan()
+        }
         centralManager.connect(peripheral)
         
     }
@@ -99,11 +105,11 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         if service.uuid == heartRateServiceCBUUID {
 
+            print("Found a Heart Rate Monitor")
             var deviceInfo = DeviceInfo()
             deviceInfo.uuid = service.uuid.uuidString
             deviceInfo.description = "Heart Rate Monitor"
             deviceInfo.name = peripheral.name
-            devices.append(deviceInfo)
             
             for characteristic in characteristics {
                 print(characteristic)
@@ -123,8 +129,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             deviceInfo.uuid = service.uuid.uuidString
             deviceInfo.description = "Power Meter"
             deviceInfo.name = peripheral.name
-            devices.append(deviceInfo)
-
             
             print("Found a power meter")
             //self.devTypeMap[peripheral] = DeviceType.PowerMeter;
@@ -194,20 +198,30 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         if (reading.previousCrankTimeEvent != crankTime) || (reading.previousCrankCount != crankRev) {
             if cumulativeTime != 0 {
                 cadence = Double((60 * cumulativeRevs / cumulativeTime) * 1024 )
-                print("Cadence: \(cadence)")
             }
-        }
-        
-        if crankRev > reading.previousCrankCount {
-            reading.previousCrankCount = crankRev
-            reading.previousCrankTimeEvent = crankTime
         }
         
         reading.power = Int(watts)
         reading.cadence = Int(cadence)
         reading.deviceType = DeviceType.PowerMeter
         reading.instantTimestamp = Date()
+
         updateRide(ride: reading)
+        
+        reading = PeripheralData()
+        
+        //Just in case the timer delegates before another BLE event.
+        reading.power = Int(watts)
+        reading.cadence = Int(cadence)
+        reading.deviceType = DeviceType.PowerMeter
+        reading.instantTimestamp = Date()
+
+        if crankRev > reading.previousCrankCount {
+            reading.previousCrankCount = crankRev
+            reading.previousCrankTimeEvent = crankTime
+        }
+
+
     }
     
     func rollOver(current: Double, previous: Double, max: Double) -> Double {

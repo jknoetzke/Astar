@@ -48,7 +48,7 @@ class CyclingAnalyticsManager {
         body += "--\(boundary)--\r\n";
         let postData = body.data(using: .utf8)
         
-        var request = URLRequest(url: URL(string: "https://www.cyclinganalytics.com/api/me/upload?format=tcx&title=Test%20Ride")!,timeoutInterval: Double.infinity)
+        var request = URLRequest(url: URL(string: "https://www.cyclinganalytics.com/api/me/upload?format=tcx")!,timeoutInterval: Double.infinity)
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         

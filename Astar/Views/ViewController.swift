@@ -72,17 +72,22 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     func didNewRideData(_ sender: DeviceManager, ride: PeripheralData) {
         reading = ride
+        lblWatts.text = String(reading.power)
+        lblHeartRate.text = String(reading.heartRate)
+        lblCadence.text = String(reading.cadence)
+        
     }
     
     func didNewGPSData(_ sender: LocationManager, gps: GPSData) {
         reading.gps = gps
+        //let speed = (gps.speed * 3600) / 1000
+        lblSpeed.text = String(format: "%.0f", gps.speed)
     }
     
     @IBAction func lapClicked(_ sender: Any) {
         
         lapCounter = lapCounter + 1
         lblLap.text = String(lapCounter)
-        reading.lap = lapCounter
         
         totalWatts = 0
         wattCounter = 0
@@ -139,12 +144,18 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     @objc func runTimedCode() {
         
         let end = DispatchTime.now()
-        var averageWatts = 0
+        
+       // lblWatts.text = String(reading.power)
+       // lblHeartRate.text = String(reading.heartRate)
+       // lblSpeed.text = String(format: "%.0f", locationManager.speed)
+       // lblCadence.text = String(reading.cadence)
+        
         
         if timerIsPaused == false {
             totalWatts = totalWatts + reading.power
             wattCounter = wattCounter + 1
-            averageWatts = totalWatts / wattCounter
+            let averageWatts = totalWatts / wattCounter
+            lblAvgWatts.text = String(averageWatts)
         
             if let tmpStartTime = startTime {
   //              let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -169,17 +180,13 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 if reading.gps.location == nil { //Don't add if we haven't gotten a location yet
                     reading.gps.location = locationManager.currentPosition
                 }
+                reading.lap = lapCounter
                 rideArray.append(reading)
-                reading = PeripheralData()
-                
             }
         }
 
-        lblWatts.text = String(reading.power)
-        lblHeartRate.text = String(reading.heartRate)
-        lblSpeed.text = String(locationManager.speed)
-        lblCadence.text = String(reading.cadence)
-        lblAvgWatts.text = String(averageWatts)
+        
+        
 
 
     }
