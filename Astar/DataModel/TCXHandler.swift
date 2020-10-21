@@ -154,8 +154,8 @@ class TCXHandler {
         return ""
     }
     
-    /*
-    func testEncode() {
+    
+    func testEncode() -> String {
         let build = Build(version: Version(major: 0, minor: 1, buildMajor: 0, buildMinor: 0), time: nil, builder: nil, type: .alpha)
         let author = Author(name: "TcxDataProtocol", build: build, language: nil, partNumber: "11-22-33")
         
@@ -197,8 +197,10 @@ class TCXHandler {
         if let encodedData = encodedData {
             let xml = String(bytes: encodedData, encoding: .utf8)
             print(xml!)
+            return xml!
         }
+       return ""
     }
- */
+ 
     
 }

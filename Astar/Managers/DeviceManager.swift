@@ -85,9 +85,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         peripheral.discoverServices([heartRateServiceCBUUID, powerMeterServiceCBUUID])
         
     }
-    
-    
-    
+
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         
         guard let services = peripheral.services else { return }
@@ -100,8 +98,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
-        
-        
         
         if service.uuid == heartRateServiceCBUUID {
 
@@ -131,9 +127,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             deviceInfo.name = peripheral.name
             
             print("Found a power meter")
-            //self.devTypeMap[peripheral] = DeviceType.PowerMeter;
-            // we should update the saved devices
-            //self.updateDevice(peripheral, deviceTyp: DeviceType.PowerMeter);
             for characteristic in service.characteristics! as [CBCharacteristic] {
                 print(characteristic)
                 switch characteristic.uuid.uuidString {
@@ -210,7 +203,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         reading = PeripheralData()
         
-        //Just in case the timer delegates before another BLE event.
+        //Just in case
         reading.power = Int(watts)
         reading.cadence = Int(cadence)
         reading.deviceType = DeviceType.PowerMeter

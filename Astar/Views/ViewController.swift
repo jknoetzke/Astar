@@ -33,7 +33,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     private var reading = PeripheralData()
     
-    private var token: String?
+    private var cyclingAnalyticsToken: String?
     
     private var totalWatts = 0
     private var wattCounter = 0
@@ -52,7 +52,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         locationManager.gpsDelegate = self
         
         self.tabBarController?.delegate = self
-   
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -84,7 +84,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     func didNewGPSData(_ sender: LocationManager, gps: GPSData) {
         reading.gps = gps
-        //let speed = (gps.speed * 3600) / 1000
         lblSpeed.text = String(format: "%.0f", gps.speed)
     }
     
@@ -95,12 +94,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         totalWatts = 0
         wattCounter = 0
-        
     }
     
     func startSpinnerView() {
-        
-
         // add the spinner view controller
         addChild(child)
         child.view.frame = view.frame
@@ -113,20 +109,17 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         child.willMove(toParent: nil)
         child.view.removeFromSuperview()
         child.removeFromParent()
-
+        
         // the alert view
         let alert = UIAlertController(title: "", message: "Ride Uploaded", preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
-
-        // change to desired number of seconds (in this case 5 seconds)
+        
+        // change to desired number of seconds (in this case 3 seconds)
         let when = DispatchTime.now() + 3
         DispatchQueue.main.asyncAfter(deadline: when){
-          // your code with delay
-          alert.dismiss(animated: true, completion: nil)
+            // your code with delay
+            alert.dismiss(animated: true, completion: nil)
         }
-        
-        
-        
     }
     
     
@@ -254,25 +247,40 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         let tcxHandler = TCXHandler()
         let xml = tcxHandler.encodeTCX(rideArray: rideArray)
-        let cyclingAnalytics = CyclingAnalyticsManager()
         
-        if token == nil {
-            startSpinnerView()
+        
+        //Cycling Analytics
+        startSpinnerView()
+        uploadToCyclingAnalytics(xml: xml)
+        uploadToStrava(xml:xml)
+        stopSpinnerView()
+        
+    }
+    
+    func uploadToStrava(xml: String) {
+        let strava = StravaManager()
+        //strava.authenticate()
+        strava.uploadRide(xml:xml)
+        
+    }
+    
+    func uploadToCyclingAnalytics(xml: String) {
+        let cyclingAnalytics = CyclingAnalyticsManager()
+        if cyclingAnalyticsToken == nil {
             cyclingAnalytics.auth() { (CyclingAnalyticsData) in
-                print("Done Upload 0")
-                self.token = CyclingAnalyticsData.access_token
+                self.cyclingAnalyticsToken = CyclingAnalyticsData.access_token
                 DispatchQueue.main.async {
-                    cyclingAnalytics.uploadRide(xml: xml, accessToken: self.token!)
-                    self.stopSpinnerView()
-                    
+                    cyclingAnalytics.uploadRide(xml: xml, accessToken: self.cyclingAnalyticsToken!)
                 }
             }
         } else {
-            cyclingAnalytics.uploadRide(xml: xml, accessToken: self.token!)
-            stopSpinnerView()
+            cyclingAnalytics.uploadRide(xml: xml, accessToken: self.cyclingAnalyticsToken!)
         }
     }
 }
+
+
+
 
 extension NSLayoutConstraint {
     

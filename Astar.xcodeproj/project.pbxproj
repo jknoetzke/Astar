@@ -28,6 +28,7 @@
 		D0D329122503BF2B003CC73A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0D329112503BF2B003CC73A /* Assets.xcassets */; };
 		D0D329152503BF2B003CC73A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D329132503BF2B003CC73A /* LaunchScreen.storyboard */; };
 		D0FF579A253F3F5800265638 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF5799253F3F5800265638 /* SpinnerViewController.swift */; };
+		D0FF579E253F840A00265638 /* StravaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF579D253F840A00265638 /* StravaManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		D0D329142503BF2B003CC73A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D0D329162503BF2B003CC73A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0FF5799253F3F5800265638 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
+		D0FF579D253F840A00265638 /* StravaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaManager.swift; sourceTree = "<group>"; };
 		DED44B6417E23A0211499F92 /* Pods_Astar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Astar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -133,6 +135,7 @@
 			children = (
 				D06B08A62535F84400553105 /* CyclingAnalyticsManager.swift */,
 				D06B08AE2535F85C00553105 /* DeviceManager.swift */,
+				D0FF579D253F840A00265638 /* StravaManager.swift */,
 				D06B08A72535F84400553105 /* LocationManager.swift */,
 			);
 			path = Managers;
@@ -311,6 +314,7 @@
 				D06D7998252CED17001961E3 /* GPSData.swift in Sources */,
 				D06B08A22535F82400553105 /* SettingsViewController.swift in Sources */,
 				D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */,
+				D0FF579E253F840A00265638 /* StravaManager.swift in Sources */,
 				D06B08AA2535F84400553105 /* LocationManager.swift in Sources */,
 				D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */,
 				D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */,
@@ -472,7 +476,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.Astar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -495,7 +499,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.Astar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

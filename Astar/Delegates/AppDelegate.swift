@@ -7,7 +7,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
+    func application(_ application: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:] ) -> Bool {
+        
+
+           // Process the URL.
+           guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
+              // let albumPath = components.path,
+               let params = components.queryItems else {
+                   print("Invalid URL or album path missing")
+                   return false
+           }
+           
+        for param in params {
+            if param.name == "code" {
+                let strava = StravaManager.sharedInstance
+                strava.setStravaCode(_stravaCode: param.value!)
+            }
+        }
+         
+        return true
+    }
+    
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // return strava.handleAuthorizationRedirect(url)
+        print("It was called!")
         return true
     }
     
