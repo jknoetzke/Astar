@@ -29,6 +29,7 @@
 		D0D329152503BF2B003CC73A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D329132503BF2B003CC73A /* LaunchScreen.storyboard */; };
 		D0FF579A253F3F5800265638 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF5799253F3F5800265638 /* SpinnerViewController.swift */; };
 		D0FF579E253F840A00265638 /* StravaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF579D253F840A00265638 /* StravaManager.swift */; };
+		D0FF57AA2540CC5500265638 /* StravaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF57A92540CC5500265638 /* StravaData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		D0D329162503BF2B003CC73A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0FF5799253F3F5800265638 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		D0FF579D253F840A00265638 /* StravaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaManager.swift; sourceTree = "<group>"; };
+		D0FF57A92540CC5500265638 /* StravaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaData.swift; sourceTree = "<group>"; };
 		DED44B6417E23A0211499F92 /* Pods_Astar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Astar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -117,6 +119,7 @@
 				D06D7997252CED17001961E3 /* GPSData.swift */,
 				D093A77B251A4AE200241E7E /* PeripheralData.swift */,
 				D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */,
+				D0FF57A92540CC5500265638 /* StravaData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0FF57AA2540CC5500265638 /* StravaData.swift in Sources */,
 				D05374462536467700C6FB91 /* CyclingAnalyticsData.swift in Sources */,
 				D06B08A32535F82400553105 /* ViewController.swift in Sources */,
 				D034189C2535F7DA001AD367 /* LocationDelegate.swift in Sources */,

@@ -94,6 +94,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         totalWatts = 0
         wattCounter = 0
+        
+        //let strava = StravaManager()
+        //strava.authenticate()
+        //strava.refresh()
     }
     
     func startSpinnerView() {
@@ -259,8 +263,13 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     func uploadToStrava(xml: String) {
         let strava = StravaManager()
-        //strava.authenticate()
-        strava.uploadRide(xml:xml)
+        strava.refresh() { (StravaData) in
+            //let accessToken = StravaData.access_token
+            DispatchQueue.main.async {
+                print("Now going to upload...")
+                strava.uploadRide(xml:xml)
+            }
+        }
         
     }
     

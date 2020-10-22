@@ -32,9 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        // return strava.handleAuthorizationRedirect(url)
-        print("It was called!")
+
         return true
     }
     
