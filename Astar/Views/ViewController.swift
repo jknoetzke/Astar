@@ -39,7 +39,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var wattCounter = 0
     
     //Used to determine if we've stopped pedaling or moving
-    private var elapsedDeviceTime = 0
+    private var elapsedWattsTime = 0
     private var elapsedSpeedTime = 0
     
     
@@ -83,17 +83,15 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         lblWatts.text = String(reading.power)
         lblHeartRate.text = String(reading.heartRate)
         lblCadence.text = String(reading.cadence)
-        elapsedDeviceTime = 0
-        
+         
+        if reading.powerEvent {
+            elapsedWattsTime = 0
+        }
     }
     
     func didNewGPSData(_ sender: LocationManager, gps: GPSData) {
         reading.gps = gps
-        
-        //print(reading.gps.location?.latitude)
-        //print(reading.gps.location?.longitude)
-        
-        
+       
         lblSpeed.text = String(format: "%.0f", gps.speed)
         elapsedSpeedTime = 0
     }
@@ -105,10 +103,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         totalWatts = 0
         wattCounter = 0
-        
-        //let strava = StravaManager()
-        //strava.authenticate()
-        //strava.refresh()
+
     }
     
     func startSpinnerView() {
@@ -208,7 +203,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 }
                 reading.lap = lapCounter
                 
-                if elapsedDeviceTime >= 2 {
+                if elapsedWattsTime >= 2 {
                     reading.power = 0
                     reading.cadence = 0
                     lblWatts.text = "0"
@@ -219,10 +214,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                     reading.speed = 0
                     lblSpeed.text = "0"
                 }
-                elapsedDeviceTime = elapsedDeviceTime + 1
-
-               // print(reading.gps.currentLocation?.coordinate.latitude)
-               // print(reading.gps.currentLocation?.coordinate.longitude)
+                
+                elapsedWattsTime = elapsedWattsTime + 1
+                elapsedSpeedTime = elapsedSpeedTime + 1
+                
                 rideArray.append(reading)
                 
                 
@@ -246,6 +241,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     private func saveRide() {
         
+        /*
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let dataRide = Ride(context: context)
         
@@ -269,13 +265,13 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         currentRideID = currentRideID + 1
         saveUserPrefs()
         
-        
         do {
             try context.save()
         }catch {
             
         }
-        
+         */
+
         let tcxHandler = TCXHandler()
         let xml = tcxHandler.encodeTCX(rideArray: rideArray)
    

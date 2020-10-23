@@ -40,6 +40,13 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         devices = [CBPeripheral]()
     }
     
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        print("Dropped Connection!")
+        
+    }
+    
+    
+    
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
         case .unknown:
@@ -162,6 +169,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         var crankTime = 0.0
         var watts = 0
         
+        var crankEvent = false
+        
         
         // the first 16bits contains the data for the flags
         // The next 16bits make up the power reading
@@ -174,12 +183,16 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             crankRev = Double(byteArray[6]) + (Double(byteArray[7]) * 255.0)
             crankTime = Double((UInt16(byteArray[9]) << 8) + UInt16(byteArray[8]))
             
+            crankEvent = true
+            
         } else if byteArray[0] == POWER_TRAINER {
             // the first 16bits contains the data for the flags
             watts = Int(byteArray[2]) + Int((byteArray[3]) * 255)
             
             crankRev = Double(byteArray[11]) + Double((byteArray[12]) * 255)
             crankTime = Double((UInt16(byteArray[14]) << 8) + UInt16(byteArray[13]))
+            
+            crankEvent = true
         } else {
             return
         }
@@ -198,6 +211,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         reading.cadence = Int(cadence)
         reading.deviceType = DeviceType.PowerMeter
         reading.instantTimestamp = Date()
+        reading.powerEvent = crankEvent
 
         updateRide(ride: reading)
         
@@ -224,12 +238,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             return (max - previous) + current
         }
     }
-    
-    func onHeartRateReceived(_ heartRate: Int) {
-        print("BPM: \(heartRate)")
-        reading.heartRate = heartRate
-    }
-    
+        
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         switch characteristic.uuid {
         case heartRateMeasurementCharacteristicCBUUID:

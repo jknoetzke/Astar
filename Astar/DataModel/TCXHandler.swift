@@ -30,6 +30,11 @@ class TCXHandler {
         
         var extensionArray: [Extension] = []
         
+        let iCadence = Int(ride.cadence)
+        if iCadence < UInt8.min || iCadence > UInt8.max {
+            ride.cadence = 0
+        }
+        
         extensionArray.append(Extension(activityTrackpointExtension: ActivityTrackpointExtension(speed: ride.speed, runCadence: UInt8(ride.cadence), watts: UInt16(ride.power), cadenceSensor: nil), activityLapExtension: nil, activityGoals: nil))
         
         return extensionArray
@@ -73,6 +78,16 @@ class TCXHandler {
                 totalDistance += ride.gps.distance.value
                 totalCadence += Double(ride.cadence)
                 
+                let iHeartRate = Int(ride.heartRate)
+                if iHeartRate < UInt8.min || iHeartRate > UInt8.max {
+                    ride.heartRate = 0
+                }
+                
+                let iCadence = Int(ride.cadence)
+                if iCadence < UInt8.min || iCadence > UInt8.max {
+                    ride.cadence = 0
+                }
+                
                 let trackPoint = Trackpoint(time: ride.gps.timeStamp, position: toPosition(lat: ride.gps.location!.latitude, lon: ride.gps.location!.longitude), altitude: Double(ride.gps.altitude), distance: ride.gps.distance.value, heartRate: HeartRateInBeatsPerMinute(heartRate: UInt8(ride.heartRate)), cadence: UInt8(ride.cadence), sensorState: nil, extensions: generateExtensionArray(ride: ride))
                 
                 tracks.append(trackPoint)
@@ -90,11 +105,18 @@ class TCXHandler {
                 cadence = totalCadence / counter
                 let heartRate = totalHR / counter
                 
-                let strHearRate = String(format: "%.0f", heartRate)
+                var iHeartRate = Int(heartRate)
+                if iHeartRate < UInt8.min || iHeartRate > UInt8.max {
+                    iHeartRate = 0
+                }
+        
+                var iCadence = Int(cadence)
+                if iCadence < UInt8.min || iCadence > UInt8.max {
+                    iCadence = 0
+                }
                 
-                
-                let heartBeatsPerMinute = HeartRateInBeatsPerMinute(heartRate: UInt8(strHearRate) ?? 0)
-                let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime!), distance: distance, maximumSpeed: maxSpeed, calories: 0, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(cadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
+                let heartBeatsPerMinute = HeartRateInBeatsPerMinute(heartRate: UInt8(iHeartRate))
+                let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime ?? 0), distance: distance, maximumSpeed: maxSpeed, calories: 0, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(iCadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
                 
                 
                 activityLap.append(lap)
@@ -113,11 +135,19 @@ class TCXHandler {
         cadence = totalCadence / counter
         heartRate = totalHR / counter
         
-        let strHeartRate = String(format: "%.0f", heartRate)
-        let iHeartRate = UInt8(strHeartRate)
+        var iHeartRate = Int(heartRate)
+        if iHeartRate < UInt8.min || iHeartRate > UInt8.max {
+            iHeartRate = 0
+        }
+
+        let heartBeatsPerMinute = HeartRateInBeatsPerMinute(heartRate: UInt8(iHeartRate))
         
-        let heartBeatsPerMinute = HeartRateInBeatsPerMinute(heartRate: UInt8(iHeartRate ?? 0))
-        let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime!), distance: distance, maximumSpeed: maxSpeed, calories: 0, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(cadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
+        var iCadence = Int(cadence)
+        if iCadence < UInt8.min || iCadence > UInt8.max {
+            iCadence = 0
+        }
+        
+        let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime ?? 0), distance: distance, maximumSpeed: maxSpeed, calories: 0, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(iCadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
         activityLap.append(lap)
         
         return activityLap
