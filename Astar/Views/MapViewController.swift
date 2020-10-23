@@ -18,6 +18,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     
     private var currentRegion: MKCoordinateRegion!
     
+    var pinched = false
+    private var pinchCounter = 0
+    
     var locationManager: LocationManager?
     
     override func viewDidLoad() {
@@ -30,8 +33,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         locationManager!.locationDelegate = self
-        
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -50,8 +51,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     }
     
     func updateCurrentLocation(newLocation: CLLocation) {
-        currentRegion = MKCoordinateRegion(center: newLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
-        mapView.setRegion(currentRegion, animated: true)
+        if !pinched {
+            currentRegion = MKCoordinateRegion(center: newLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+            mapView.setRegion(currentRegion, animated: true)
+        }
     }
     
     func updateMap(newLocation: CLLocation, lastLocation: CLLocation) {
@@ -60,11 +63,25 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     }
     
     func didNewLocationData(_ sender: LocationManager, newLocation: CLLocation, oldLocation: CLLocation) {
+        pinchCounter = pinchCounter + 1
+        
+        if pinchCounter >= 10 && pinched == true {
+            pinched = false
+        }
+        
         updateMap(newLocation: newLocation, lastLocation: oldLocation)
         updateCurrentLocation(newLocation: newLocation)
     }
     
+    @IBAction func handlePinch(_ gesture: UIPinchGestureRecognizer) {
+        pinched = true
+        pinchCounter = 0
+    }
     
+    @IBAction func handlePan(_ gesture: UIPanGestureRecognizer) {
+        pinched = true
+        pinchCounter = 0
+    }
     
     
 }

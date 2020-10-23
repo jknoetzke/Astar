@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Q2K-RP-Gug">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -337,6 +336,11 @@
                                         <subviews>
                                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YWp-Mz-n7t">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
+                                                <gestureRecognizers/>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="t5p-jz-deQ" appends="YES" id="pj1-U7-uvz"/>
+                                                    <outletCollection property="gestureRecognizers" destination="EBZ-TL-cgJ" appends="YES" id="Aay-fk-UwW"/>
+                                                </connections>
                                             </mapView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -372,13 +376,22 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hv6-p2-W93" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <pinchGestureRecognizer id="t5p-jz-deQ">
+                    <connections>
+                        <action selector="handlePinch:" destination="q59-We-f4Y" id="i26-iF-cMv"/>
+                    </connections>
+                </pinchGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="EBZ-TL-cgJ">
+                    <connections>
+                        <action selector="handlePan:" destination="q59-We-f4Y" id="C1P-gd-cLK"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1084" y="-462.8185907046477"/>
         </scene>
         <!--Settings-->
         <scene sceneID="IpA-vl-1lh">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ot-yI-D59" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController title="Settings" id="LN3-vZ-CZy" customClass="SettingsViewController" customModule="Astar" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="f2c-GX-wtT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -430,6 +443,7 @@
                         <outlet property="deviceTableView" destination="yT7-45-Gt3" id="nyl-5X-uLT"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ot-yI-D59" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1863.2" y="-106.59670164917542"/>
         </scene>
