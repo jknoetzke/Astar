@@ -37,7 +37,6 @@ class StravaManager {
     
     func refresh(completionHandler: @escaping (StravaData) -> Void) {
         
-        print("Refresh..")
         var request = URLRequest(url: URL(string: "https://www.strava.com/oauth/token?client_id=\(clientID)&client_secret=\(clientSecret)&refresh_token=\(refreshToken)&grant_type=refresh_token")!,timeoutInterval: Double.infinity)
         request.addValue("_strava4_session=r1lko2eduj089hbhjllafegg00fut9u1", forHTTPHeaderField: "Cookie")
         
@@ -58,7 +57,6 @@ class StravaManager {
             if let data = data,
                let strava = try? JSONDecoder().decode(StravaData.self, from: data) {
                 completionHandler(strava)
-                print("Completion Handler Finished for refresh. Access Token: \(self.accessToken)")
             }
         }
         task.resume()
@@ -66,7 +64,7 @@ class StravaManager {
     
     func storeTokens(tokenData: StravaData) {
         
-        print("Storing Tokens")
+        print("Setting Access Tokens..")
         accessToken = tokenData.access_token
         refreshToken = tokenData.refresh_token
         let defaults = UserDefaults.standard
@@ -127,7 +125,7 @@ class StravaManager {
     }
     
     func uploadRide(xml: String) {
-        print("Uploading Ride")
+        print("Uploading Ride with accessToken: \(accessToken)")
         let semaphore = DispatchSemaphore (value: 0)
         
         let parameters = [

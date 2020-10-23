@@ -11,7 +11,6 @@ import Foundation
 
 class CyclingAnalyticsManager {
     
-    //let domainUrlString = "https://www.cyclinganalytics.com/api/token?"
     let url = URL(string: "https://www.cyclinganalytics.com/api/token")
     
     func uploadRide(xml:String, accessToken: String) {
@@ -68,7 +67,6 @@ class CyclingAnalyticsManager {
                 print("Response data string:\n \(dataString)")
             }
         }
-        //parseJSON(cyclingData: data!)
         task.resume()
     }
     
@@ -96,8 +94,9 @@ class CyclingAnalyticsManager {
             }
             
             if let data = data,
-               let film = try? JSONDecoder().decode(CyclingAnalyticsData.self, from: data) {
-                completionHandler(film)
+               let cyclingAnalytics = try? JSONDecoder().decode(CyclingAnalyticsData.self, from: data) {
+                completionHandler(cyclingAnalytics)
+                print("Uploaded to Cycling Analytics: \(cyclingAnalytics)")
             }
         }
         task.resume()

@@ -38,6 +38,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var totalWatts = 0
     private var wattCounter = 0
     
+    //Used to determine if we've stopped pedaling or moving
+    private var elapsedDeviceTime = 0
+    private var elapsedSpeedTime = 0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,12 +83,19 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         lblWatts.text = String(reading.power)
         lblHeartRate.text = String(reading.heartRate)
         lblCadence.text = String(reading.cadence)
+        elapsedDeviceTime = 0
         
     }
     
     func didNewGPSData(_ sender: LocationManager, gps: GPSData) {
         reading.gps = gps
+        
+        //print(reading.gps.location?.latitude)
+        //print(reading.gps.location?.longitude)
+        
+        
         lblSpeed.text = String(format: "%.0f", gps.speed)
+        elapsedSpeedTime = 0
     }
     
     @IBAction func lapClicked(_ sender: Any) {
@@ -164,12 +175,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { action in
                 self.saveRide()
             }))
-            alert.addAction(UIAlertAction(title: "Don't save", style: .cancel, handler: { action in
+            alert.addAction(UIAlertAction(title: "Pause Ride", style: .cancel, handler: { action in
                 print("Clicked Cancel")
             }))
             
-            lapCounter = 0
-            lblLap.text = "0"
             self.present(alert, animated: true)
             
         }
@@ -198,7 +207,25 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                     reading.gps.location = locationManager.currentPosition
                 }
                 reading.lap = lapCounter
+                
+                if elapsedDeviceTime >= 2 {
+                    reading.power = 0
+                    reading.cadence = 0
+                    lblWatts.text = "0"
+                    lblCadence.text = "0"
+                }
+                
+                if elapsedSpeedTime >= 2 {
+                    reading.speed = 0
+                    lblSpeed.text = "0"
+                }
+                elapsedDeviceTime = elapsedDeviceTime + 1
+
+               // print(reading.gps.currentLocation?.coordinate.latitude)
+               // print(reading.gps.currentLocation?.coordinate.longitude)
                 rideArray.append(reading)
+                
+                
             }
         }
     }
@@ -251,8 +278,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         let tcxHandler = TCXHandler()
         let xml = tcxHandler.encodeTCX(rideArray: rideArray)
-        
-        
+   
         //Cycling Analytics
         startSpinnerView()
         uploadToCyclingAnalytics(xml: xml)
@@ -264,7 +290,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     func uploadToStrava(xml: String) {
         let strava = StravaManager()
         strava.refresh() { (StravaData) in
-            //let accessToken = StravaData.access_token
+            strava.storeTokens(tokenData: StravaData)
             DispatchQueue.main.async {
                 print("Now going to upload...")
                 strava.uploadRide(xml:xml)

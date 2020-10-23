@@ -73,7 +73,7 @@ class TCXHandler {
                 totalDistance += ride.gps.distance.value
                 totalCadence += Double(ride.cadence)
                 
-                let trackPoint = Trackpoint(time: ride.gps.timeStamp, position: toPosition(lat: ride.gps.location!.latitude, lon: ride.gps.location!.latitude), altitude: Double(ride.gps.altitude), distance: ride.gps.distance.value, heartRate: HeartRateInBeatsPerMinute(heartRate: UInt8(ride.heartRate)), cadence: UInt8(ride.cadence), sensorState: nil, extensions: generateExtensionArray(ride: ride))
+                let trackPoint = Trackpoint(time: ride.gps.timeStamp, position: toPosition(lat: ride.gps.location!.latitude, lon: ride.gps.location!.longitude), altitude: Double(ride.gps.altitude), distance: ride.gps.distance.value, heartRate: HeartRateInBeatsPerMinute(heartRate: UInt8(ride.heartRate)), cadence: UInt8(ride.cadence), sensorState: nil, extensions: generateExtensionArray(ride: ride))
                 
                 tracks.append(trackPoint)
                 
