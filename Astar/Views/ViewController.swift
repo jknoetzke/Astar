@@ -182,6 +182,21 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     @objc func runTimedCode() {
         
         let end = DispatchTime.now()
+
+        elapsedWattsTime = elapsedWattsTime + 1
+        elapsedSpeedTime = elapsedSpeedTime + 1
+        
+        if elapsedWattsTime >= 2 {
+            reading.power = 0
+            reading.cadence = 0
+            lblWatts.text = "0"
+            lblCadence.text = "0"
+        }
+        
+        if elapsedSpeedTime >= 2 {
+            reading.speed = 0
+            lblSpeed.text = "0"
+        }
         
         if timerIsPaused == false {
             totalWatts = totalWatts + reading.power
@@ -203,26 +218,12 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 }
                 reading.lap = lapCounter
                 
-                if elapsedWattsTime >= 2 {
-                    reading.power = 0
-                    reading.cadence = 0
-                    lblWatts.text = "0"
-                    lblCadence.text = "0"
-                }
-                
-                if elapsedSpeedTime >= 2 {
-                    reading.speed = 0
-                    lblSpeed.text = "0"
-                }
-                
-                elapsedWattsTime = elapsedWattsTime + 1
-                elapsedSpeedTime = elapsedSpeedTime + 1
-                
                 rideArray.append(reading)
-                
-                
+
             }
         }
+        
+        
     }
     
     private func saveUserPrefs() {

@@ -22,7 +22,6 @@ let UINT16_MAX = 65535.0
 let POWER_PEDAL = 44
 let POWER_TRAINER = 39
 
-
 class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     private var peripheral: CBPeripheral!
@@ -42,7 +41,12 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         print("Dropped Connection!")
+        print("Dropped Name: \(peripheral.name)");
+        print("Dropped UUID: \(peripheral.identifier.uuidString)")
         
+        devices.removeFirst()
+        centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID, powerMeterServiceCBUUID])
+    
     }
     
     
@@ -61,8 +65,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             print("central.state is .poweredOff")
         case .poweredOn:
             print("central.state is .poweredOn")
-            //centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID, powerMeterServiceCBUUID])
-            centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID])
+            centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID, powerMeterServiceCBUUID])
 
         @unknown default:
             print("Unknown case")
@@ -73,12 +76,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                         advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
         peripheral = tmpPeripheral
+        
         devices.append(peripheral)
         peripheral.delegate = self
         
-        if(devices.count == 2) {
-            centralManager.stopScan()
-        }
         centralManager.connect(peripheral)
         
     }
@@ -90,6 +91,13 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("Connected!")
         peripheral.discoverServices([heartRateServiceCBUUID, powerMeterServiceCBUUID])
+        
+        print("Device Count: \(devices.count)")
+        
+        if(devices.count >= 2) {
+            print("Stop scanning..")
+            centralManager.stopScan()
+        }
         
     }
 
@@ -105,6 +113,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
+        
+        print("Name: \(String(describing: peripheral.name?.debugDescription))");
+        print("UUID: \(peripheral.identifier.uuidString)")
+        print("Description: \(peripheral.identifier.debugDescription)")
         
         if service.uuid == heartRateServiceCBUUID {
 
