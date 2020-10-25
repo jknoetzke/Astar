@@ -242,7 +242,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     private func saveRide() {
         
-        /*
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let dataRide = Ride(context: context)
         
@@ -271,7 +270,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         }catch {
             
         }
-         */
 
         let tcxHandler = TCXHandler()
         let xml = tcxHandler.encodeTCX(rideArray: rideArray)

@@ -19,7 +19,7 @@ let POWER_MEASUREMENT = "2A63"
 let POWER_FEATURE = "2A65"
 let UINT16_MAX = 65535.0
 
-let POWER_PEDAL = 44
+let POWER_CRANK = 44
 let POWER_TRAINER = 39
 
 class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
@@ -179,7 +179,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         var crankRev = 0.0
         var crankTime = 0.0
-        var watts = 0
+        var watts:Int = 0
         
         var crankEvent = false
         
@@ -188,9 +188,12 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         // The next 16bits make up the power reading
         let byteArray = [UInt8](characteristicData)
         
-        if byteArray[0] == POWER_PEDAL {
+        if byteArray[0] == POWER_CRANK {
             
-            watts = Int(byteArray[2]) + Int((byteArray[3]) * 255)
+            let foo1 = Int(byteArray[2])
+            let foo2 = Int(byteArray[3])
+            let foo3 = foo2 * 255
+            watts = foo1+foo3
             
             crankRev = Double(byteArray[6]) + (Double(byteArray[7]) * 255.0)
             crankTime = Double((UInt16(byteArray[9]) << 8) + UInt16(byteArray[8]))
@@ -198,8 +201,11 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             crankEvent = true
             
         } else if byteArray[0] == POWER_TRAINER {
-            // the first 16bits contains the data for the flags
-            watts = Int(byteArray[2]) + Int((byteArray[3]) * 255)
+            
+            let foo1 = Int(byteArray[2])
+            let foo2 = Int(byteArray[3])
+            let foo3 = foo2 * 255
+            watts = foo1+foo3
             
             crankRev = Double(byteArray[11]) + Double((byteArray[12]) * 255)
             crankTime = Double((UInt16(byteArray[14]) << 8) + UInt16(byteArray[13]))
@@ -234,6 +240,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         reading.cadence = Int(cadence)
         reading.deviceType = DeviceType.PowerMeter
         reading.instantTimestamp = Date()
+        reading.powerEvent = crankEvent
 
         if crankRev > reading.previousCrankCount {
             reading.previousCrankCount = crankRev
