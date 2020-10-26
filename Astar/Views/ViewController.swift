@@ -49,6 +49,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         UIApplication.shared.isIdleTimerDisabled = true
         
         readUserPrefs()
+        
+        retrieveRides(rideID: currentRideID - 1)
         rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         locationManager.startLocationUpdates()
         
@@ -222,8 +224,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
 
             }
         }
-        
-        
     }
     
     private func saveUserPrefs() {
@@ -237,6 +237,47 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         let defaults = UserDefaults.standard
         currentRideID = defaults.integer(forKey: "RideID")
+        
+    }
+    
+    func retrieveRides(rideID: Int) -> [PeripheralData]? {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil}
+        
+        var aRideArray = [PeripheralData]()
+        var aRide = PeripheralData()
+        var gps = CLLocationCoordinate2D()
+        var gpsData = GPSData()
+        
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Ride")
+        
+        fetchRequest.predicate = NSPredicate(format: "ride_number = \(rideID)")
+        
+        do {
+            let result = try managedContext.fetch(fetchRequest)
+            for data in result as! [NSManagedObject] {
+                aRide.power = data.value(forKey: "watts") as! Int
+                aRide.heartRate = data.value(forKey: "heartrate") as! Int
+                aRide.gps.altitude = data.value(forKey: "altitude") as! Double
+                aRide.cadence = data.value(forKey: "cadence") as! Int
+                aRide.lap = data.value(forKey: "lap") as! Int
+                gps.latitude = data.value(forKey: "latitude") as! Double
+                gps.longitude = data.value(forKey: "longitude") as! Double
+                aRide.gps.timeStamp = data.value(forKey: "timestamp") as! Date
+                aRide.gps.speed = data.value(forKey: "speed") as! Double
+                gpsData.location = gps
+                aRide.gps = gpsData
+                
+                aRideArray.append(aRide)
+                aRide = PeripheralData()
+                gpsData = GPSData()
+                gps = CLLocationCoordinate2D()
+            }
+        } catch {
+            print("Error retrieving CoreData")
+        }
+        
+        return aRideArray
         
     }
     

@@ -49,8 +49,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     }
     
-    
-    
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
         case .unknown:
@@ -190,10 +188,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         if byteArray[0] == POWER_CRANK {
             
-            let foo1 = Int(byteArray[2])
-            let foo2 = Int(byteArray[3])
-            let foo3 = foo2 * 255
-            watts = foo1+foo3
+            let byteArray1 = Int(byteArray[2])
+            let byteArray2 = Int(byteArray[3])
+            let overFlow = byteArray2 * 255
+            watts = byteArray1+overFlow
             
             crankRev = Double(byteArray[6]) + (Double(byteArray[7]) * 255.0)
             crankTime = Double((UInt16(byteArray[9]) << 8) + UInt16(byteArray[8]))
@@ -202,10 +200,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             
         } else if byteArray[0] == POWER_TRAINER {
             
-            let foo1 = Int(byteArray[2])
-            let foo2 = Int(byteArray[3])
-            let foo3 = foo2 * 255
-            watts = foo1+foo3
+            let byteArray1 = Int(byteArray[2])
+            let byteArray2 = Int(byteArray[3])
+            let overFlow = byteArray2 * 255
+            watts = byteArray1+overFlow
             
             crankRev = Double(byteArray[11]) + Double((byteArray[12]) * 255)
             crankTime = Double((UInt16(byteArray[14]) << 8) + UInt16(byteArray[13]))
