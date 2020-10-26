@@ -243,33 +243,32 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private func saveRide() {
         
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let dataRide = Ride(context: context)
+        var dataRide = Ride(context: context)
         
         for ride in rideArray {
-            
+
             dataRide.cadence = Int16(ride.cadence)
             dataRide.watts = Int16(ride.power)
-            dataRide.distance = ride.gps.distance.value
-            let location:Location = Location(context: context)
-            location.latitude = ride.gps.location!.latitude
-            location.longitude = ride.gps.location!.longitude
-            location.timestamp = ride.gps.timeStamp
-            dataRide.addToLocations(location)
+            dataRide.latitude = ride.gps.location!.latitude
+            dataRide.longitude = ride.gps.location!.longitude
             dataRide.speed = Double(ride.gps.speed)
             dataRide.heartrate = Int16(ride.heartRate)
             dataRide.timestamp =  ride.instantTimestamp
             dataRide.ride_number = Int16(currentRideID + 1)
             dataRide.altitude = Double(ride.gps.altitude)
             dataRide.ride_number = Int16(currentRideID)
+
+            do {
+                try context.save()
+                dataRide = Ride(context: context)
+
+            }catch {
+                print("Error saving to CoreData")
+            }
         }
         currentRideID = currentRideID + 1
         saveUserPrefs()
         
-        do {
-            try context.save()
-        }catch {
-            
-        }
 
         let tcxHandler = TCXHandler()
         let xml = tcxHandler.encodeTCX(rideArray: rideArray)

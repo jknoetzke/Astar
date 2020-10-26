@@ -233,6 +233,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
 
         updateRide(ride: reading)
         
+        let tmpGPS = reading.gps
+        
         reading = PeripheralData()
         
         //Just in case
@@ -241,6 +243,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         reading.deviceType = DeviceType.PowerMeter
         reading.instantTimestamp = Date()
         reading.powerEvent = crankEvent
+        reading.gps = tmpGPS
+        
 
         if crankRev > reading.previousCrankCount {
             reading.previousCrankCount = crankRev
