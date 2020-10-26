@@ -49,8 +49,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         UIApplication.shared.isIdleTimerDisabled = true
         
         readUserPrefs()
-        
-        retrieveRides(rideID: currentRideID - 1)
+
         rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         locationManager.startLocationUpdates()
         
