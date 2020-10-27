@@ -25,12 +25,19 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         return devices.count
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath)
         
         cell.textLabel?.text =  devices[indexPath.row].name
-      //  cell.
+        
+        //here is programatically switch make to the table view
+        let switchView = UISwitch(frame: .zero)
+        switchView.setOn(false, animated: true)
+        switchView.tag = indexPath.row // for detect which row switch Changed
+        switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
+        cell.accessoryView = switchView
         
         return cell
     }
@@ -51,5 +58,10 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         print(indexPath.row)
     }
     
+    @objc func switchChanged(_ sender : UISwitch!){
+
+          print("table row switch Changed \(sender.tag)")
+          print("The switch is \(sender.isOn ? "ON" : "OFF")")
+    }
 }
 

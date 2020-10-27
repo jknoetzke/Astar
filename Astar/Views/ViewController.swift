@@ -326,7 +326,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         strava.refresh() { (StravaData) in
             strava.storeTokens(tokenData: StravaData)
             DispatchQueue.main.async {
-                print("Now going to upload...")
                 strava.uploadRide(xml:xml)
             }
         }
