@@ -74,7 +74,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
         gpsData.distance = distance
         gpsData.location = currentPosition
         
-        gpsData.timeStamp = Date()
         updateGPSData(gps: gpsData)
         
         if currentLocation != nil && gpsData.lastLocation != nil {

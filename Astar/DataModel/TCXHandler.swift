@@ -51,8 +51,8 @@ class TCXHandler {
         var cadence = 0.0
         var heartRate = 0.0
         
-        var firstRecordedTime = rideArray.first?.gps.timeStamp
-        var lastRecordedTime = rideArray.last?.gps.timeStamp
+        var firstRecordedTime = rideArray.first?.timeStamp
+        var lastRecordedTime = rideArray.last?.timeStamp
         var totalElapsedTime = lastRecordedTime?.timeIntervalSince(firstRecordedTime!)
         var totalDistance = 0.0
         var totalCadence = 0.0
@@ -66,7 +66,7 @@ class TCXHandler {
         for ride in rideArray {
             if previousLap == ride.lap {
                 if counter == 1 {
-                    firstRecordedTime = ride.gps.timeStamp
+                    firstRecordedTime = ride.timeStamp
                 }
                 
                 if ride.speed > maxSpeed {
@@ -88,11 +88,11 @@ class TCXHandler {
                     ride.cadence = 0
                 }
                 
-                let trackPoint = Trackpoint(time: ride.gps.timeStamp, position: toPosition(lat: ride.gps.location!.latitude, lon: ride.gps.location!.longitude), altitude: Double(ride.gps.altitude), distance: ride.gps.distance.value, heartRate: HeartRateInBeatsPerMinute(heartRate: UInt8(ride.heartRate)), cadence: UInt8(ride.cadence), sensorState: nil, extensions: generateExtensionArray(ride: ride))
+                let trackPoint = Trackpoint(time: ride.timeStamp, position: toPosition(lat: ride.gps.location!.latitude, lon: ride.gps.location!.longitude), altitude: Double(ride.gps.altitude), distance: ride.gps.distance.value, heartRate: HeartRateInBeatsPerMinute(heartRate: UInt8(ride.heartRate)), cadence: UInt8(ride.cadence), sensorState: nil, extensions: generateExtensionArray(ride: ride))
                 
                 tracks.append(trackPoint)
                 
-                lastRecordedTime = ride.gps.timeStamp
+                lastRecordedTime = ride.timeStamp
                 counter += 1
                 
             } else { //Do some math..

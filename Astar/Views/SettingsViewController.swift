@@ -8,6 +8,9 @@
 import Foundation
 import UIKit
 
+let METRIC_ROW = 0
+let STRAVA_ROW = 1
+let CYCLING_ANALYTICS_ROW = 2
 
 class SettingsViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -20,21 +23,41 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
                                Devices(name: "4iiii Power Meter", id: "1101", description: "4iii Crank based power meter"),
                                Devices(name: "Wahoo HRM", id: "1101", description: "BLE Heart Rate Monitor")]
     
+    var settings: [Settings] = [ Settings(name: "Metric", checked: false),
+                                 Settings(name: "Strava", checked: false),
+                                 Settings(name: "Cycling Analytics", checked: false)]
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return devices.count
+        return settings.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath)
         
-        cell.textLabel?.text =  devices[indexPath.row].name
+        let defaults = UserDefaults.standard
+        var switchState = false
+        
+        switch(indexPath.item) {
+        case METRIC_ROW :
+            switchState = defaults.bool(forKey: "metric")
+            break
+        case STRAVA_ROW :
+            switchState = defaults.bool(forKey: "strava")
+            break
+        case CYCLING_ANALYTICS_ROW:
+            switchState = defaults.bool(forKey: "cycling_analytics")
+            break
+        default:
+            break
+        }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath)
+        cell.textLabel?.text =  settings[indexPath.row].name
         
         //here is programatically switch make to the table view
         let switchView = UISwitch(frame: .zero)
-        switchView.setOn(false, animated: true)
+        switchView.setOn(switchState, animated: true)
         switchView.tag = indexPath.row // for detect which row switch Changed
         switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell.accessoryView = switchView
@@ -59,9 +82,25 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
     }
     
     @objc func switchChanged(_ sender : UISwitch!){
-
-          print("table row switch Changed \(sender.tag)")
-          print("The switch is \(sender.isOn ? "ON" : "OFF")")
+        
+        print("table row switch Changed \(sender.tag)")
+        print("The switch is \(sender.isOn ? "ON" : "OFF")")
+        let defaults = UserDefaults.standard
+        var switchState = sender.isOn
+        
+        switch(sender.tag) {
+        case METRIC_ROW :
+            defaults.set(switchState, forKey: "metric")
+            break
+        case STRAVA_ROW :
+            switchState = defaults.bool(forKey: "strava")
+            break
+        case CYCLING_ANALYTICS_ROW:
+            switchState = defaults.bool(forKey: "cycling_analytics")
+            break
+        default:
+            break
+        }
     }
 }
 

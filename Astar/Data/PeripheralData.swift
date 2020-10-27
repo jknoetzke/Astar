@@ -26,7 +26,7 @@ public class PeripheralData: NSObject {
     var heartRate = 0
     var power: Int = 0
     var cadence:Int = 0;
-    var instantTimestamp:Date!
+    var timeStamp = Date()
     var deviceType = DeviceType.PowerMeter
     var previousCrankTimeEvent  = 0.0
     var previousCrankCount = 0.0

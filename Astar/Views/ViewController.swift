@@ -50,6 +50,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         readUserPrefs()
 
+        retrieveRides(rideID: currentRideID - 1)
+        
         rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         locationManager.startLocationUpdates()
         
@@ -84,7 +86,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         lblWatts.text = String(reading.power)
         lblHeartRate.text = String(reading.heartRate)
         lblCadence.text = String(reading.cadence)
-         
         if reading.powerEvent {
             elapsedWattsTime = 0
         }
@@ -187,14 +188,14 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         elapsedWattsTime = elapsedWattsTime + 1
         elapsedSpeedTime = elapsedSpeedTime + 1
         
-        if elapsedWattsTime >= 2 {
+        if elapsedWattsTime >= 3 {
             reading.power = 0
             reading.cadence = 0
             lblWatts.text = "0"
             lblCadence.text = "0"
         }
         
-        if elapsedSpeedTime >= 2 {
+        if elapsedSpeedTime >= 3 {
             reading.speed = 0
             lblSpeed.text = "0"
         }
@@ -220,7 +221,17 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 reading.lap = lapCounter
                 
                 rideArray.append(reading)
-
+                
+                let tmpGPS = reading.gps
+                let tmpReading = reading
+                
+                reading = PeripheralData()
+                
+                //Just in case
+                reading.power = tmpReading.power
+                reading.cadence = tmpReading.cadence
+                reading.deviceType = DeviceType.PowerMeter
+                reading.gps = tmpGPS
             }
         }
     }
@@ -262,7 +273,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 aRide.lap = data.value(forKey: "lap") as! Int
                 gps.latitude = data.value(forKey: "latitude") as! Double
                 gps.longitude = data.value(forKey: "longitude") as! Double
-                aRide.gps.timeStamp = data.value(forKey: "timestamp") as! Date
+                aRide.timeStamp = data.value(forKey: "timestamp") as! Date
                 aRide.gps.speed = data.value(forKey: "speed") as! Double
                 gpsData.location = gps
                 aRide.gps = gpsData
@@ -293,7 +304,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             dataRide.longitude = ride.gps.location!.longitude
             dataRide.speed = Double(ride.gps.speed)
             dataRide.heartrate = Int16(ride.heartRate)
-            dataRide.timestamp =  ride.instantTimestamp
+            dataRide.timestamp =  ride.timeStamp
             dataRide.ride_number = Int16(currentRideID + 1)
             dataRide.altitude = Double(ride.gps.altitude)
             dataRide.ride_number = Int16(currentRideID)
@@ -313,6 +324,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         let tcxHandler = TCXHandler()
         let xml = tcxHandler.encodeTCX(rideArray: rideArray)
    
+        print(xml)
         //Cycling Analytics
         startSpinnerView()
         uploadToCyclingAnalytics(xml: xml)

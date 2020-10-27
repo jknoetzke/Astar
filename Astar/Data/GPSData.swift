@@ -16,11 +16,15 @@ public class GPSData {
     var location: CLLocationCoordinate2D?
     var lastLocation: CLLocation?
     var currentLocation: CLLocation?
-    var timeStamp = Date()
 }
 
 struct Devices {
     var name: String?
     var id: String?
     var description: String?
+}
+
+struct Settings {
+    var name: String?
+    var checked: Bool?
 }
