@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-let METRIC_ROW = 0
-let STRAVA_ROW = 1
-let CYCLING_ANALYTICS_ROW = 2
+let METRIC_ROW = 1
+let STRAVA_ROW = 2
+let CYCLING_ANALYTICS_ROW = 3
 
 let SETTINGS_SECTION = 0
 let UPLOADS_SECTION = 1
@@ -22,17 +22,17 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
     
     var deviceManager:DeviceManager?
     
-    var settings: [Settings] = [ Settings(name: "Metric/Imperial", checked: false, tag: 1)]
+    var settings: [Settings] = [ Settings(name: "Metric/Imperial", id: "1", checked: false, tag: 1)]
 
-    var uploads: [Settings] = [ Settings(name: "Strava", checked: false, tag: 2),
-                                Settings(name: "Cycling Analytics", checked: false, tag: 3)]
+    var uploads: [Settings] = [ Settings(name: "Strava", id: "2", checked: false, tag: 2),
+                                Settings(name: "Cycling Analytics", id: "3", checked: false, tag: 3)]
     
     var devices: [Settings] = []
     
     var allSettings: [Settings] = []
     
     func didNewBLEUpdate(_ sender: DeviceManager, ble: BluetoothData) {
-        let device = Settings(name: ble.name, checked: false, tag: devices.count + 1 + settings.count + uploads.count)
+        let device = Settings(name: ble.name, id: ble.id, checked: false, tag: devices.count + 1 + settings.count + uploads.count)
         devices.append(device)
         allSettings.append(device)
         deviceTableView.reloadData()
@@ -99,36 +99,40 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+ 
+        let defaults = UserDefaults.standard
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath)
-        
         var switchTag = 0
-        
-        print(indexPath.row)
-        
+        var switchState = false
+
         switch indexPath.section {
         case SETTINGS_SECTION:
             cell.textLabel?.text =  settings[indexPath.row].name
             switchTag = settings[indexPath.row].tag
+            switchState = defaults.bool(forKey: "metric")
             break
         case UPLOADS_SECTION:
             cell.textLabel?.text =  uploads[indexPath.row].name
             switchTag = uploads[indexPath.row].tag
+            if indexPath.row == 0 {
+                switchState = defaults.bool(forKey: "strava")
+            } else if indexPath.row == 1 {
+                switchState = defaults.bool(forKey: "cycling_analytics")
+            }
             break
         case DEVICES_SECTION:
-            cell.textLabel?.text =  devices[indexPath.row].name
-            switchTag = devices[indexPath.row].tag
+            let device = devices[indexPath.row]
+            cell.textLabel?.text =  device.name
+            switchTag = device.tag
+            switchState = defaults.bool(forKey: device.id ?? "")
         default:
             break
             
         }
         
-        //   let defaults = UserDefaults.standard
-        //    var switchState = false
-        
         //here is programatically switch make to the table view
         let switchView = UISwitch(frame: .zero)
-        switchView.setOn(false, animated: true)
+        switchView.setOn(switchState, animated: true)
         switchView.tag = switchTag // for detect which row switch Changed
         switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell.accessoryView = switchView
@@ -144,28 +148,26 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         
         print("table row switch Changed \(sender.tag)")
         print("The switch is \(sender.isOn ? "ON" : "OFF")")
-        
         print("Switch Tag: \(sender.tag)")
         
         let defaults = UserDefaults.standard
-        var switchState = sender.isOn
-
+        let switchState = sender.isOn
         let setting = allSettings[sender.tag-1]
         
         print("Setting chosen: \(String(describing: setting.name))")
-        
-        
+
         switch(sender.tag) {
         case METRIC_ROW :
             defaults.set(switchState, forKey: "metric")
             break
         case STRAVA_ROW :
-            switchState = defaults.bool(forKey: "strava")
+            defaults.set(switchState, forKey: "strava")
             break
         case CYCLING_ANALYTICS_ROW:
-            switchState = defaults.bool(forKey: "cycling_analytics")
+            defaults.set(switchState, forKey: "cycling_analytics")
             break
         default:
+            defaults.set(switchState, forKey: setting.id!)
             break
         }
     }

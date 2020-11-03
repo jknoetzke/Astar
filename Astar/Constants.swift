@@ -14,6 +14,7 @@ struct K {
 
 struct Settings {
     var name: String?
+    var id: String?
     var checked: Bool?
     var tag: Int
 }
