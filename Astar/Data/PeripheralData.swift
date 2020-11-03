@@ -32,5 +32,6 @@ public class PeripheralData: NSObject {
     var previousCrankCount = 0.0
     var lap = 0
     var powerEvent = false
+    var hrEvent = false
     var gps: GPSData = GPSData()
 }

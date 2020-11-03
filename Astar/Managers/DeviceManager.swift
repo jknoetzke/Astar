@@ -277,6 +277,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
         
         reading.heartRate = heartRate
+        reading.hrEvent = true
         updateRide(ride: reading)
     }
     
