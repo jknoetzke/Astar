@@ -51,9 +51,9 @@ class TCXHandler {
         var cadence = 0.0
         var heartRate = 0.0
         
-        var firstRecordedTime = rideArray.first?.timeStamp
-        var lastRecordedTime = rideArray.last?.timeStamp
-        var totalElapsedTime = lastRecordedTime?.timeIntervalSince(firstRecordedTime!)
+        var firstRecordedTime: Date?
+        var lastRecordedTime: Date?
+        var totalElapsedTime: TimeInterval?
         var totalDistance = 0.0
         var totalCadence = 0.0
         
@@ -100,6 +100,8 @@ class TCXHandler {
                 //We completed a lap, add it.
                 allTracks.append(Track(trackPoint: tracks))
                 
+                totalElapsedTime = lastRecordedTime?.timeIntervalSince(firstRecordedTime!)
+
                 //Get the averages
                 distance = totalDistance / counter
                 cadence = totalCadence / counter
@@ -126,8 +128,9 @@ class TCXHandler {
                 let heartBeatsPerMinute = HeartRateInBeatsPerMinute(heartRate: UInt8(iHeartRate))
                 let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime ?? 0), distance: distance, maximumSpeed: maxSpeed, calories: calories, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(iCadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
                 
-                
                 activityLap.append(lap)
+                allTracks.removeAll()
+                tracks.removeAll()
                 
                 //Reset
                 counter = 1
@@ -137,6 +140,7 @@ class TCXHandler {
         
         //Finish up the last row in the array
         totalElapsedTime = lastRecordedTime?.timeIntervalSince(firstRecordedTime!)
+
         allTracks.append(Track(trackPoint: tracks))
         
         distance = totalDistance / counter
