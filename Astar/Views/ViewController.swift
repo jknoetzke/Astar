@@ -12,7 +12,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var timerIsPaused = true
     private var lapCounter = 0
     private var locationManager = LocationManager()
-    private var deviceManager = DeviceManager()
+    private var deviceManager = DeviceManager.deviceManagerInstance
     private var rideArray =  [PeripheralData]()
     
     private var currentRideID = 0
@@ -81,11 +81,22 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     func didNewRideData(_ sender: DeviceManager, ride: PeripheralData) {
         reading = ride
-        lblWatts.text = String(reading.power)
-        lblHeartRate.text = String(reading.heartRate)
-        lblCadence.text = String(reading.cadence)
+        
+        if reading.hrEvent {
+            lblHeartRate.text = String(reading.heartRate)
+        }
+        
         if reading.powerEvent {
+            lblWatts.text = String(reading.power)
+            lblCadence.text = String(reading.cadence)
             elapsedWattsTime = 0
+            
+            if timerIsPaused == false {
+                totalWatts = totalWatts + reading.power
+                wattCounter = wattCounter + 1
+                let averageWatts = totalWatts / wattCounter
+                lblAvgWatts.text = String(averageWatts)
+            }
         }
     }
     
@@ -199,10 +210,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         }
         
         if timerIsPaused == false {
-            totalWatts = totalWatts + reading.power
-            wattCounter = wattCounter + 1
-            let averageWatts = totalWatts / wattCounter
-            lblAvgWatts.text = String(averageWatts)
             
             if let tmpStartTime = startTime {
                 let nanoTime = end.uptimeNanoseconds - tmpStartTime.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
