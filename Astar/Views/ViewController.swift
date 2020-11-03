@@ -132,7 +132,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         child.removeFromParent()
         
         // the alert view
-        let alert = UIAlertController(title: "", message: "Ride Uploaded", preferredStyle: .alert)
+        let alert = UIAlertController(title: "", message: "Uploading Ride...", preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         
         // change to desired number of seconds (in this case 3 seconds)
@@ -145,8 +145,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     
     @IBAction func startClicked(_ sender: Any) {
-        
-        deviceManager.stopScanning()
         
         if timerIsPaused {
             startTime = DispatchTime.now()
@@ -328,8 +326,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
 
         let tcxHandler = TCXHandler()
         let xml = tcxHandler.encodeTCX(rideArray: rideArray)
-   
-        print(xml)
+
         //Cycling Analytics
         startSpinnerView()
         uploadToCyclingAnalytics(xml: xml)

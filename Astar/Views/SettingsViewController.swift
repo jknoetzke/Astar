@@ -16,23 +16,46 @@ let SETTINGS_SECTION = 0
 let UPLOADS_SECTION = 1
 let DEVICES_SECTION = 2
 
-
-class SettingsViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SettingsViewController : UIViewController, UITableViewDataSource, UITableViewDelegate, BluetoothDelegate {
     
     @IBOutlet weak var deviceTableView: UITableView!
     
+    var deviceManager:DeviceManager?
+    
+    var settings: [Settings] = [ Settings(name: "Metric/Imperial", checked: false, tag: 1)]
+
+    var uploads: [Settings] = [ Settings(name: "Strava", checked: false, tag: 2),
+                                Settings(name: "Cycling Analytics", checked: false, tag: 3)]
+    
+    var devices: [Settings] = []
+    
+    var allSettings: [Settings] = []
+    
+    func didNewBLEUpdate(_ sender: DeviceManager, ble: BluetoothData) {
+        let device = Settings(name: ble.name, checked: false, tag: devices.count + 1 + settings.count + uploads.count)
+        devices.append(device)
+        allSettings.append(device)
+        deviceTableView.reloadData()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        deviceTableView.dataSource = self
+        deviceTableView.delegate = self
+        deviceManager = DeviceManager.deviceManagerInstance
+        deviceManager?.bleDelegate = self
+        
+        allSettings = settings + uploads
+        
+        deviceManager?.startScanning()
+    }
+    
     let SectionHeaderHeight: CGFloat = 25
     
-    var devices: [Devices] = [ Devices(name: "Quarq", id: "1801", description: "Cinqo Power Meter"),
-                               Devices(name: "4iiii Power Meter", id: "1101", description: "4iii Crank based power meter"),
-                               Devices(name: "Wahoo HRM", id: "1101", description: "BLE Heart Rate Monitor")]
-    
-    var uploads: [Settings] = [ Settings(name: "Metric", checked: false),
-                                 Settings(name: "Strava", checked: false),
-                                 Settings(name: "Cycling Analytics", checked: false)]
-
-    var settings: [Settings] = [ Settings(name: "Metric/Imperial", checked: false)]
-
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        deviceManager?.stopScanning()
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -56,7 +79,7 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.bounds.width - 30, height: SectionHeaderHeight))
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = UIColor.white
-  
+        
         switch section {
         case SETTINGS_SECTION:
             label.text = "Metric"
@@ -70,7 +93,7 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         default:
             break
         }
-
+        
         view.addSubview(label)
         return view
     }
@@ -79,43 +102,34 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath)
         
+        var switchTag = 0
+        
         print(indexPath.row)
-    
+        
         switch indexPath.section {
         case SETTINGS_SECTION:
             cell.textLabel?.text =  settings[indexPath.row].name
+            switchTag = settings[indexPath.row].tag
             break
         case UPLOADS_SECTION:
             cell.textLabel?.text =  uploads[indexPath.row].name
+            switchTag = uploads[indexPath.row].tag
             break
         case DEVICES_SECTION:
             cell.textLabel?.text =  devices[indexPath.row].name
+            switchTag = devices[indexPath.row].tag
         default:
             break
-
+            
         }
         
-        let defaults = UserDefaults.standard
-        var switchState = false
+        //   let defaults = UserDefaults.standard
+        //    var switchState = false
         
-        switch(indexPath.item) {
-        case METRIC_ROW :
-            switchState = defaults.bool(forKey: "metric")
-            break
-        case STRAVA_ROW :
-            switchState = defaults.bool(forKey: "strava")
-            break
-        case CYCLING_ANALYTICS_ROW:
-            switchState = defaults.bool(forKey: "cycling_analytics")
-            break
-        default:
-            break
-        }
-
         //here is programatically switch make to the table view
         let switchView = UISwitch(frame: .zero)
-        switchView.setOn(switchState, animated: true)
-        switchView.tag = indexPath.row // for detect which row switch Changed
+        switchView.setOn(false, animated: true)
+        switchView.tag = switchTag // for detect which row switch Changed
         switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
         cell.accessoryView = switchView
         
@@ -125,27 +139,21 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        deviceTableView.dataSource = self
-        deviceTableView.delegate = self
-        
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.row)
-    }
     
     @objc func switchChanged(_ sender : UISwitch!){
         
         print("table row switch Changed \(sender.tag)")
         print("The switch is \(sender.isOn ? "ON" : "OFF")")
+        
+        print("Switch Tag: \(sender.tag)")
+        
         let defaults = UserDefaults.standard
         var switchState = sender.isOn
+
+        let setting = allSettings[sender.tag-1]
+        
+        print("Setting chosen: \(String(describing: setting.name))")
+        
         
         switch(sender.tag) {
         case METRIC_ROW :

@@ -17,7 +17,6 @@ let powerMeterServiceCBUUID = CBUUID(string: "1818")
 let POWER_CONTROL = "2A66"
 let POWER_MEASUREMENT = "2A63"
 let POWER_FEATURE = "2A65"
-let UINT16_MAX = 65535.0
 
 let POWER_CRANK = 44
 let POWER_TRAINER = 39
@@ -30,7 +29,9 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var devices: [CBPeripheral]!
     
     var rideDelegate: RideDelegate?
+    var bleDelegate: BluetoothDelegate?
     
+    static let deviceManagerInstance = DeviceManager()
     
     override init() {
         super.init()
@@ -63,11 +64,14 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             print("central.state is .poweredOff")
         case .poweredOn:
             print("central.state is .poweredOn")
-            centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID, powerMeterServiceCBUUID])
 
         @unknown default:
             print("Unknown case")
         }
+    }
+
+    func startScanning() {
+        centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID, powerMeterServiceCBUUID])
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover tmpPeripheral: CBPeripheral,
@@ -87,15 +91,21 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        print("Connected!")
-        peripheral.discoverServices([heartRateServiceCBUUID, powerMeterServiceCBUUID])
+
+        //peripheral.discoverServices([heartRateServiceCBUUID, powerMeterServiceCBUUID])
         
-        print("Device Count: \(devices.count)")
+        print("Device: \(String(describing: peripheral.name))")
+        var ble = BluetoothData()
+        ble.description = peripheral.identifier.description
+        ble.id = peripheral.identifier.uuidString
+        ble.name = peripheral.name?.debugDescription
+
+        updateBluetooth(ble: ble)
         
-        if(devices.count >= 2) {
-            print("Stop scanning..")
-            centralManager.stopScan()
-        }
+        //if(devices.count >= 2) {
+           // print("Stop scanning..")
+           // centralManager.stopScan()
+       // }
         
     }
 
@@ -112,13 +122,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
         
-        print("Name: \(String(describing: peripheral.name?.debugDescription))");
-        print("UUID: \(peripheral.identifier.uuidString)")
-        print("Description: \(peripheral.identifier.debugDescription)")
-        
         if service.uuid == heartRateServiceCBUUID {
 
             print("Found a Heart Rate Monitor")
+            
             var deviceInfo = DeviceInfo()
             deviceInfo.uuid = service.uuid.uuidString
             deviceInfo.description = "Heart Rate Monitor"
@@ -144,8 +151,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             deviceInfo.name = peripheral.name
             
             print("Found a power meter")
+
             for characteristic in service.characteristics! as [CBCharacteristic] {
                 print(characteristic)
+
                 switch characteristic.uuid.uuidString {
                 case POWER_CONTROL:
                     var rawArray:[UInt8] = [0x01];
@@ -213,8 +222,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             return
         }
         
-        let cumulativeRevs = rollOver(current: crankRev, previous: reading.previousCrankCount, max: UINT16_MAX)
-        let cumulativeTime = rollOver(current: crankTime, previous: reading.previousCrankTimeEvent, max: UINT16_MAX)
+        let cumulativeRevs = rollOver(current: crankRev, previous: reading.previousCrankCount, max: UInt16.max)
+        let cumulativeTime = rollOver(current: crankTime, previous: reading.previousCrankTimeEvent, max: UInt16.max)
         
         
         if (reading.previousCrankTimeEvent != crankTime) || (reading.previousCrankCount != crankRev) {
@@ -236,15 +245,13 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             reading.previousCrankCount = crankRev
             reading.previousCrankTimeEvent = crankTime
         }
-
-
     }
     
-    func rollOver(current: Double, previous: Double, max: Double) -> Double {
+    func rollOver(current: Double, previous: Double, max: UInt16) -> Double {
         if current >= previous {
             return current - previous
         } else {
-            return (max - previous) + current
+            return (Double(max) - previous) + current
         }
     }
         
@@ -283,6 +290,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func updateRide(ride: PeripheralData) {
         rideDelegate?.didNewRideData(self, ride: ride)
+    }
+    
+    func updateBluetooth(ble: BluetoothData) {
+        bleDelegate?.didNewBLEUpdate(self, ble: ble)
     }
 }
 

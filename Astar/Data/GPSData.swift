@@ -17,14 +17,3 @@ public class GPSData {
     var lastLocation: CLLocation?
     var currentLocation: CLLocation?
 }
-
-struct Devices {
-    var name: String?
-    var id: String?
-    var description: String?
-}
-
-struct Settings {
-    var name: String?
-    var checked: Bool?
-}

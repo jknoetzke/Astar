@@ -11,3 +11,9 @@ struct K {
     
     static let cellIdentifier = "ReusableCell"
 }
+
+struct Settings {
+    var name: String?
+    var checked: Bool?
+    var tag: Int
+}
