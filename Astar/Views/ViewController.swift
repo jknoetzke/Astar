@@ -57,7 +57,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         self.tabBarController?.delegate = self
         
-        deviceManager.startScanning(fullScan: false, timer: 100)
+        deviceManager.startScanning(fullScan: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

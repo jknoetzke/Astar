@@ -48,7 +48,7 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         allSettings = settings + uploads
         
         deviceManager?.stopScanning()
-        deviceManager?.startScanning(fullScan: true, timer: 30)
+        deviceManager?.startScanning(fullScan: true)
     }
     
     let SectionHeaderHeight: CGFloat = 25

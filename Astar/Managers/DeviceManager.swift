@@ -28,7 +28,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var reading: PeripheralData!
     private var devices: [CBPeripheral]!
     
-    private var MAX_SCAN_TIMER = 10
+    private var MAX_SCAN_TIMER = 300
     
     private var scanTimer: Timer?
     
@@ -86,10 +86,9 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
     }
     
-    func startScanning(fullScan: Bool, timer: Int) {
+    func startScanning(fullScan: Bool) {
         print("Start Scanning")
         self.fullScan = fullScan
-        MAX_SCAN_TIMER = timer
         scanTimer = Timer.scheduledTimer(timeInterval: TimeInterval(MAX_SCAN_TIMER), target: self, selector: #selector(scanTimeCode), userInfo: nil, repeats: false)
         centralManager = CBCentralManager(delegate: self, queue: nil)
     }
@@ -105,9 +104,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         peripheral = tmpPeripheral
         peripheral.delegate = self
         centralManager.connect(peripheral)
-
+        
         if fullScan == false {
             if let _ = savedDevices.firstIndex(of: tmpPeripheral.identifier.uuidString) {
+              
                 devices.append(peripheral)
             }
         }
