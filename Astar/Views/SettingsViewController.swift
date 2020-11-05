@@ -28,11 +28,11 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
                                 Settings(name: "Cycling Analytics", id: "3", checked: false, tag: 3)]
     
     var devices: [Settings] = []
-    
     var allSettings: [Settings] = []
     
+    
     func didNewBLEUpdate(_ sender: DeviceManager, ble: BluetoothData) {
-        let device = Settings(name: ble.name, id: ble.id, checked: false, tag: devices.count + 1 + settings.count + uploads.count)
+        let device = Settings(name: ble.name!, id: ble.id!, checked: false, tag: devices.count + 1 + settings.count + uploads.count)
         devices.append(device)
         allSettings.append(device)
         deviceTableView.reloadData()
@@ -47,7 +47,8 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         
         allSettings = settings + uploads
         
-        deviceManager?.startScanning()
+        deviceManager?.stopScanning()
+        deviceManager?.startScanning(fullScan: true, timer: 30)
     }
     
     let SectionHeaderHeight: CGFloat = 25
@@ -97,7 +98,7 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         view.addSubview(label)
         return view
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
  
         let defaults = UserDefaults.standard
@@ -124,7 +125,12 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             let device = devices[indexPath.row]
             cell.textLabel?.text =  device.name
             switchTag = device.tag
-            switchState = defaults.bool(forKey: device.id ?? "")
+            if deviceManager!.savedDevices.firstIndex(of: device.id) != nil {
+                switchState = true
+            } else {
+                switchState = false
+            }
+            
         default:
             break
             
@@ -148,7 +154,7 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         
         print("table row switch Changed \(sender.tag)")
         print("The switch is \(sender.isOn ? "ON" : "OFF")")
-        print("Switch Tag: \(sender.tag)")
+        print("Switch Tg: \(sender.tag)")
         
         let defaults = UserDefaults.standard
         let switchState = sender.isOn
@@ -167,7 +173,7 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             defaults.set(switchState, forKey: "cycling_analytics")
             break
         default:
-            defaults.set(switchState, forKey: setting.id!)
+            deviceManager!.saveDevice(deviceID: setting.id, state: switchState)
             break
         }
     }

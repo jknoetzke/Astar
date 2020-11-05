@@ -42,7 +42,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var elapsedWattsTime = 0
     private var elapsedSpeedTime = 0
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,6 +57,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         self.tabBarController?.delegate = self
         
+        deviceManager.startScanning(fullScan: false, timer: 100)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -222,7 +222,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                     reading.gps.location = locationManager.currentPosition
                 }
                 reading.lap = lapCounter
-                
+
                 rideArray.append(reading)
                 
                 let tmpGPS = reading.gps
