@@ -12,7 +12,7 @@ class StravaManager {
     
     private var authSession: ASWebAuthenticationSession?
     static let sharedInstance = StravaManager()
-    var stravaCode = "5070f57c1bfaa53d3b166ee9f0b2da33e4fe9170"
+    var stravaCode = "337f15bafa8de590ea96d9e39771cf3d1f4a8359"
     var accessCode = ""
     let clientSecret = "69e26bcc0183fb52e446f62cf61c3e4773b6c11d"
     let clientID = "54604"
@@ -23,7 +23,6 @@ class StravaManager {
     var refreshToken = ""
     
     let appOAuthUrlStravaScheme = URL(string: "strava://oauth/mobile/authorize?client_id=54604&redirect_uri=astar://shampoo.ca&response_type=code&approval_prompt=force&scope=activity%3Awrite%2Cread&state=test")!
-    // let webOAuthUrl = URL(string: "https://www.strava.com/oauth/mobile/authorize?client_id=54604&redirect_uri= YourApp%3A%2F%2Fwww.yourapp.com%2Fen-US&response_type=code&approval_prompt=auto&scope=activity%3Awrite%2Cread&state=test")
     
     init() {
         
@@ -31,7 +30,7 @@ class StravaManager {
         accessToken = defaults.string(forKey: "accessToken") ?? ""
         expiresAt = defaults.integer(forKey: "expiresAt")
         expiresIn = defaults.integer(forKey: "expiresIn")
-        refreshToken = defaults.string(forKey: "refreshToken") ?? "742de9680d6267f87f416657688cd3c25c69874f"
+        refreshToken = defaults.string(forKey: "refreshToken") ?? ""
         
     }
     
@@ -85,11 +84,14 @@ class StravaManager {
         }
     }
     
-    func validateToken() {
-        
-    }
-    
     func token(completionHandler: @escaping (StravaData) -> Void) {
+        
+        let defaults = UserDefaults.standard
+        if let strava_code = defaults.string(forKey: "strava_code") {
+            stravaCode = strava_code
+        } else {
+            return
+        }
         
         var request = URLRequest(url: URL(string: "https://www.strava.com/oauth/token?client_id=\(clientID)&client_secret=\(clientSecret)&code=\(stravaCode)&grant_type=authorization_code")!,timeoutInterval: Double.infinity)
         request.addValue("Bearer \(accessCode)", forHTTPHeaderField: "Authorization")
@@ -121,7 +123,13 @@ class StravaManager {
         stravaCode = _stravaCode
         print("Strava code: \(stravaCode)")
         let defaults = UserDefaults.standard
-        defaults.set(stravaCode, forKey: "stravaCode")
+        defaults.set(stravaCode, forKey: "strava_code")
+        
+        //Let's get a refresh token
+        token() { (StravaData) in
+            print("Storing Strava Refresh Token: \(StravaData.refresh_token)")
+            self.storeTokens(tokenData: StravaData)
+        }
     }
     
     func uploadRide(xml: String) {

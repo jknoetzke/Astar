@@ -212,6 +212,12 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             break
         case STRAVA_ROW :
             defaults.set(switchState, forKey: "strava")
+            if switchState {
+                let strava = StravaManager()
+                strava.authenticate()
+            } else {
+                defaults.removeObject(forKey: "strava_code")
+            }
             break
         case CYCLING_ANALYTICS_ROW:
             storeCyclingAnalyticsCreds(checked: switchState)
