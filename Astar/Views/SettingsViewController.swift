@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Security
 
 let METRIC_ROW = 1
 let STRAVA_ROW = 2
@@ -150,6 +151,49 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         return 3
     }
     
+    func storeCyclingAnalyticsCreds(checked: Bool) {
+        
+        if checked {
+            let alert = UIAlertController(title: "Enter your credentials", message: "Please enter your user name and password for Cycling Analytics", preferredStyle: .alert)
+            
+            alert.addTextField { (textField) in
+                textField.placeholder = "User"
+            }
+            
+            alert.addTextField { (textFieldPass) in
+                textFieldPass.placeholder = "Password"
+                textFieldPass.isSecureTextEntry = true
+            }
+            
+            // 3. Grab the value from the text field, and print it when the user clicks OK.
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { [weak alert] (_) in
+                print("Canceled")
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: { [weak alert] (_) in
+                let txtUserName = alert?.textFields![0]
+                let txtPassword = alert?.textFields![1]
+                print("Text field: \(String(describing: txtUserName!.text))")
+                print("Text field: \(String(describing: txtPassword!.text))")
+                let userName = txtUserName!.text
+                let password = txtPassword!.text
+                let defaults = UserDefaults.standard
+                
+                defaults.setValue(userName, forKey: "cycling_analytics_username")
+                defaults.setValue(password, forKey: "cycling_analytics_password")
+                
+                
+            }))
+            // 4. Present the alert.
+            self.present(alert, animated: true, completion: nil)
+            
+        } else {
+            let defaults = UserDefaults.standard
+            defaults.removeObject(forKey: "cycling_analytics_username")
+            defaults.removeObject(forKey: "cycling_analytics_password")
+        }
+    }
+    
     @objc func switchChanged(_ sender : UISwitch!){
         
         print("table row switch Changed \(sender.tag)")
@@ -170,6 +214,7 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             defaults.set(switchState, forKey: "strava")
             break
         case CYCLING_ANALYTICS_ROW:
+            storeCyclingAnalyticsCreds(checked: switchState)
             defaults.set(switchState, forKey: "cycling_analytics")
             break
         default:

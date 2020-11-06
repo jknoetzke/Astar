@@ -73,13 +73,31 @@ class CyclingAnalyticsManager {
     
     func auth(completionHandler: @escaping (CyclingAnalyticsData) -> Void) {
         
-        var request = URLRequest(url: url!)
-        request.httpMethod = "POST"
         
-        // HTTP Request Parameters which will be sent in HTTP Request Body
-        let postString = "grant_type=password&client_id=4577341&username=justin@shampoo.ca&password=xQFQfUP3LX3@T1kRtiYqsK4LmURzR%26hc&scope=read_rides,create_rides";
-        // Set HTTP Request Body
-        request.httpBody = postString.data(using: String.Encoding.utf8);
+        let defaults = UserDefaults.standard
+               
+        let userName = defaults.string(forKey: "cycling_analytics_username")
+        let password = defaults.string(forKey: "cycling_analytics_password")
+        
+        if userName == nil || password == nil {
+            return
+        }
+        
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "www.cyclinganalytics.com"
+        components.path = "/api/token"
+        components.queryItems = [
+            URLQueryItem(name: "grant_type", value: "password"),
+            URLQueryItem(name: "client_id", value: "4577341"),
+            URLQueryItem(name: "username", value: userName),
+            URLQueryItem(name: "password", value: password),
+            URLQueryItem(name: "scope", value: "create_rides,read_rides")
+        ]
+
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "POST"
+
         // Perform HTTP Request
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
