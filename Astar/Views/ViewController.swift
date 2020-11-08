@@ -10,6 +10,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var seconds = 0
     private var startTime: DispatchTime?
     private var timerIsPaused = true
+    private var restarted = false
     private var lapCounter = 0
     private var locationManager = LocationManager()
     private var deviceManager = DeviceManager.deviceManagerInstance
@@ -102,7 +103,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     func didNewGPSData(_ sender: LocationManager, gps: GPSData) {
         reading.gps = gps
-       
+        
         lblSpeed.text = String(format: "%.0f", gps.speed)
         elapsedSpeedTime = 0
     }
@@ -114,7 +115,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         totalWatts = 0
         wattCounter = 0
-
+        
     }
     
     func startSpinnerView() {
@@ -146,41 +147,36 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     @IBAction func startClicked(_ sender: Any) {
         
-        if timerIsPaused {
-            startTime = DispatchTime.now()
-            let hours = 0
-            let minutes = 0
-            let seconds = 0
-            lblRideTime.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
-            
-            btnLap.isEnabled = true
-            
-            if #available(iOS 13, *) {
+        if timerIsPaused && !restarted {
+            if !restarted {
+                startTime = DispatchTime.now()
+                let hours = 0
+                let minutes = 0
+                let seconds = 0
+                lblRideTime.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
                 let stopImage = UIImage(systemName: "stop")
                 btnStart.setImage(stopImage, for: .normal)
                 btnStart.setBackgroundImage(stopImage, for: .normal)
+                btnStart.setTitle("Stop", for: .normal)
+                timerIsPaused = false
             }
-            btnStart.setTitle("Stop", for: .normal)
-            timerIsPaused = false
+            btnLap.isEnabled = true
             
         } else {
-            btnLap.isEnabled = false
-            if #available(iOS 13, *) {
-                let startImage = UIImage(systemName: "play")
-                btnStart.setImage(startImage, for: .normal)
-                
-                btnStart.setBackgroundImage(startImage, for: .normal)
-            }
-            btnStart.setTitle("Start", for: .normal)
-            timerIsPaused = true
-            
+
             //Prompt user to save or not
             let alert = UIAlertController(title: "Save and Upload Ride ?", message: "Saving will save this ride to your iPhone and upload to the sites you have configured.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { action in
                 self.saveRide()
+                self.rideArray.removeAll()
+                self.timerIsPaused = true
+                self.btnLap.isEnabled = false
+                self.rideTimer?.invalidate()
             }))
-            alert.addAction(UIAlertAction(title: "Pause Ride", style: .cancel, handler: { action in
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
                 print("Clicked Cancel")
+                self.timerIsPaused = false
+                
             }))
             
             self.present(alert, animated: true)
@@ -191,7 +187,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     @objc func runTimedCode() {
         
         let end = DispatchTime.now()
-
+        
         elapsedWattsTime = elapsedWattsTime + 1
         elapsedSpeedTime = elapsedSpeedTime + 1
         
@@ -207,7 +203,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             lblSpeed.text = "0"
         }
         
-        if timerIsPaused == false {
+        if !timerIsPaused {
             
             if let tmpStartTime = startTime {
                 let nanoTime = end.uptimeNanoseconds - tmpStartTime.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
@@ -222,7 +218,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                     reading.gps.location = locationManager.currentPosition
                 }
                 reading.lap = lapCounter
-
+                
                 rideArray.append(reading)
                 
                 let tmpGPS = reading.gps
@@ -300,7 +296,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         var dataRide = Ride(context: context)
         
         for ride in rideArray {
-
+            
             dataRide.cadence = Int16(ride.cadence)
             dataRide.watts = Int16(ride.power)
             dataRide.latitude = ride.gps.location!.latitude
@@ -311,11 +307,11 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             dataRide.ride_number = Int16(currentRideID + 1)
             dataRide.altitude = Double(ride.gps.altitude)
             dataRide.ride_number = Int16(currentRideID)
-
+            
             do {
                 try context.save()
                 dataRide = Ride(context: context)
-
+                
             }catch {
                 print("Error saving to CoreData")
             }
@@ -323,10 +319,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         currentRideID = currentRideID + 1
         saveUserPrefs()
         
-
+        
         let tcxHandler = TCXHandler()
         let xml = tcxHandler.encodeTCX(rideArray: rideArray)
-
+        
         //Cycling Analytics
         startSpinnerView()
         uploadToCyclingAnalytics(xml: xml)
@@ -337,7 +333,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     func uploadToStrava(xml: String) {
         let strava = StravaManager()
-
+        
         strava.refresh() { (StravaData) in
             strava.storeTokens(tokenData: StravaData)
             DispatchQueue.main.async {
