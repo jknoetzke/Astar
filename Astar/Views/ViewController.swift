@@ -10,7 +10,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var seconds = 0
     private var startTime: DispatchTime?
     private var timerIsPaused = true
-    private var restarted = false
     private var lapCounter = 0
     private var locationManager = LocationManager()
     private var deviceManager = DeviceManager.deviceManagerInstance
@@ -49,8 +48,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         UIApplication.shared.isIdleTimerDisabled = true
         
         readUserPrefs()
-        
-        rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         locationManager.startLocationUpdates()
         
         deviceManager.rideDelegate = self
@@ -147,41 +144,58 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     @IBAction func startClicked(_ sender: Any) {
         
-        if timerIsPaused && !restarted {
-            if !restarted {
-                startTime = DispatchTime.now()
-                let hours = 0
-                let minutes = 0
-                let seconds = 0
-                lblRideTime.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
-                let stopImage = UIImage(systemName: "stop")
-                btnStart.setImage(stopImage, for: .normal)
-                btnStart.setBackgroundImage(stopImage, for: .normal)
-                btnStart.setTitle("Stop", for: .normal)
-                timerIsPaused = false
-            }
+        if timerIsPaused {
+            rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
+            startTime = DispatchTime.now()
+            let hours = 0
+            let minutes = 0
+            let seconds = 0
+            lblRideTime.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
+            let stopImage = UIImage(systemName: "stop")
+            btnStart.setImage(stopImage, for: .normal)
+            btnStart.setBackgroundImage(stopImage, for: .normal)
+            btnStart.setTitle("Stop", for: .normal)
+            timerIsPaused = false
             btnLap.isEnabled = true
             
         } else {
-
+            
             //Prompt user to save or not
-            let alert = UIAlertController(title: "Save and Upload Ride ?", message: "Saving will save this ride to your iPhone and upload to the sites you have configured.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Save and Upload Ride ?", message: "Saving will save this ride to your iPhone and upload to the sites you have configured.", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { action in
-                self.saveRide()
-                self.rideArray.removeAll()
-                self.timerIsPaused = true
-                self.btnLap.isEnabled = false
-                self.rideTimer?.invalidate()
+                print("Save Ride")
+                self.saveRide(tmpRideArray: self.rideArray)
+                print("Ride Saved.. Resetting")
+                self.resetRide()
+                print("Ride Reset")
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
                 print("Clicked Cancel")
                 self.timerIsPaused = false
-                
             }))
-            
+            alert.addAction(UIAlertAction(title: "Discard Ride", style: .destructive, handler: { action in
+                print("Discarded Ride")
+                self.resetRide()
+            }))
+
             self.present(alert, animated: true)
             
         }
+    }
+    
+    func resetRide() {
+        rideArray.removeAll()
+        timerIsPaused = true
+        btnLap.isEnabled = false
+        rideTimer?.invalidate()
+        
+        let startImage = UIImage(systemName: "play")
+        btnStart.setImage(startImage, for: .normal)
+        btnStart.setBackgroundImage(startImage, for: .normal)
+        btnStart.setTitle("Start", for: .normal)
+        lblAvgWatts.text = "0"
+        lblLap.text = "0"
+
     }
     
     @objc func runTimedCode() {
@@ -290,12 +304,12 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
     }
     
-    private func saveRide() {
+    private func saveRide(tmpRideArray: [PeripheralData]) {
         
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         var dataRide = Ride(context: context)
         
-        for ride in rideArray {
+        for ride in tmpRideArray {
             
             dataRide.cadence = Int16(ride.cadence)
             dataRide.watts = Int16(ride.power)
@@ -321,7 +335,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         
         let tcxHandler = TCXHandler()
-        let xml = tcxHandler.encodeTCX(rideArray: rideArray)
+        let xml = tcxHandler.encodeTCX(rideArray: tmpRideArray)
         
         //Cycling Analytics
         startSpinnerView()

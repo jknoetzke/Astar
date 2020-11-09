@@ -52,6 +52,12 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         deviceManager?.startScanning(fullScan: true)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //Restart with the new selected devices.
+        
+    }
+    
     let SectionHeaderHeight: CGFloat = 25
     
     override func viewWillDisappear(_ animated: Bool) {
