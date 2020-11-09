@@ -54,14 +54,17 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         locationManager.gpsDelegate = self
         
         self.tabBarController?.delegate = self
-        
-        deviceManager.startScanning(fullScan: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        deviceManager.stopScanning()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        deviceManager.startScanning(fullScan: false)
+    }
     
     public func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if tabBarController.selectedIndex == 1 {

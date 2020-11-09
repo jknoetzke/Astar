@@ -125,6 +125,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         } else {
             if let index = savedDevices.firstIndex(of: deviceID) {
                 savedDevices.remove(at: index)
+                let tmpPeripheral = devices[index]
+                centralManager.cancelPeripheralConnection(tmpPeripheral)
             }
         }
         defaults.set(savedDevices, forKey: "saved_devices")
