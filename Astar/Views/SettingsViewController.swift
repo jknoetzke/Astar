@@ -34,9 +34,13 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
     
     func didNewBLEUpdate(_ sender: DeviceManager, ble: BluetoothData) {
         let device = Settings(name: ble.name!, id: ble.id!, checked: false, tag: devices.count + 1 + settings.count + uploads.count)
-        devices.append(device)
-        allSettings.append(device)
-        deviceTableView.reloadData()
+
+        if devices.firstIndex(where: {$0.id == device.id}) == nil {
+            devices.append(device)
+            allSettings.append(device)
+            deviceTableView.reloadData()
+       }
+
     }
     
     override func viewDidLoad() {
