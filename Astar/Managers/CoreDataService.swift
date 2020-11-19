@@ -11,7 +11,6 @@ import MapKit
 class CoreDataServices {
 
     
-    
     func retrieveRide(rideID: Int) -> [PeripheralData]? {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil}
         
@@ -71,8 +70,8 @@ class CoreDataServices {
                 completedRide.avgWatts = data.value(forKey: "average_watts") as? Int16
                 completedRide.calories = data.value(forKey: "calories") as? Int16
                 completedRide.distance = data.value(forKey: "distance") as? Int16
-                completedRide.ride_time = data.value(forKey: "ride_time") as? Double
-                completedRide.map_uuid = data.value(forKey: "map_uuid") as? String
+                completedRide.rideTime = data.value(forKey: "ride_time") as? Double
+                completedRide.mapUUID = data.value(forKey: "map_uuid") as? String
                          
             }
         } catch {
@@ -83,6 +82,23 @@ class CoreDataServices {
         
     }
     
+    static func load(fileName: String) -> UIImage? {
+        let fileURL = getDocumentsDirectory().appendingPathComponent(fileName)
+        do {
+            let imageData = try Data(contentsOf: fileURL)
+            return UIImage(data: imageData)
+        } catch {
+            print("Error loading image : \(error)")
+        }
+        return nil
+    }
+    
+    static func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+
+
     func retrieveAllRideStats() -> [RideMetrics] {
         
         var rideMetricArray = [RideMetrics]()
@@ -102,10 +118,11 @@ class CoreDataServices {
                 completedRide.avgWatts = data.value(forKey: "average_watts") as? Int16
                 completedRide.calories = data.value(forKey: "calories") as? Int16
                 completedRide.distance = data.value(forKey: "distance") as? Int16
-                completedRide.ride_time = data.value(forKey: "ride_time") as? Double
-                completedRide.map_uuid = data.value(forKey: "map_uuid") as? String
-                         
+                completedRide.rideTime = data.value(forKey: "ride_time") as? Double
+                completedRide.mapUUID = data.value(forKey: "map_uuid") as? String
+                
                 rideMetricArray.append(completedRide)
+                
             }
         } catch {
             print("Error retrieving CoreData")

@@ -44,8 +44,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var elapsedWattsTime = 0
     private var elapsedSpeedTime = 0
     
-    private var mapController: MapViewController!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,34 +56,18 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         locationManager.gpsDelegate = self
         self.tabBarController?.delegate = self
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        mapController = storyboard.instantiateViewController(withIdentifier: "MapView") as? MapViewController
-        mapController.loadView()
-        mapController.viewDidLoad()
-        mapController.viewWillAppear(false)
-        mapController.viewDidAppear(false)
-        
-        let coreData = CoreDataServices()
-        
-        let results = coreData.retrieveAllRideStats()
-        
-    }
-    
-    private func load(fileName: String) -> UIImage? {
-        let fileURL = self.getDocumentsDirectory().appendingPathComponent(fileName)
-        do {
-            let imageData = try Data(contentsOf: fileURL)
-            return UIImage(data: imageData)
-        } catch {
-            print("Error loading image : \(error)")
-        }
-        return nil
+        //let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        var mapViewController = tabBarController!.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
+        mapViewController.loadView()
+        mapViewController.viewDidLoad()
+        mapViewController.viewWillAppear(false)
+        mapViewController.viewDidAppear(false)
     }
     
     /*
     public func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if tabBarController.selectedIndex == 1 {
-            var mapViewController = tabBarController.viewControllers![1] as! MapViewController // or whatever tab index you're trying to access
+            var mapViewController = tabBarController.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
             mapViewController = mapController as! MapViewController
         }
     }
@@ -333,13 +315,14 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         let rideCalculator = RideCalculator()
         let rideMetrics = rideCalculator.calculateRideMetrics(rideArray: tmpRideArray)
         let mapUUID = UUID().uuidString
-        mapController.generateImageFromMap(mapUUID: mapUUID)
+        let mapViewController = tabBarController!.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
+        mapViewController.generateImageFromMap(mapUUID: mapUUID)
         
         completedRide.average_watts = rideMetrics.avgWatts!
         completedRide.calories = rideMetrics.calories!
         completedRide.distance = rideMetrics.distance!
         completedRide.ride_number = Int16(currentRideID)
-        completedRide.ride_time = rideMetrics.ride_time!
+        completedRide.ride_time = rideMetrics.rideTime!
         completedRide.map_uuid = mapUUID
         
         do {

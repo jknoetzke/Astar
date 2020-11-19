@@ -372,7 +372,7 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Maps" selectedImage="map" catalog="system" id="jYd-uo-pFM">
-                        <imageReference key="image" image="map" catalog="system" symbolScale="small"/>
+                        <imageReference key="image" image="map" catalog="system" symbolScale="medium"/>
                     </tabBarItem>
                     <connections>
                         <outlet property="mapContainerView" destination="XnF-mM-eBd" id="t8f-bF-zwX"/>
@@ -482,7 +482,7 @@
         <scene sceneID="hWT-zJ-Dio">
             <objects>
                 <collectionViewController id="n6l-0E-iga" customClass="FeedController" customModule="Astar" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="FVL-yf-Z4f">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" dataMode="prototypes" id="FVL-yf-Z4f">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>

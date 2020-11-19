@@ -13,8 +13,8 @@ struct RideMetrics {
     var avgWatts: Int16?
     var calories: Int16?
     var distance: Int16?
-    var ride_time: Double?
-    var map_uuid: String?
+    var rideTime: Double?
+    var mapUUID: String?
     
 }
 
@@ -40,7 +40,7 @@ class RideCalculator {
         let cal2 = cal1 * 3.60
         
         
-        let rideMetrics = RideMetrics(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16(totalDistance), ride_time: rideTime!)
+        let rideMetrics = RideMetrics(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16(totalDistance/1000), rideTime: rideTime!)
         
         return rideMetrics
     }

@@ -27,11 +27,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     var locationManager = LocationManager.sharedLocationManager
     
     override func viewDidLoad() {
-        print("View Did Load Map Controller")
         super.viewDidLoad()
         mapView.setUserTrackingMode(.follow, animated:true)
         mapView.delegate = self
-        initializeMap(coordinates: locationManager.coordinate2D)
+        initializeMap()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,7 +63,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
         
     }
     
-    func initializeMap(coordinates: [CLLocation]) {
+    func initializeMap() {
         
         var newLocation: CLLocation?
         var oldLocation: CLLocation?
@@ -81,8 +80,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     }
     
     func updateMap(newLocation: CLLocation, lastLocation: CLLocation) {
-        let coordinates = [lastLocation.coordinate, newLocation.coordinate]
-        mapView.addOverlay(MKPolyline(coordinates: coordinates, count: 2))
+        let newCoordinates = [lastLocation.coordinate, newLocation.coordinate]
+        mapView.addOverlay(MKPolyline(coordinates: newCoordinates, count: 2))
     }
     
     func didNewLocationData(_ sender: LocationManager, newLocation: CLLocation, oldLocation: CLLocation) {
@@ -91,7 +90,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
         if pinchCounter >= 10 && pinched == true {
             pinched = false
         }
-        
+
         coordinates.append(newLocation.coordinate)
         updateMap(newLocation: newLocation, lastLocation: oldLocation)
         updateCurrentLocation(newLocation: newLocation)
@@ -112,8 +111,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
         let options = MKMapSnapshotter.Options()
         let rect = MKCoordinateRegion(boundingRect)
         
-        options.region = rect
-        options.size = CGSize(width: 1024, height: 768)
+        
+        
+        options.region = mapView.region
+        options.size = CGSize(width: 380, height: 280)
+        
         options.showsBuildings = true
         
         MKMapSnapshotter(options: options).start() { snapshot, error in
@@ -124,7 +126,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
                 
                 // draw the map image
                 mapImage.draw(at: .zero)
-                
                 // convert the `[CLLocationCoordinate2D]` into a `[CGPoint]`
                 let points = self.coordinates.map { coordinate in
                     snapshot.point(for: coordinate)
@@ -145,24 +146,16 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
             }
             
             if let data = finalImage.pngData() {
-                print("Saving Map: \(mapUUID)")
-                let filename = self.getDocumentsDirectory().appendingPathComponent(mapUUID)
-                //let filename = self.getDocumentsDirectory().appendingPathComponent("map.png")
-                print("Filename: \(filename.absoluteURL)")
+                let filename = CoreDataServices.getDocumentsDirectory().appendingPathComponent(mapUUID)
+              
                 try? data.write(to: filename)
             }
             
+            //Update the Activity Feed
+            let feedController = self.tabBarController!.viewControllers![0] as! FeedController
+            feedController.updateFeed()
+            
         }
-    }
-    
-    func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
-    }
-    
-    
-    func mapRegion() {
-        
     }
 }
 
