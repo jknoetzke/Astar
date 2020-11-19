@@ -114,8 +114,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
     func stopScanning() {
-        print("Stop scanning")
-        centralManager.stopScan()
+        if centralManager != nil && centralManager.state == .poweredOn && centralManager.isScanning {
+            print("Stop scanning")
+            centralManager.stopScan()
+        }
     }
     
     func saveDevice(deviceID: String, state: Bool) {
