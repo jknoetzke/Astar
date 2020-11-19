@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/justin/Projects/Astar/Astar/Managers/CoreDataService.swift">
+   </FileRef>
+   <FileRef
       location = "group:Astar.xcodeproj">
    </FileRef>
    <FileRef

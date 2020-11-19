@@ -10,6 +10,8 @@
 		2AA39BFEA396EB459BD868B8 /* Pods_Astar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED44B6417E23A0211499F92 /* Pods_Astar.framework */; };
 		D00147042550DDBF0015B672 /* BluetoothData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00147032550DDBF0015B672 /* BluetoothData.swift */; };
 		D00147072550DE9F0015B672 /* BluetoothDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00147062550DE9F0015B672 /* BluetoothDelegate.swift */; };
+		D01A9680256459A30061B9B2 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01A967F256459A30061B9B2 /* CoreDataService.swift */; };
+		D01A9683256459E10061B9B2 /* RideCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01A9682256459E10061B9B2 /* RideCalculator.swift */; };
 		D034189C2535F7DA001AD367 /* LocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03418982535F7DA001AD367 /* LocationDelegate.swift */; };
 		D034189D2535F7DA001AD367 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03418992535F7DA001AD367 /* AppDelegate.swift */; };
 		D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034189A2535F7DA001AD367 /* RideDelegate.swift */; };
@@ -25,6 +27,9 @@
 		D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D79852527BCE4001961E3 /* TCXHandler.swift */; };
 		D06D7998252CED17001961E3 /* GPSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D7997252CED17001961E3 /* GPSData.swift */; };
 		D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77B251A4AE200241E7E /* PeripheralData.swift */; };
+		D0AB73AD255EDC930090B1DF /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AB73AC255EDC930090B1DF /* FeedController.swift */; };
+		D0AB73B0255F028F0090B1DF /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AB73AF255F028F0090B1DF /* FeedCell.swift */; };
+		D0AB73B4255F038E0090B1DF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AB73B3255F038E0090B1DF /* Extensions.swift */; };
 		D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0C757F02508FA1200C923C4 /* AStar.xcdatamodeld */; };
 		D0D329102503BF2B003CC73A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D3290E2503BF2B003CC73A /* Main.storyboard */; };
 		D0D329122503BF2B003CC73A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0D329112503BF2B003CC73A /* Assets.xcassets */; };
@@ -39,6 +44,8 @@
 		955A3ACC2F09105D7B44DCD3 /* Pods-Astar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Astar.release.xcconfig"; path = "Target Support Files/Pods-Astar/Pods-Astar.release.xcconfig"; sourceTree = "<group>"; };
 		D00147032550DDBF0015B672 /* BluetoothData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothData.swift; sourceTree = "<group>"; };
 		D00147062550DE9F0015B672 /* BluetoothDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDelegate.swift; sourceTree = "<group>"; };
+		D01A967F256459A30061B9B2 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoreDataService.swift; path = /Users/justin/Projects/Astar/Astar/Managers/CoreDataService.swift; sourceTree = "<absolute>"; };
+		D01A9682256459E10061B9B2 /* RideCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideCalculator.swift; sourceTree = "<group>"; };
 		D03418982535F7DA001AD367 /* LocationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationDelegate.swift; path = Delegates/LocationDelegate.swift; sourceTree = "<group>"; };
 		D03418992535F7DA001AD367 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Delegates/AppDelegate.swift; sourceTree = "<group>"; };
 		D034189A2535F7DA001AD367 /* RideDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideDelegate.swift; path = Delegates/RideDelegate.swift; sourceTree = "<group>"; };
@@ -54,6 +61,9 @@
 		D06D79852527BCE4001961E3 /* TCXHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCXHandler.swift; sourceTree = "<group>"; };
 		D06D7997252CED17001961E3 /* GPSData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSData.swift; sourceTree = "<group>"; };
 		D093A77B251A4AE200241E7E /* PeripheralData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralData.swift; sourceTree = "<group>"; };
+		D0AB73AC255EDC930090B1DF /* FeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
+		D0AB73AF255F028F0090B1DF /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
+		D0AB73B3255F038E0090B1DF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D0C757F12508FA1200C923C4 /* AStar.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AStar.xcdatamodel; sourceTree = "<group>"; };
 		D0D329052503BF2B003CC73A /* Astar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Astar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0D3290F2503BF2B003CC73A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -114,6 +124,8 @@
 				D06B089E2535F82400553105 /* MapViewController.swift */,
 				D06B08A02535F82400553105 /* ViewController.swift */,
 				D0FF5799253F3F5800265638 /* SpinnerViewController.swift */,
+				D0AB73AC255EDC930090B1DF /* FeedController.swift */,
+				D0AB73AF255F028F0090B1DF /* FeedCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -142,12 +154,22 @@
 		D055FA602534B7AE00D5ECA4 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				D01A967F256459A30061B9B2 /* CoreDataService.swift */,
 				D06B08A62535F84400553105 /* CyclingAnalyticsManager.swift */,
 				D06B08AE2535F85C00553105 /* DeviceManager.swift */,
 				D0FF579D253F840A00265638 /* StravaManager.swift */,
 				D06B08A72535F84400553105 /* LocationManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		D0AB73B2255F03780090B1DF /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				D0AB73B3255F038E0090B1DF /* Extensions.swift */,
+				D01A9682256459E10061B9B2 /* RideCalculator.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		D0C757F32509234E00C923C4 /* DataModel */ = {
@@ -180,6 +202,7 @@
 		D0D329072503BF2B003CC73A /* Astar */ = {
 			isa = PBXGroup;
 			children = (
+				D0AB73B2255F03780090B1DF /* Utils */,
 				D055FA602534B7AE00D5ECA4 /* Managers */,
 				D055FA572534B5D900D5ECA4 /* Storyboards */,
 				D055FA502534B54000D5ECA4 /* Data */,
@@ -314,6 +337,7 @@
 				D0FF57AA2540CC5500265638 /* StravaData.swift in Sources */,
 				D05374462536467700C6FB91 /* CyclingAnalyticsData.swift in Sources */,
 				D06B08A32535F82400553105 /* ViewController.swift in Sources */,
+				D0AB73AD255EDC930090B1DF /* FeedController.swift in Sources */,
 				D034189C2535F7DA001AD367 /* LocationDelegate.swift in Sources */,
 				D034189F2535F7DA001AD367 /* GPSDelegate.swift in Sources */,
 				D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */,
@@ -321,14 +345,18 @@
 				D034189D2535F7DA001AD367 /* AppDelegate.swift in Sources */,
 				D0FF579A253F3F5800265638 /* SpinnerViewController.swift in Sources */,
 				D06B08A92535F84400553105 /* CyclingAnalyticsManager.swift in Sources */,
+				D01A9683256459E10061B9B2 /* RideCalculator.swift in Sources */,
 				D06B08A12535F82400553105 /* MapViewController.swift in Sources */,
 				D06D7998252CED17001961E3 /* GPSData.swift in Sources */,
 				D06B08A22535F82400553105 /* SettingsViewController.swift in Sources */,
 				D00147072550DE9F0015B672 /* BluetoothDelegate.swift in Sources */,
 				D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */,
 				D0FF579E253F840A00265638 /* StravaManager.swift in Sources */,
+				D01A9680256459A30061B9B2 /* CoreDataService.swift in Sources */,
 				D06B08AA2535F84400553105 /* LocationManager.swift in Sources */,
 				D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */,
+				D0AB73B4255F038E0090B1DF /* Extensions.swift in Sources */,
+				D0AB73B0255F028F0090B1DF /* FeedCell.swift in Sources */,
 				D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */,
 				D06B08AF2535F85C00553105 /* DeviceManager.swift in Sources */,
 				D055FA2E252F907000D5ECA4 /* Constants.swift in Sources */,

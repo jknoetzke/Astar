@@ -25,6 +25,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
     var gpsDelegate: GPSDelegate?
     var locationDelegate: LocationDelegate?
     
+    var coordinate2D = [CLLocation]()
+    
     func startLocationUpdates() {
         locationManager.delegate = self
         locationManager.activityType = .fitness
@@ -47,6 +49,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
         let gpsData = GPSData()
         
         currentPosition = manager.location?.coordinate
+        
+        coordinate2D.append(locations.first!)
         
         for newLocation in locations {
             

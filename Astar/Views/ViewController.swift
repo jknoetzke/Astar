@@ -6,12 +6,14 @@ import UserNotifications
 
 class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarControllerDelegate {
     
+    
+    
     private var rideTimer: Timer?
     private var seconds = 0
     private var startTime: DispatchTime?
     private var timerIsPaused = true
     private var lapCounter = 0
-    private var locationManager = LocationManager()
+    private var locationManager = LocationManager.sharedLocationManager
     private var deviceManager = DeviceManager.deviceManagerInstance
     private var rideArray =  [PeripheralData]()
     
@@ -42,6 +44,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var elapsedWattsTime = 0
     private var elapsedSpeedTime = 0
     
+    private var mapController: MapViewController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -52,9 +56,40 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         deviceManager.rideDelegate = self
         locationManager.gpsDelegate = self
-        
         self.tabBarController?.delegate = self
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        mapController = storyboard.instantiateViewController(withIdentifier: "MapView") as? MapViewController
+        mapController.loadView()
+        mapController.viewDidLoad()
+        mapController.viewWillAppear(false)
+        mapController.viewDidAppear(false)
+        
+        let coreData = CoreDataServices()
+        
+        let results = coreData.retrieveAllRideStats()
+        
     }
+    
+    private func load(fileName: String) -> UIImage? {
+        let fileURL = self.getDocumentsDirectory().appendingPathComponent(fileName)
+        do {
+            let imageData = try Data(contentsOf: fileURL)
+            return UIImage(data: imageData)
+        } catch {
+            print("Error loading image : \(error)")
+        }
+        return nil
+    }
+    
+    /*
+    public func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if tabBarController.selectedIndex == 1 {
+            var mapViewController = tabBarController.viewControllers![1] as! MapViewController // or whatever tab index you're trying to access
+            mapViewController = mapController as! MapViewController
+        }
+    }
+    */
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -64,15 +99,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         deviceManager.startScanning(fullScan: false)
-    }
-    
-    public func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if tabBarController.selectedIndex == 1 {
-            let mapViewController = tabBarController.viewControllers![1] as! MapViewController // or whatever tab index you're trying to access
-            mapViewController.locationManager = locationManager
-            mapViewController.updateCurrentLocation(newLocation: locationManager.currentLocation!)
-            
-        }
     }
     
     func stopTimer() {
@@ -266,51 +292,18 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
     }
     
-    func retrieveRides(rideID: Int) -> [PeripheralData]? {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil}
-        
-        var aRideArray = [PeripheralData]()
-        var aRide = PeripheralData()
-        var gps = CLLocationCoordinate2D()
-        var gpsData = GPSData()
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Ride")
-        
-        fetchRequest.predicate = NSPredicate(format: "ride_number = \(rideID)")
-        
-        do {
-            let result = try managedContext.fetch(fetchRequest)
-            for data in result as! [NSManagedObject] {
-                aRide.power = data.value(forKey: "watts") as! Int
-                aRide.heartRate = data.value(forKey: "heartrate") as! Int
-                aRide.gps.altitude = data.value(forKey: "altitude") as! Double
-                aRide.cadence = data.value(forKey: "cadence") as! Int
-                aRide.lap = data.value(forKey: "lap") as! Int
-                gps.latitude = data.value(forKey: "latitude") as! Double
-                gps.longitude = data.value(forKey: "longitude") as! Double
-                aRide.timeStamp = data.value(forKey: "timestamp") as! Date
-                aRide.gps.speed = data.value(forKey: "speed") as! Double
-                gpsData.location = gps
-                aRide.gps = gpsData
-                
-                aRideArray.append(aRide)
-                aRide = PeripheralData()
-                gpsData = GPSData()
-                gps = CLLocationCoordinate2D()
-            }
-        } catch {
-            print("Error retrieving CoreData")
-        }
-        
-        return aRideArray
-        
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
     
     private func saveRide(tmpRideArray: [PeripheralData]) {
         
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let context2 = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
         var dataRide = Ride(context: context)
+        var completedRide = CompletedRide(context: context)
         
         for ride in tmpRideArray {
             
@@ -333,6 +326,29 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 print("Error saving to CoreData")
             }
         }
+        
+        //Save the Map
+        //NotificationCenter.default.post(name: Notification.Name("createImageMap"), object: nil)
+
+        let rideCalculator = RideCalculator()
+        let rideMetrics = rideCalculator.calculateRideMetrics(rideArray: tmpRideArray)
+        let mapUUID = UUID().uuidString
+        mapController.generateImageFromMap(mapUUID: mapUUID)
+        
+        completedRide.average_watts = rideMetrics.avgWatts!
+        completedRide.calories = rideMetrics.calories!
+        completedRide.distance = rideMetrics.distance!
+        completedRide.ride_number = Int16(currentRideID)
+        completedRide.ride_time = rideMetrics.ride_time!
+        completedRide.map_uuid = mapUUID
+        
+        do {
+            try context2.save()
+            completedRide = CompletedRide(context: context2)
+        } catch {
+            print("Error saving completed ride to CoreData")
+        }
+        
         currentRideID = currentRideID + 1
         saveUserPrefs()
         
@@ -341,10 +357,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         let xml = tcxHandler.encodeTCX(rideArray: tmpRideArray)
         
         //Cycling Analytics
-        startSpinnerView()
-        uploadToCyclingAnalytics(xml: xml)
-        uploadToStrava(xml:xml)
-        stopSpinnerView()
+      //  startSpinnerView()
+      //  uploadToCyclingAnalytics(xml: xml)
+      //  uploadToStrava(xml:xml)
+      //  stopSpinnerView()
         
     }
     

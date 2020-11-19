@@ -3,12 +3,14 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Main-->
+        <!--Record-->
         <scene sceneID="Hxb-o0-0Ev">
             <objects>
                 <viewController id="ohW-W5-lud" customClass="ViewController" customModule="Astar" sceneMemberID="viewController">
@@ -273,9 +275,9 @@
                                                 <rect key="frame" x="188" y="0.0" width="187" height="119.5"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z62-HF-01r">
-                                                        <rect key="frame" x="25" y="8" width="138" height="103.5"/>
+                                                        <rect key="frame" x="25" y="9" width="138" height="101"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="34"/>
-                                                        <state key="normal" title="Lap" backgroundImage="lap"/>
+                                                        <state key="normal" title="Lap" backgroundImage="repeat" catalog="system"/>
                                                         <connections>
                                                             <action selector="lapClicked:" destination="ohW-W5-lud" eventType="touchUpInside" id="gMY-6A-KP5"/>
                                                         </connections>
@@ -303,7 +305,7 @@
                             <constraint firstItem="ImL-8S-Em9" firstAttribute="trailing" secondItem="iBI-5k-LyB" secondAttribute="trailing" identifier="101" id="igi-ky-tVe"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Main" image="1.circle" catalog="system" badgeValue="Main" selectedImage="1.circle" id="L7R-yn-hZA"/>
+                    <tabBarItem key="tabBarItem" title="Record" image="record.circle" catalog="system" selectedImage="record.circle" id="L7R-yn-hZA"/>
                     <connections>
                         <outlet property="btnLap" destination="Z62-HF-01r" id="YUj-NS-tfN"/>
                         <outlet property="btnStart" destination="n9S-iO-BK5" id="6Xt-Uo-axi"/>
@@ -318,12 +320,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aMC-cH-BBG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1153" y="329"/>
+            <point key="canvasLocation" x="1143" y="271"/>
         </scene>
         <!--Maps-->
         <scene sceneID="FlA-mQ-Hpi">
             <objects>
-                <viewController id="q59-We-f4Y" customClass="MapViewController" customModule="Astar" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MapView" id="q59-We-f4Y" customClass="MapViewController" customModule="Astar" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IIT-U5-bSw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -369,7 +371,9 @@
                             <constraint firstItem="foS-4Q-pPO" firstAttribute="bottom" secondItem="Bkd-aq-Wzi" secondAttribute="bottom" id="deO-9h-ldM"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Maps" image="map" catalog="system" badgeValue="Maps" selectedImage="map" id="jYd-uo-pFM"/>
+                    <tabBarItem key="tabBarItem" title="Maps" selectedImage="map" catalog="system" id="jYd-uo-pFM">
+                        <imageReference key="image" image="map" catalog="system" symbolScale="small"/>
+                    </tabBarItem>
                     <connections>
                         <outlet property="mapContainerView" destination="XnF-mM-eBd" id="t8f-bF-zwX"/>
                         <outlet property="mapView" destination="YWp-Mz-n7t" id="1ss-7O-q3t"/>
@@ -465,14 +469,49 @@
                             <constraint firstItem="AqK-bW-eNX" firstAttribute="leading" secondItem="xPL-XJ-SsG" secondAttribute="leading" id="wVo-Jt-a7o"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" image="slider.horizontal.3" catalog="system" badgeValue="Settings" selectedImage="slider.horizontal.3" id="IMI-bw-6Cw"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="slider.horizontal.3" catalog="system" selectedImage="slider.horizontal.3" id="IMI-bw-6Cw"/>
                     <connections>
                         <outlet property="deviceTableView" destination="Lce-ew-klP" id="pt4-3u-Fmg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Ot-yI-D59" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1863.2" y="-106.59670164917542"/>
+            <point key="canvasLocation" x="362" y="788"/>
+        </scene>
+        <!--Home-->
+        <scene sceneID="hWT-zJ-Dio">
+            <objects>
+                <collectionViewController id="n6l-0E-iga" customClass="FeedController" customModule="Astar" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="FVL-yf-Z4f">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dli-qa-wqF">
+                            <size key="itemSize" width="128" height="128"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="hsW-lR-HyA">
+                                <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="uTu-ZI-fqn">
+                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </collectionViewCellContentView>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="n6l-0E-iga" id="ad2-xI-tOL"/>
+                            <outlet property="delegate" destination="n6l-0E-iga" id="kk4-XE-8NN"/>
+                        </connections>
+                    </collectionView>
+                    <tabBarItem key="tabBarItem" title="Home" image="house.circle" catalog="system" id="oGe-J8-V52"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gng-hk-oCj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2015" y="-20"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="ABa-vr-AEb">
@@ -485,6 +524,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
+                        <segue destination="n6l-0E-iga" kind="relationship" relationship="viewControllers" id="vd8-SW-9U7"/>
                         <segue destination="ohW-W5-lud" kind="relationship" relationship="viewControllers" id="iFg-yV-gyT"/>
                         <segue destination="q59-We-f4Y" kind="relationship" relationship="viewControllers" id="C6c-Bj-as5"/>
                         <segue destination="LN3-vZ-CZy" kind="relationship" relationship="viewControllers" id="wJW-7X-RkP"/>
@@ -496,9 +536,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="1.circle" catalog="system" width="128" height="121"/>
-        <image name="lap" width="512" height="512"/>
+        <image name="house.circle" catalog="system" width="128" height="121"/>
         <image name="map" catalog="system" width="128" height="110"/>
+        <image name="record.circle" catalog="system" width="128" height="121"/>
+        <image name="repeat" catalog="system" width="128" height="99"/>
         <image name="slider.horizontal.3" catalog="system" width="128" height="100"/>
         <image name="start" width="1000" height="1000"/>
         <systemColor name="systemBackgroundColor">
