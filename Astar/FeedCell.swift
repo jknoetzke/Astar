@@ -16,24 +16,22 @@ class FeedCell: UICollectionViewCell {
     
     //MARK: - Properties
     
-    private let profileImageView: UIImageView = {
+    private let headerImageView: UIImageView = {
     
         let iv = UIImageView()
         
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
-        iv.image = #imageLiteral(resourceName: "me")
         
         return iv
         
     }()
     
-    private lazy var usernameButton: UIButton = {
+    private lazy var dateRideButton: UIButton = {
         let button = UIButton(type: .system)
        
         button.setTitleColor(.black, for: .normal)
-        button.setTitle("Justin", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
         button.addTarget(self, action: #selector(didTapUsername), for: .touchUpInside)
         
@@ -46,12 +44,10 @@ class FeedCell: UICollectionViewCell {
         iv.contentMode = .scaleToFill
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
-       // iv.image = #imageLiteral(resourceName: "venom")
         
         return iv
     }()
-    
-    
+        
     private let distanceLabel: UILabel = {
         let label = UILabel()
         //label.text="Distance: 100km"
@@ -65,9 +61,9 @@ class FeedCell: UICollectionViewCell {
         label.font = UIFont.boldSystemFont(ofSize: 14)
         return label
     }()
+
     private let rideTimeLabel: UILabel = {
         let label = UILabel()
-        //label.text="Ride Time: 2:34:54"
         label.font = UIFont.boldSystemFont(ofSize: 14)
         return label
     }()
@@ -80,21 +76,18 @@ class FeedCell: UICollectionViewCell {
         
         backgroundColor = .white
         
-        addSubview(profileImageView)
-        profileImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 1)
-        profileImageView.setDimensions(height: 40, width: 40)
-        profileImageView.layer.cornerRadius = 40 / 2
+        addSubview(headerImageView)
+        headerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 1)
+        headerImageView.setDimensions(height: 40, width: 40)
+        headerImageView.layer.cornerRadius = 40 / 2
         
-        addSubview(usernameButton)
-        usernameButton.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 8)
-        
-        addSubview(usernameButton)
-        usernameButton.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 8)
+        addSubview(dateRideButton)
+        dateRideButton.centerY(inView: headerImageView, leftAnchor: headerImageView.rightAnchor, paddingLeft: 8)
         
         addSubview(postImageView)
-        postImageView.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 8)
+        postImageView.anchor(top: headerImageView.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 8)
         postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
-        postImageView.setDimensions(height: 280, width: 380)
+        //postImageView.setDimensions(height: 280, width: 380)
         
         addSubview(rideTimeLabel)
         rideTimeLabel.anchor(top: postImageView.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
@@ -104,8 +97,6 @@ class FeedCell: UICollectionViewCell {
         
         addSubview(distanceLabel)
         distanceLabel.anchor(top: wattsLabel.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
-        
-        
     }
     
     
@@ -133,10 +124,14 @@ class FeedCell: UICollectionViewCell {
         
         distanceLabel.text = String("Distance: \(viewModel.distance / 1000)km")
         
-        postImageView.image = CoreDataServices.load(fileName: viewModel.filePath)
+        let mapImage = CoreDataServices.load(fileName: viewModel.filePath)
+        postImageView.image = mapImage
+        headerImageView.image = mapImage
         
-        
-    
-   
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full
+        formatter.timeStyle = .none
+        let date = formatter.string(from: viewModel.rideDate)
+        dateRideButton.setTitle(date, for: .normal)
     }
 }

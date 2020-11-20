@@ -71,8 +71,9 @@ class CoreDataServices {
                 completedRide.calories = data.value(forKey: "calories") as? Int16
                 completedRide.distance = data.value(forKey: "distance") as? Int16
                 completedRide.rideTime = data.value(forKey: "ride_time") as? Double
-                completedRide.mapUUID = data.value(forKey: "map_uuid") as? String
-                         
+                completedRide.mapUUID  = data.value(forKey: "map_uuid") as? String
+                completedRide.rideDate = data.value(forKey: "ride_date") as? Date
+                
             }
         } catch {
             print("Error retrieving CoreData")
@@ -110,8 +111,6 @@ class CoreDataServices {
         
         var completedRide = RideMetrics()
         
-        //fetchRequest.predicate = NSPredicate()
-        
         do {
             let result = try managedContext.fetch(fetchRequest)
             for data in result as! [NSManagedObject] {
@@ -120,6 +119,7 @@ class CoreDataServices {
                 completedRide.distance = data.value(forKey: "distance") as? Int16
                 completedRide.rideTime = data.value(forKey: "ride_time") as? Double
                 completedRide.mapUUID = data.value(forKey: "map_uuid") as? String
+                completedRide.rideDate = data.value(forKey: "ride_date") as? Date
                 
                 rideMetricArray.append(completedRide)
                 

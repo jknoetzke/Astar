@@ -5,9 +5,7 @@ import UserNotifications
 
 
 class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarControllerDelegate {
-    
-    
-    
+
     private var rideTimer: Timer?
     private var seconds = 0
     private var startTime: DispatchTime?
@@ -16,7 +14,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var locationManager = LocationManager.sharedLocationManager
     private var deviceManager = DeviceManager.deviceManagerInstance
     private var rideArray =  [PeripheralData]()
-    
+    private var stravaFlag  = false
+    private var cyclingAnalyticsFlag = false
+
     private var currentRideID = 0
     
     private var container: NSPersistentContainer!
@@ -56,8 +56,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         locationManager.gpsDelegate = self
         self.tabBarController?.delegate = self
         
-        //let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        var mapViewController = tabBarController!.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
+        let mapViewController = tabBarController!.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
         mapViewController.loadView()
         mapViewController.viewDidLoad()
         mapViewController.viewWillAppear(false)
@@ -271,7 +270,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         let defaults = UserDefaults.standard
         currentRideID = defaults.integer(forKey: "RideID")
-        
+        stravaFlag = defaults.bool(forKey: "strava")
+        cyclingAnalyticsFlag = defaults.bool(forKey: "cycling_analytics")
     }
     
     func getDocumentsDirectory() -> URL {
@@ -309,9 +309,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             }
         }
         
-        //Save the Map
-        //NotificationCenter.default.post(name: Notification.Name("createImageMap"), object: nil)
-
         let rideCalculator = RideCalculator()
         let rideMetrics = rideCalculator.calculateRideMetrics(rideArray: tmpRideArray)
         let mapUUID = UUID().uuidString
@@ -324,6 +321,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         completedRide.ride_number = Int16(currentRideID)
         completedRide.ride_time = rideMetrics.rideTime!
         completedRide.map_uuid = mapUUID
+        completedRide.ride_date = Date()
         
         do {
             try context2.save()
@@ -335,16 +333,18 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         currentRideID = currentRideID + 1
         saveUserPrefs()
         
-        
-        let tcxHandler = TCXHandler()
-        let xml = tcxHandler.encodeTCX(rideArray: tmpRideArray)
-        
-        //Cycling Analytics
-      //  startSpinnerView()
-      //  uploadToCyclingAnalytics(xml: xml)
-      //  uploadToStrava(xml:xml)
-      //  stopSpinnerView()
-        
+        if stravaFlag || cyclingAnalyticsFlag {
+            let tcxHandler = TCXHandler()
+            let xml = tcxHandler.encodeTCX(rideArray: tmpRideArray)
+            startSpinnerView()
+            if cyclingAnalyticsFlag {
+                uploadToCyclingAnalytics(xml: xml)
+            }
+            if stravaFlag {
+                uploadToStrava(xml:xml)
+            }
+            stopSpinnerView()
+        }
     }
     
     func uploadToStrava(xml: String) {
@@ -356,7 +356,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 strava.uploadRide(xml:xml)
             }
         }
-        
     }
     
     func uploadToCyclingAnalytics(xml: String) {

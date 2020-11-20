@@ -15,6 +15,7 @@ struct RideMetrics {
     var distance: Int16?
     var rideTime: Double?
     var mapUUID: String?
+    var rideDate: Date?
     
 }
 

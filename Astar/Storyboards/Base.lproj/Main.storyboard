@@ -469,7 +469,9 @@
                             <constraint firstItem="AqK-bW-eNX" firstAttribute="leading" secondItem="xPL-XJ-SsG" secondAttribute="leading" id="wVo-Jt-a7o"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" image="slider.horizontal.3" catalog="system" selectedImage="slider.horizontal.3" id="IMI-bw-6Cw"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="slider.horizontal.3" catalog="system" selectedImage="slider.horizontal.3" id="IMI-bw-6Cw">
+                        <color key="badgeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBarItem>
                     <connections>
                         <outlet property="deviceTableView" destination="Lce-ew-klP" id="pt4-3u-Fmg"/>
                     </connections>

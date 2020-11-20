@@ -109,12 +109,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     func generateImageFromMap(mapUUID: String) {
         
         let options = MKMapSnapshotter.Options()
-        let rect = MKCoordinateRegion(boundingRect)
-        
-        
         
         options.region = mapView.region
-        options.size = CGSize(width: 380, height: 280)
+        options.size = CGSize(width: 180, height: 150)
         
         options.showsBuildings = true
         
@@ -147,7 +144,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
             
             if let data = finalImage.pngData() {
                 let filename = CoreDataServices.getDocumentsDirectory().appendingPathComponent(mapUUID)
-              
+                print(filename.absoluteURL)
+                
                 try? data.write(to: filename)
             }
             

@@ -26,6 +26,10 @@ struct RideViewModel {
         return ride.rideTime!
     }
     
+    var rideDate: Date {
+        return ride.rideDate!
+    }
+    
     init(ride: RideMetrics) {
         self.ride = ride
     }
