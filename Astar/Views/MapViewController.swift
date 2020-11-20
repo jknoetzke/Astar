@@ -115,6 +115,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
         
         options.showsBuildings = true
         
+        if coordinates.count == 0 { return }
+        
         MKMapSnapshotter(options: options).start() { snapshot, error in
             guard let snapshot = snapshot else { return }
             let mapImage = snapshot.image
@@ -151,6 +153,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
             
             //Update the Activity Feed
             let feedController = self.tabBarController!.viewControllers![0] as! FeedController
+            print("Updating Feed..")
             feedController.updateFeed()
             
         }

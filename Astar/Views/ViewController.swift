@@ -291,8 +291,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             
             dataRide.cadence = Int16(ride.cadence)
             dataRide.watts = Int16(ride.power)
-            dataRide.latitude = ride.gps.location!.latitude
-            dataRide.longitude = ride.gps.location!.longitude
+            dataRide.latitude = ride.gps.location?.latitude ?? 0.0
+            dataRide.longitude = ride.gps.location?.longitude ?? 0.0
             dataRide.speed = Double(ride.gps.speed)
             dataRide.heartrate = Int16(ride.heartRate)
             dataRide.timestamp =  ride.timeStamp
