@@ -54,7 +54,7 @@ class TCXHandler {
         var firstRecordedTime: Date?
         var lastRecordedTime: Date?
         var totalElapsedTime: TimeInterval?
-        var totalDistance = 0.0
+        let totalDistance = 0.0
         var totalCadence = 0.0
         
         

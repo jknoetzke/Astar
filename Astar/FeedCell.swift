@@ -52,20 +52,20 @@ class FeedCell: UICollectionViewCell {
     private let distanceLabel: UILabel = {
         let label = UILabel()
         //label.text="Distance: 100km"
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
     
     private let wattsLabel: UILabel = {
         let label = UILabel()
         //label.text="Average Watts: 240"
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
 
     private let rideTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
     
@@ -93,15 +93,15 @@ class FeedCell: UICollectionViewCell {
         
         addSubview(rideTimeLabel)
         rideTimeLabel.anchor(top: postImageView.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
-        
+                
         addSubview(wattsLabel)
         wattsLabel.anchor(top: rideTimeLabel.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
-        
+       
         addSubview(distanceLabel)
         distanceLabel.anchor(top: wattsLabel.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
+       
+    
     }
-    
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

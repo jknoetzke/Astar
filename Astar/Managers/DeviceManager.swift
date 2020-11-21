@@ -55,7 +55,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         print("Dropped Connection!")
-        print("Dropped Name: \(peripheral.name)");
+        print("Dropped Name: \(String(describing: peripheral.name?.debugDescription))");
         print("Dropped UUID: \(peripheral.identifier.uuidString)")
         
         if let index = savedDevices.firstIndex(of: peripheral.identifier.uuidString) {
