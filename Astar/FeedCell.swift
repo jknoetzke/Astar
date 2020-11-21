@@ -9,7 +9,6 @@ import UIKit
 
 class FeedCell: UICollectionViewCell {
     
-    
     var viewModel: RideViewModel? {
         didSet { configure() }
     }
@@ -44,30 +43,63 @@ class FeedCell: UICollectionViewCell {
         iv.contentMode = .scaleToFill
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
-        iv.image = #imageLiteral(resourceName: "rich")
-        
+       
         return iv
     }()
         
+    private let distanceLbl: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.text = "Distance"
+        return label
+    }()
+    
+    private let wattsLbl: UILabel = {
+        let label = UILabel()
+        label.text = "Avg Watts"
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }()
+
+    private let rideTimeLbl: UILabel = {
+        let label = UILabel()
+        label.text = "Ride Time"
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }()
+
+    private let elevationLbl: UILabel = {
+        let label = UILabel()
+        label.text = "Elevation"
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }()
+
+    
     private let distanceLabel: UILabel = {
         let label = UILabel()
-        //label.text="Distance: 100km"
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
     
     private let wattsLabel: UILabel = {
         let label = UILabel()
-        //label.text="Average Watts: 240"
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
 
     private let rideTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
+
+    private let elevationLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        return label
+    }()
+
     
     //MARK: - Lifecycle
     
@@ -78,7 +110,7 @@ class FeedCell: UICollectionViewCell {
         backgroundColor = .white
         
         addSubview(headerImageView)
-        headerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 1)
+        headerImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop:10, paddingLeft: 1)
         headerImageView.setDimensions(height: 40, width: 40)
         headerImageView.layer.cornerRadius = 40 / 2
         
@@ -86,21 +118,33 @@ class FeedCell: UICollectionViewCell {
         dateRideButton.centerY(inView: headerImageView, leftAnchor: headerImageView.rightAnchor, paddingLeft: 8)
         
         addSubview(postImageView)
-        postImageView.anchor(top: headerImageView.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 8)
+        postImageView.anchor(top: headerImageView.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 2)
         postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
         
-        postImageView.setDimensions(height: 562.5, width: 374)
+        postImageView.setDimensions(height: 340, width: 374)
+       
         
         addSubview(rideTimeLabel)
-        rideTimeLabel.anchor(top: postImageView.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
+        rideTimeLabel.anchor(top: postImageView.bottomAnchor, left: leftAnchor, paddingTop: 2, paddingLeft: 8)
                 
         addSubview(wattsLabel)
-        wattsLabel.anchor(top: rideTimeLabel.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
+        wattsLabel.anchor(top: rideTimeLabel.bottomAnchor, left: leftAnchor, paddingTop: 2, paddingLeft: 8)
        
         addSubview(distanceLabel)
-        distanceLabel.anchor(top: wattsLabel.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
+        distanceLabel.anchor(top: wattsLabel.bottomAnchor, left: leftAnchor, paddingTop: 2, paddingLeft: 8)
        
-    
+        let stackView = UIStackView(arrangedSubviews: [rideTimeLbl, wattsLbl, distanceLbl, elevationLbl])
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        addSubview(stackView)
+        stackView.anchor(top: postImageView.bottomAnchor, paddingTop: 2, width: 380, height: 18)  //Height of the row
+
+        let stackView1 = UIStackView(arrangedSubviews: [rideTimeLabel, wattsLabel, distanceLabel, elevationLabel])
+        stackView1.axis = .horizontal
+        stackView1.distribution = .fillEqually
+        addSubview(stackView1)
+        stackView1.anchor(top: stackView.bottomAnchor, paddingTop: 8, width: 380, height: 16)
+
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -120,11 +164,12 @@ class FeedCell: UICollectionViewCell {
         let minutes = Int(viewModel.rideTime) / 60 % 60
         let seconds = Int(viewModel.rideTime) % 60
         let rideTime = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
-        rideTimeLabel.text = "Ride Time " + rideTime
+        rideTimeLabel.text = rideTime
         
-        wattsLabel.text = String("Average Watts: \(viewModel.avgWatts)")
+        wattsLabel.text = String(viewModel.avgWatts)
         
-        distanceLabel.text = String("Distance: \(viewModel.distance / 1000)km")
+        let distance = String(viewModel.distance / 1000)
+        distanceLabel.text = String(distance + "km")
         
         let mapImage = CoreDataServices.load(fileName: viewModel.filePath)
         postImageView.image = mapImage
@@ -135,5 +180,9 @@ class FeedCell: UICollectionViewCell {
         formatter.timeStyle = .none
         let date = formatter.string(from: viewModel.rideDate)
         dateRideButton.setTitle(date, for: .normal)
+    
+        elevationLabel.text = String(viewModel.elevation)
+    
+    
     }
 }

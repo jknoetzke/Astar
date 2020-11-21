@@ -27,7 +27,11 @@ struct RideViewModel {
     }
     
     var rideDate: Date {
-        return ride.rideDate!
+        return ride.rideDate ?? Date()
+    }
+    
+    var elevation: Int16 {
+        return Int16(ride.elevation!)
     }
     
     init(ride: RideMetrics) {

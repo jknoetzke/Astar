@@ -73,6 +73,7 @@ class CoreDataServices {
                 completedRide.rideTime = data.value(forKey: "ride_time") as? Double
                 completedRide.mapUUID  = data.value(forKey: "map_uuid") as? String
                 completedRide.rideDate = data.value(forKey: "ride_date") as? Date
+                completedRide.elevation = data.value(forKey: "elevation") as? Int16
                 
             }
         } catch {
@@ -120,7 +121,8 @@ class CoreDataServices {
                 completedRide.rideTime = data.value(forKey: "ride_time") as? Double
                 completedRide.mapUUID = data.value(forKey: "map_uuid") as? String
                 completedRide.rideDate = data.value(forKey: "ride_date") as? Date
-                
+                completedRide.elevation = data.value(forKey: "elevation") as? Int16
+
                 rideMetricArray.append(completedRide)
                 
             }

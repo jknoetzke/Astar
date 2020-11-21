@@ -16,7 +16,7 @@ struct RideMetrics {
     var rideTime: Double?
     var mapUUID: String?
     var rideDate: Date?
-    
+    var elevation: Int16?
 }
 
 
@@ -27,10 +27,18 @@ class RideCalculator {
         var counter = 0.0
         var totalWatts = 0.0
         let rideTime = rideArray.last?.timeStamp.timeIntervalSince(rideArray.first!.timeStamp)
+        var elevation = 0.0
+        var previousElevation = 0.0
+        
         
         for ride in rideArray {
             counter+=1
             totalWatts += Double(ride.power)
+            
+            if ride.gps.altitude > previousElevation {
+                elevation += ride.gps.altitude
+            }
+            previousElevation = ride.gps.altitude
         }
         
         let avgWatts = totalWatts / counter
@@ -38,7 +46,7 @@ class RideCalculator {
         let cal1 = avgWatts * rideTime! / 3600
         let cal2 = cal1 * 3.60
         
-        let rideMetrics = RideMetrics(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16(rideArray.last?.gps.distance.value ?? 0), rideTime: rideTime!, rideDate: Date())
+        let rideMetrics = RideMetrics(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16(rideArray.last?.gps.distance.value ?? 0), rideTime: rideTime!, rideDate: Date(), elevation: Int16(elevation))
         
         return rideMetrics
     }

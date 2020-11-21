@@ -4,6 +4,7 @@
         <attribute name="average_watts" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="calories" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="distance" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="elevation" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="map_uuid" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="ride_date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="ride_number" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -22,7 +23,7 @@
         <attribute name="watts" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="CompletedRide" positionX="-1755" positionY="-252" width="128" height="134"/>
+        <element name="CompletedRide" positionX="-1755" positionY="-252" width="128" height="149"/>
         <element name="Ride" positionX="-1779.652709960938" positionY="-331.2987365722656" width="185.45068359375" height="179"/>
     </elements>
 </model>

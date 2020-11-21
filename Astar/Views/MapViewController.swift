@@ -122,6 +122,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
         
         if coordinates.count == 0 { return }
         
+        startSpinnerView()
+        
         MKMapSnapshotter(options: options).start() { snapshot, error in
             guard let snapshot = snapshot else { return }
             let mapImage = snapshot.image
