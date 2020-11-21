@@ -44,6 +44,7 @@ class FeedCell: UICollectionViewCell {
         iv.contentMode = .scaleToFill
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
+        iv.image = #imageLiteral(resourceName: "rich")
         
         return iv
     }()
@@ -87,7 +88,8 @@ class FeedCell: UICollectionViewCell {
         addSubview(postImageView)
         postImageView.anchor(top: headerImageView.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 8)
         postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
-        //postImageView.setDimensions(height: 280, width: 380)
+        
+        postImageView.setDimensions(height: 562.5, width: 374)
         
         addSubview(rideTimeLabel)
         rideTimeLabel.anchor(top: postImageView.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)

@@ -21,6 +21,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     private var coordinates =  [CLLocationCoordinate2D]()
     private var boundingRect = MKMapRect()
     
+    let child = SpinnerViewController()
+
+    
     var pinched = false
     private var pinchCounter = 0
     
@@ -109,18 +112,21 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     func generateImageFromMap(mapUUID: String) {
         
         let options = MKMapSnapshotter.Options()
-        
         options.region = mapView.region
-        options.size = CGSize(width: 180, height: 150)
         
-        options.showsBuildings = true
+//        Working Size
+//        options.size = CGSize(width: 180, height: 120)
+        options.size = CGSize(width: 350, height: 375)
+        
+        options.showsBuildings = false
         
         if coordinates.count == 0 { return }
         
         MKMapSnapshotter(options: options).start() { snapshot, error in
             guard let snapshot = snapshot else { return }
             let mapImage = snapshot.image
-            
+
+            self.startSpinnerView()
             let finalImage = UIGraphicsImageRenderer(size: mapImage.size).image { _ in
                 
                 // draw the map image
@@ -155,8 +161,36 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
             let feedController = self.tabBarController!.viewControllers![0] as! FeedController
             print("Updating Feed..")
             feedController.updateFeed()
-            
+            self.stopSpinnerView()
         }
     }
+
+    func startSpinnerView() {
+        // add the spinner view controller
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
+    }
+    
+    func stopSpinnerView()
+    {
+        child.willMove(toParent: nil)
+        child.view.removeFromSuperview()
+        child.removeFromParent()
+        
+        // the alert view
+        let alert = UIAlertController(title: "", message: "Saving Ride...", preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        
+        // change to desired number of seconds (in this case 3 seconds)
+        let when = DispatchTime.now() + 3
+        DispatchQueue.main.asyncAfter(deadline: when){
+            // your code with delay
+            alert.dismiss(animated: true, completion: nil)
+        }
+    }
+
+
 }
 

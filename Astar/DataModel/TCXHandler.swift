@@ -75,7 +75,7 @@ class TCXHandler {
                 totalWatts += Double(ride.power)
                 totalHR += Double(ride.heartRate)
                 totalSpeed += ride.speed
-                totalDistance += ride.gps.distance.value
+
                 totalCadence += Double(ride.cadence)
                 
                 let iHeartRate = Int(ride.heartRate)
