@@ -71,6 +71,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
             }
             locationList.append(newLocation)
             altitude = newLocation.altitude
+            
         }
         
         
