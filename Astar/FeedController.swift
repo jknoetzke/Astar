@@ -71,8 +71,8 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
 
         let width = view.frame.width
         var height = width + 8 + 40 + 8
-        height += 80
-        
+        height += 40
+
         return CGSize(width: width, height: height)
     }
 }

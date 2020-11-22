@@ -40,9 +40,10 @@ class FeedCell: UICollectionViewCell {
     private let postImageView: UIImageView = {
         let iv = UIImageView()
         
-        iv.contentMode = .scaleToFill
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.isUserInteractionEnabled = true
+        iv.setDimensions(height: 340, width: 374)
        
         return iv
     }()
@@ -119,9 +120,7 @@ class FeedCell: UICollectionViewCell {
         
         addSubview(postImageView)
         postImageView.anchor(top: headerImageView.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 2)
-        postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
-        
-        postImageView.setDimensions(height: 340, width: 374)
+     //   postImageView.heightAnchor.constraint(equalTo: widthAnchor).isActive = true
        
         
         addSubview(rideTimeLabel)
@@ -137,7 +136,7 @@ class FeedCell: UICollectionViewCell {
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         addSubview(stackView)
-        stackView.anchor(top: postImageView.bottomAnchor, paddingTop: 2, width: 380, height: 18)  //Height of the row
+        stackView.anchor(top: postImageView.bottomAnchor, paddingTop: 2, width: 340, height: 18)  //Height of the row
 
         let stackView1 = UIStackView(arrangedSubviews: [rideTimeLabel, wattsLabel, distanceLabel, elevationLabel])
         stackView1.axis = .horizontal
