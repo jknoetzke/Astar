@@ -391,7 +391,17 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1084" y="-462.8185907046477"/>
+            <point key="canvasLocation" x="908" y="-869"/>
+        </scene>
+        <!--Home-->
+        <scene sceneID="Dke-x0-SUp">
+            <objects>
+                <hostingController id="BJ6-Yz-YUZ" customClass="ActivityFeedHostingController" customModule="Astar" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Home" image="house" catalog="system" selectedImage="house" id="HCw-E9-ZYd"/>
+                </hostingController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BNk-tv-buB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1950" y="-726"/>
         </scene>
         <!--Settings-->
         <scene sceneID="IpA-vl-1lh">
@@ -527,7 +537,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="n6l-0E-iga" kind="relationship" relationship="viewControllers" id="vd8-SW-9U7"/>
+                        <segue destination="BJ6-Yz-YUZ" kind="relationship" relationship="viewControllers" id="X79-da-fQD"/>
                         <segue destination="ohW-W5-lud" kind="relationship" relationship="viewControllers" id="iFg-yV-gyT"/>
                         <segue destination="q59-We-f4Y" kind="relationship" relationship="viewControllers" id="C6c-Bj-as5"/>
                         <segue destination="LN3-vZ-CZy" kind="relationship" relationship="viewControllers" id="wJW-7X-RkP"/>
@@ -539,6 +549,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="house" catalog="system" width="128" height="106"/>
         <image name="house.circle" catalog="system" width="128" height="121"/>
         <image name="map" catalog="system" width="128" height="110"/>
         <image name="record.circle" catalog="system" width="128" height="121"/>

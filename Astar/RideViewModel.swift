@@ -8,33 +8,33 @@
 import Foundation
 
 struct RideViewModel {
-    private let ride: RideMetrics
+    private let ride: RideMetric
     
     var filePath: String {
-        return ride.mapUUID ?? ""
+        return ride.mapUUID
     }
     
     var distance: Int16 {
-        return ride.distance!
+        return ride.distance
     }
     
     var avgWatts: Int16 {
-        return ride.avgWatts!
+        return ride.avgWatts
     }
     
     var rideTime: Double {
-        return ride.rideTime!
+        return ride.rideTime
     }
     
     var rideDate: Date {
-        return ride.rideDate ?? Date()
+        return ride.rideDate
     }
     
     var elevation: Int16 {
-        return Int16(ride.elevation!)
+        return Int16(ride.elevation)
     }
     
-    init(ride: RideMetrics) {
+    init(ride: RideMetric) {
         self.ride = ride
     }
     

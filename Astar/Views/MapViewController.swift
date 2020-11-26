@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import MapKit
 import CoreLocation
-
+import Combine
 
 class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     
@@ -156,14 +156,20 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
                 let filename = CoreDataServices.getDocumentsDirectory().appendingPathComponent(mapUUID)
                 print(filename.absoluteURL)
                 
-                try? data.write(to: filename)
+                try? data.write(to: filename, options: .atomic)
             }
             
             //Update the Activity Feed
-            let feedController = self.tabBarController!.viewControllers![0] as! FeedController
-            print("Updating Feed..")
-            feedController.updateFeed()
-            self.stopSpinnerView()
+           // let feedController = self.tabBarController!.viewControllers![0] as! FeedController
+           // print("Updating Feed..")
+           // feedController.updateFeed()
+            
+            let coreDataService = CoreDataServices.sharedCoreDataService
+            let defaults = UserDefaults.standard
+            let currentRideID = defaults.integer(forKey: "RideID")
+            coreDataService.retrieveRideStats(rideID: currentRideID-1)
+            
+             self.stopSpinnerView()
         }
     }
 
@@ -195,4 +201,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
 
 
 }
+
+extension Notification.Name {
+    static let newRide = Notification.Name("new_ride")
+}
+
+struct NewRide {
+    let title: String
+}
+
+
 

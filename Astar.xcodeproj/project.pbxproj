@@ -27,9 +27,10 @@
 		D06B08AF2535F85C00553105 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B08AE2535F85C00553105 /* DeviceManager.swift */; };
 		D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D79852527BCE4001961E3 /* TCXHandler.swift */; };
 		D06D7998252CED17001961E3 /* GPSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D7997252CED17001961E3 /* GPSData.swift */; };
+		D08253B7256C605C0023D6C5 /* ActivityFeedHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */; };
+		D08253BC256C62F30023D6C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BA256C62F30023D6C5 /* ContentView.swift */; };
+		D08253BF256C63020023D6C5 /* RideResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BE256C63020023D6C5 /* RideResult.swift */; };
 		D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77B251A4AE200241E7E /* PeripheralData.swift */; };
-		D0AB73AD255EDC930090B1DF /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AB73AC255EDC930090B1DF /* FeedController.swift */; };
-		D0AB73B0255F028F0090B1DF /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AB73AF255F028F0090B1DF /* FeedCell.swift */; };
 		D0AB73B4255F038E0090B1DF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AB73B3255F038E0090B1DF /* Extensions.swift */; };
 		D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0C757F02508FA1200C923C4 /* AStar.xcdatamodeld */; };
 		D0D329102503BF2B003CC73A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D3290E2503BF2B003CC73A /* Main.storyboard */; };
@@ -62,9 +63,10 @@
 		D06B08AE2535F85C00553105 /* DeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		D06D79852527BCE4001961E3 /* TCXHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCXHandler.swift; sourceTree = "<group>"; };
 		D06D7997252CED17001961E3 /* GPSData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSData.swift; sourceTree = "<group>"; };
+		D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityFeedHostingController.swift; sourceTree = "<group>"; };
+		D08253BA256C62F30023D6C5 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D08253BE256C63020023D6C5 /* RideResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideResult.swift; sourceTree = "<group>"; };
 		D093A77B251A4AE200241E7E /* PeripheralData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralData.swift; sourceTree = "<group>"; };
-		D0AB73AC255EDC930090B1DF /* FeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
-		D0AB73AF255F028F0090B1DF /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		D0AB73B3255F038E0090B1DF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D0C757F12508FA1200C923C4 /* AStar.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AStar.xcdatamodel; sourceTree = "<group>"; };
 		D0D329052503BF2B003CC73A /* Astar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Astar.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,13 +124,14 @@
 		D055FA4A2534946000D5ECA4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D08253BE256C63020023D6C5 /* RideResult.swift */,
+				D08253BA256C62F30023D6C5 /* ContentView.swift */,
 				D06B089F2535F82400553105 /* SettingsViewController.swift */,
 				D06B089E2535F82400553105 /* MapViewController.swift */,
 				D06B08A02535F82400553105 /* ViewController.swift */,
 				D0FF5799253F3F5800265638 /* SpinnerViewController.swift */,
-				D0AB73AC255EDC930090B1DF /* FeedController.swift */,
-				D0AB73AF255F028F0090B1DF /* FeedCell.swift */,
 				D01A96892566964D0061B9B2 /* RideViewModel.swift */,
+				D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -136,6 +139,7 @@
 		D055FA502534B54000D5ECA4 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				D0C757F02508FA1200C923C4 /* AStar.xcdatamodeld */,
 				D06D7997252CED17001961E3 /* GPSData.swift */,
 				D093A77B251A4AE200241E7E /* PeripheralData.swift */,
 				D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */,
@@ -170,18 +174,10 @@
 			isa = PBXGroup;
 			children = (
 				D0AB73B3255F038E0090B1DF /* Extensions.swift */,
+				D06D79852527BCE4001961E3 /* TCXHandler.swift */,
 				D01A9682256459E10061B9B2 /* RideCalculator.swift */,
 			);
 			path = Utils;
-			sourceTree = "<group>";
-		};
-		D0C757F32509234E00C923C4 /* DataModel */ = {
-			isa = PBXGroup;
-			children = (
-				D0C757F02508FA1200C923C4 /* AStar.xcdatamodeld */,
-				D06D79852527BCE4001961E3 /* TCXHandler.swift */,
-			);
-			path = DataModel;
 			sourceTree = "<group>";
 		};
 		D0D328FC2503BF2B003CC73A = {
@@ -212,7 +208,6 @@
 				D055FA4A2534946000D5ECA4 /* Views */,
 				D055FA482534920300D5ECA4 /* Delegates */,
 				D0D329112503BF2B003CC73A /* Assets.xcassets */,
-				D0C757F32509234E00C923C4 /* DataModel */,
 				D0D329162503BF2B003CC73A /* Info.plist */,
 				D055FA2D252F907000D5ECA4 /* Constants.swift */,
 			);
@@ -339,8 +334,8 @@
 			files = (
 				D0FF57AA2540CC5500265638 /* StravaData.swift in Sources */,
 				D05374462536467700C6FB91 /* CyclingAnalyticsData.swift in Sources */,
+				D08253BF256C63020023D6C5 /* RideResult.swift in Sources */,
 				D06B08A32535F82400553105 /* ViewController.swift in Sources */,
-				D0AB73AD255EDC930090B1DF /* FeedController.swift in Sources */,
 				D034189C2535F7DA001AD367 /* LocationDelegate.swift in Sources */,
 				D034189F2535F7DA001AD367 /* GPSDelegate.swift in Sources */,
 				D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */,
@@ -360,10 +355,11 @@
 				D06B08AA2535F84400553105 /* LocationManager.swift in Sources */,
 				D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */,
 				D0AB73B4255F038E0090B1DF /* Extensions.swift in Sources */,
-				D0AB73B0255F028F0090B1DF /* FeedCell.swift in Sources */,
 				D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */,
+				D08253BC256C62F30023D6C5 /* ContentView.swift in Sources */,
 				D06B08AF2535F85C00553105 /* DeviceManager.swift in Sources */,
 				D055FA2E252F907000D5ECA4 /* Constants.swift in Sources */,
+				D08253B7256C605C0023D6C5 /* ActivityFeedHostingController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

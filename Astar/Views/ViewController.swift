@@ -315,11 +315,11 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         let mapViewController = tabBarController!.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
         mapViewController.generateImageFromMap(mapUUID: mapUUID)
         
-        completedRide.average_watts = rideMetrics.avgWatts!
-        completedRide.calories = rideMetrics.calories!
-        completedRide.distance = rideMetrics.distance!
+        completedRide.average_watts = rideMetrics.avgWatts
+        completedRide.calories = rideMetrics.calories
+        completedRide.distance = rideMetrics.distance
         completedRide.ride_number = Int16(currentRideID)
-        completedRide.ride_time = rideMetrics.rideTime!
+        completedRide.ride_time = rideMetrics.rideTime
         completedRide.map_uuid = mapUUID
         completedRide.ride_date = Date()
         

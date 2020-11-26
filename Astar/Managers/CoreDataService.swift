@@ -8,8 +8,28 @@
 import CoreData
 import MapKit
 
-class CoreDataServices {
+struct RideMetric {
+    var rideNumber = 0
+    var avgWatts:Int16 = 0
+    var calories:Int16 = 0
+    var distance:Int16 = 0
+    var rideTime = 0.0
+    var mapUUID = ""
+    var rideDate = Date()
+    var elevation:Int16 = 0
+}
 
+
+class CoreDataServices: ObservableObject {
+
+    static let sharedCoreDataService = CoreDataServices()
+    
+    @Published var rideMetrics: [RideMetric]
+    
+    init() {
+        rideMetrics = [RideMetric]()
+    }
+    
     
     func retrieveRide(rideID: Int) -> [PeripheralData]? {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil}
@@ -52,40 +72,39 @@ class CoreDataServices {
         
     }
     
-    func retrieveRideStats(rideID: Int) -> RideMetrics {
+    func retrieveRideStats(rideID: Int) {
         
-        
+        var completedRides = [CompletedRide]()
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
      
         let managedContext = appDelegate!.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CompletedRide")
-        
-        var completedRide = RideMetrics()
-        
-        fetchRequest.predicate = NSPredicate(format: "ride_number = \(rideID)")
+        //let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CompletedRide")
+
+        let request: NSFetchRequest<CompletedRide> = CompletedRide.fetchRequest()
+        request.predicate = NSPredicate(format: "ride_number == %i", rideID)
+
         
         do {
-            let result = try managedContext.fetch(fetchRequest)
-            for data in result as! [NSManagedObject] {
-                completedRide.avgWatts = data.value(forKey: "average_watts") as? Int16
-                completedRide.calories = data.value(forKey: "calories") as? Int16
-                completedRide.distance = data.value(forKey: "distance") as? Int16
-                completedRide.rideTime = data.value(forKey: "ride_time") as? Double
-                completedRide.mapUUID  = data.value(forKey: "map_uuid") as? String
-                completedRide.rideDate = data.value(forKey: "ride_date") as? Date
-                completedRide.elevation = data.value(forKey: "elevation") as? Int16
-                
-            }
-        } catch {
-            print("Error retrieving CoreData")
+            completedRides = try managedContext.fetch(request)
+        } catch let error as NSError {
+            print(error)
         }
         
-        return completedRide
+        let aRide = completedRides.first
+        
+        let rideMetric = RideMetric(rideNumber: Int(aRide!.ride_number), avgWatts: aRide!.average_watts, calories: aRide!.calories, distance: aRide!.distance, rideTime: aRide!.ride_time, mapUUID: aRide!.map_uuid!, rideDate: aRide!.ride_date!, elevation: aRide!.elevation)
+        
+        rideMetrics.append(rideMetric)
         
     }
     
     static func load(fileName: String) -> UIImage? {
+        
+        print("Filename: \(fileName)")
+        
         let fileURL = getDocumentsDirectory().appendingPathComponent(fileName)
+        print("File URL: \(fileURL)")
+
         do {
             let imageData = try Data(contentsOf: fileURL)
             return UIImage(data: imageData)
@@ -101,36 +120,33 @@ class CoreDataServices {
     }
 
 
-    func retrieveAllRideStats() -> [RideMetrics] {
-        
-        var rideMetricArray = [RideMetrics]()
+    func retrieveAllRideStats() {
         
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
      
         let managedContext = appDelegate!.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CompletedRide")
         
-        var completedRide = RideMetrics()
+        var completedRide = RideMetric()
         
         do {
             let result = try managedContext.fetch(fetchRequest)
             for data in result as! [NSManagedObject] {
-                completedRide.avgWatts = data.value(forKey: "average_watts") as? Int16
-                completedRide.calories = data.value(forKey: "calories") as? Int16
-                completedRide.distance = data.value(forKey: "distance") as? Int16
-                completedRide.rideTime = data.value(forKey: "ride_time") as? Double
-                completedRide.mapUUID = data.value(forKey: "map_uuid") as? String
-                completedRide.rideDate = data.value(forKey: "ride_date") as? Date
-                completedRide.elevation = data.value(forKey: "elevation") as? Int16
+                completedRide.rideNumber    = (data.value(forKey: "ride_number") as? Int)!
+                completedRide.avgWatts  = (data.value(forKey: "average_watts") as? Int16)!
+                completedRide.calories  = (data.value(forKey: "calories") as? Int16)!
+                completedRide.distance  = (data.value(forKey: "distance") as? Int16)!
+                completedRide.rideTime  = (data.value(forKey: "ride_time") as? Double)!
+                completedRide.mapUUID   = (data.value(forKey: "map_uuid") as? String)!
+                completedRide.rideDate  = (data.value(forKey: "ride_date") as? Date)!
+                completedRide.elevation = (data.value(forKey: "elevation") as? Int16)!
 
-                rideMetricArray.append(completedRide)
+                rideMetrics.append(completedRide)
                 
             }
         } catch {
             print("Error retrieving CoreData")
         }
-        
-        return rideMetricArray
         
     }
     

@@ -11,7 +11,7 @@ private let reuseIdentifier = "Cell"
 
 class FeedController: UICollectionViewController {
     
-    private var rides: [RideMetrics]?
+    private var rides: [RideMetric]?
     
     override func viewDidLoad() {
         super.viewDidLoad()

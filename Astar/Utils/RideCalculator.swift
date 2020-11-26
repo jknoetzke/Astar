@@ -8,21 +8,23 @@
 import Foundation
 import MapKit
 import CoreLocation
+import SwiftUI
 
-struct RideMetrics {
-    var avgWatts: Int16?
-    var calories: Int16?
-    var distance: Int16?
-    var rideTime: Double?
-    var mapUUID: String?
-    var rideDate: Date?
-    var elevation: Int16?
-}
+//struct RideMetrics: ObservableObject {
+//    var rideID: Int?
+//    var avgWatts: Int16?
+//    var calories: Int16?
+//    var distance: Int16?
+//    var rideTime: Double?
+//    var mapUUID: String?
+//    var rideDate: Date?
+//    var elevation: Int16?
+//}
 
 
 class RideCalculator {
 
-    func calculateRideMetrics(rideArray: [PeripheralData]) -> RideMetrics {
+    func calculateRideMetrics(rideArray: [PeripheralData]) -> RideMetric {
        
         var counter = 0.0
         var totalWatts = 0.0
@@ -30,6 +32,8 @@ class RideCalculator {
         var elevation = 0.0
         var previousElevation = 0.0
         
+        let defaults = UserDefaults.standard
+        let currentRideID = defaults.integer(forKey: "RideID")
         
         for ride in rideArray {
             counter+=1
@@ -46,9 +50,9 @@ class RideCalculator {
         let cal1 = avgWatts * rideTime! / 3600
         let cal2 = cal1 * 3.60
         
-        let rideMetrics = RideMetrics(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16(rideArray.last?.gps.distance.value ?? 0), rideTime: rideTime!, rideDate: Date(), elevation: Int16(elevation))
+        let rideMetric = RideMetric(rideNumber: currentRideID, avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16(rideArray.last?.gps.distance.value ?? 0), rideTime: rideTime!, rideDate: Date(), elevation: Int16(elevation))
         
-        return rideMetrics
+        return rideMetric
     }
 
 }

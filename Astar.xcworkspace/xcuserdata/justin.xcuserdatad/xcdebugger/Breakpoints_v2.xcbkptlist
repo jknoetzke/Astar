@@ -55,16 +55,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F7884EDE-C8D4-4487-99EE-7AD2738EE377"
-            shouldBeEnabled = "Yes"
+            uuid = "9E2189E1-2FD2-45DB-AA6B-9B83CE604914"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Astar/Utils/RideCalculator.swift"
+            filePath = "Astar/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
-            landmarkName = "calculateRideMetrics(rideArray:)"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "9E2189E1-2FD2-45DB-AA6B-9B83CE604914 - e209441186d72b58"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Astar.ContentView.body.getter : some"
+                  moduleName = "Astar"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/justin/Projects/Astar/Astar/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "17"
+                  endingLineNumber = "17"
+                  offsetFromSymbolStart = "143">
+               </Location>
+               <Location
+                  uuid = "9E2189E1-2FD2-45DB-AA6B-9B83CE604914 - 9738e7a5d72b0a0d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Astar.RideMetric) -&gt; SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(Astar.ContentView.ImageView, SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(Astar.ContentView.RideTimeView, SwiftUI.Spacer, Astar.ContentView.DistanceView, SwiftUI.Spacer, Astar.ContentView.WattsView, SwiftUI.Spacer, Astar.ContentView.ElevationView, SwiftUI.Spacer, Astar.ContentView.CaloriesView)&gt;&gt;)&gt;&gt; in Astar.ContentView.body.getter : some"
+                  moduleName = "Astar"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/justin/Projects/Astar/Astar/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "188">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "43342F70-DD3D-46F9-8A5F-B76236727125"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Astar/Managers/CoreDataService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
+            landmarkName = "retrieveRideStats(rideID:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
