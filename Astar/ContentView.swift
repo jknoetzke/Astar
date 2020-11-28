@@ -16,6 +16,8 @@ struct ContentView: View {
     var body: some View {
         List(coreDataService.rideMetrics, id: \.rideNumber) { ride in
             VStack(alignment: .center) {
+                DateView(ride: ride)
+                Spacer()
                 ImageView(ride: ride)
                 HStack(alignment: .lastTextBaseline) {
                     RideTimeView(ride: ride)
@@ -35,7 +37,7 @@ struct ContentView: View {
     struct ImageView: View {
         let ride: RideMetric
         var body: some View {
-            let mapImage = CoreDataServices.load(fileName: ride.mapUUID)
+            let mapImage = ride.mapImage
             Image(uiImage: mapImage!)
                 .resizable()
                 .frame(width: 340, height: 300)
@@ -73,7 +75,7 @@ struct ContentView: View {
         var body: some View {
             VStack(alignment: .leading) {
                 Text("Distance:").fixedSize().font(.system(size:10))
-                Text(String(ride.distance)).fixedSize()
+                Text(String(ride.distance / 1000)).fixedSize()
             }
         }
     }

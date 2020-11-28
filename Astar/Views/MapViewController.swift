@@ -109,7 +109,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
         pinchCounter = 0
     }
     
-    func generateImageFromMap(mapUUID: String) {
+    func generateImageFromMap(ride: [PeripheralData], rideID: UUID) {
         
         let options = MKMapSnapshotter.Options()
         options.region = mapView.region
@@ -151,23 +151,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
                 UIColor.blue.setStroke()
                 path.stroke()
             }
-            
-            if let data = finalImage.pngData() {
-                let filename = CoreDataServices.getDocumentsDirectory().appendingPathComponent(mapUUID)
-                print(filename.absoluteURL)
-                
-                try? data.write(to: filename, options: .atomic)
-            }
-            
-            //Update the Activity Feed
-           // let feedController = self.tabBarController!.viewControllers![0] as! FeedController
-           // print("Updating Feed..")
-           // feedController.updateFeed()
-            
-            let coreDataService = CoreDataServices.sharedCoreDataService
-            let defaults = UserDefaults.standard
-            let currentRideID = defaults.integer(forKey: "RideID")
-            coreDataService.retrieveRideStats(rideID: currentRideID-1)
+     
+            let coreDataServices = CoreDataServices.sharedCoreDataService
+            coreDataServices.saveMetrics(ride: ride, mapImage: finalImage, rideID: rideID)
             
              self.stopSpinnerView()
         }

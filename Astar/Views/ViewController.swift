@@ -280,59 +280,18 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     }
     
     private func saveRide(tmpRideArray: [PeripheralData]) {
+  
+        let coreDataServices = CoreDataServices.sharedCoreDataService
         
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let context2 = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
-        var dataRide = Ride(context: context)
-        var completedRide = CompletedRide(context: context)
-        
-        for ride in tmpRideArray {
-            
-            dataRide.cadence = Int16(ride.cadence)
-            dataRide.watts = Int16(ride.power)
-            dataRide.latitude = ride.gps.location?.latitude ?? 0.0
-            dataRide.longitude = ride.gps.location?.longitude ?? 0.0
-            dataRide.speed = Double(ride.gps.speed)
-            dataRide.heartrate = Int16(ride.heartRate)
-            dataRide.timestamp =  ride.timeStamp
-            dataRide.ride_number = Int16(currentRideID + 1)
-            dataRide.altitude = Double(ride.gps.altitude)
-            dataRide.ride_number = Int16(currentRideID)
-            
-            do {
-                try context.save()
-                dataRide = Ride(context: context)
-                
-            }catch {
-                print("Error saving to CoreData")
-            }
-        }
-        
-        let rideCalculator = RideCalculator()
-        let rideMetrics = rideCalculator.calculateRideMetrics(rideArray: tmpRideArray)
-        let mapUUID = UUID().uuidString
+        //Save the Ride itself
+        coreDataServices.saveRide(tmpRideArray: tmpRideArray)
+
+        //Save The map
+        let rideID = UUID() //Create the unique ID for the ride
         let mapViewController = tabBarController!.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
-        mapViewController.generateImageFromMap(mapUUID: mapUUID)
-        
-        completedRide.average_watts = rideMetrics.avgWatts
-        completedRide.calories = rideMetrics.calories
-        completedRide.distance = rideMetrics.distance
-        completedRide.ride_number = Int16(currentRideID)
-        completedRide.ride_time = rideMetrics.rideTime
-        completedRide.map_uuid = mapUUID
-        completedRide.ride_date = Date()
-        
-        do {
-            try context2.save()
-            completedRide = CompletedRide(context: context2)
-        } catch {
-            print("Error saving completed ride to CoreData")
-        }
-        
-        currentRideID = currentRideID + 1
-        saveUserPrefs()
-        
+        mapViewController.generateImageFromMap(ride: tmpRideArray, rideID: rideID)
+
+        //Upload to Strava and Cycling Analytics
         if stravaFlag || cyclingAnalyticsFlag {
             let tcxHandler = TCXHandler()
             let xml = tcxHandler.encodeTCX(rideArray: tmpRideArray)

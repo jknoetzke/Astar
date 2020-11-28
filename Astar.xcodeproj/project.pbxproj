@@ -18,6 +18,7 @@
 		D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034189A2535F7DA001AD367 /* RideDelegate.swift */; };
 		D034189F2535F7DA001AD367 /* GPSDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034189B2535F7DA001AD367 /* GPSDelegate.swift */; };
 		D05374462536467700C6FB91 /* CyclingAnalyticsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */; };
+		D0539B45257150B20008E651 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0539B44257150B20008E651 /* CloudKit.framework */; };
 		D055FA2E252F907000D5ECA4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D055FA2D252F907000D5ECA4 /* Constants.swift */; };
 		D06B08A12535F82400553105 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B089E2535F82400553105 /* MapViewController.swift */; };
 		D06B08A22535F82400553105 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B089F2535F82400553105 /* SettingsViewController.swift */; };
@@ -54,6 +55,8 @@
 		D034189A2535F7DA001AD367 /* RideDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideDelegate.swift; path = Delegates/RideDelegate.swift; sourceTree = "<group>"; };
 		D034189B2535F7DA001AD367 /* GPSDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GPSDelegate.swift; path = Delegates/GPSDelegate.swift; sourceTree = "<group>"; };
 		D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclingAnalyticsData.swift; sourceTree = "<group>"; };
+		D0539B42257150AA0008E651 /* Astar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Astar.entitlements; sourceTree = "<group>"; };
+		D0539B44257150B20008E651 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		D055FA2D252F907000D5ECA4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D06B089E2535F82400553105 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Views/MapViewController.swift; sourceTree = "<group>"; };
 		D06B089F2535F82400553105 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Views/SettingsViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +89,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AA39BFEA396EB459BD868B8 /* Pods_Astar.framework in Frameworks */,
+				D0539B45257150B20008E651 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +99,7 @@
 		4854A358B909476D69A44E28 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D0539B44257150B20008E651 /* CloudKit.framework */,
 				DED44B6417E23A0211499F92 /* Pods_Astar.framework */,
 			);
 			name = Frameworks;
@@ -201,6 +206,7 @@
 		D0D329072503BF2B003CC73A /* Astar */ = {
 			isa = PBXGroup;
 			children = (
+				D0539B42257150AA0008E651 /* Astar.entitlements */,
 				D0AB73B2255F03780090B1DF /* Utils */,
 				D055FA602534B7AE00D5ECA4 /* Managers */,
 				D055FA572534B5D900D5ECA4 /* Storyboards */,
@@ -507,6 +513,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Astar/Astar.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
@@ -516,7 +523,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astarios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -530,6 +537,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Astar/Astar.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
@@ -539,7 +547,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astarios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

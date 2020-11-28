@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import UIKit
 
 struct RideViewModel {
     private let ride: RideMetric
     
-    var filePath: String {
-        return ride.mapUUID
+    var mapImage: UIImage {
+        return ride.mapImage
     }
     
     var distance: Int16 {

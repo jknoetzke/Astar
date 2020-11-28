@@ -32,9 +32,6 @@ class RideCalculator {
         var elevation = 0.0
         var previousElevation = 0.0
         
-        let defaults = UserDefaults.standard
-        let currentRideID = defaults.integer(forKey: "RideID")
-        
         for ride in rideArray {
             counter+=1
             totalWatts += Double(ride.power)
@@ -50,7 +47,7 @@ class RideCalculator {
         let cal1 = avgWatts * rideTime! / 3600
         let cal2 = cal1 * 3.60
         
-        let rideMetric = RideMetric(rideNumber: currentRideID, avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16(rideArray.last?.gps.distance.value ?? 0), rideTime: rideTime!, rideDate: Date(), elevation: Int16(elevation))
+        let rideMetric = RideMetric(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16(rideArray.last?.gps.distance.value ?? 0), rideTime: rideTime!, rideDate: Date(), elevation: Int16(elevation))
         
         return rideMetric
     }
