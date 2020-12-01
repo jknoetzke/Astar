@@ -9,14 +9,19 @@ import CoreData
 import MapKit
 
 struct RideMetric {
-    var rideNumber: UUID?
+    var rideID: UUID!
     var avgWatts:Int16 = 0
     var calories:Int16 = 0
     var distance:Int16 = 0
     var rideTime = 0.0
     var rideDate = Date()
     var elevation:Int16 = 0
-    var mapImage: UIImage!
+    var heartRate:Int16 = 0
+    var mapImage: UIImage?
+    var speed:Int16?
+    
+    var laps: [RideMetric]?
+    
 }
 
 
@@ -36,7 +41,7 @@ class CoreDataServices: ObservableObject {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
         let rideCalculator = RideCalculator()
-        let tmpRideMetric = rideCalculator.calculateRideMetrics(rideArray: ride)
+        let tmpRideMetric = rideCalculator.calculateRideMetrics(rideArray: ride, rideID: rideID)
         
         var completedRide = CompletedRide(context: context)
         
@@ -46,7 +51,21 @@ class CoreDataServices: ObservableObject {
         completedRide.ride_date = Date()
         completedRide.average_watts = tmpRideMetric.avgWatts
         completedRide.map_image = mapImage.pngData()
-        completedRide.ride_number = rideID
+        completedRide.ride_id = rideID
+        
+        if tmpRideMetric.laps != nil {
+            for lap in tmpRideMetric.laps! {
+                let lapObject = Laps(context: context)
+                lapObject.average_hr = lap.heartRate
+                lapObject.average_speed = lap.speed!
+                lapObject.average_watts = lap.avgWatts
+                lapObject.distance = lap.distance
+                lapObject.elevation = lap.elevation
+                lapObject.lap_time = lap.rideTime
+                completedRide.addToLaps(lapObject)
+            }
+            
+        }
         
         do {
             try context.save()
@@ -55,22 +74,21 @@ class CoreDataServices: ObservableObject {
             print("Error saving completed ride to CoreData")
         }
         
-        let rideMetric = RideMetric(rideNumber: rideID, avgWatts: tmpRideMetric.avgWatts, calories: tmpRideMetric.calories, distance: tmpRideMetric.distance, rideTime: tmpRideMetric.rideTime, rideDate: tmpRideMetric.rideDate, elevation: tmpRideMetric.elevation, mapImage: mapImage)
+        let rideMetric = RideMetric(rideID: rideID, avgWatts: tmpRideMetric.avgWatts, calories: tmpRideMetric.calories, distance: tmpRideMetric.distance, rideTime: tmpRideMetric.rideTime, rideDate: tmpRideMetric.rideDate, elevation: tmpRideMetric.elevation, mapImage: mapImage)
         
         rideMetrics.append(rideMetric)
         
     }
     
     
-    func saveRide(tmpRideArray: [PeripheralData]) {
+    func saveRide(tmpRideArray: [PeripheralData], rideID: UUID) {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
         var dataRide = Ride(context: context)
         
-        let rideID = UUID()
-        
         for ride in tmpRideArray {
             
+            dataRide.ride_id = rideID
             dataRide.cadence = Int16(ride.cadence)
             dataRide.watts = Int16(ride.power)
             dataRide.latitude = ride.gps.location?.latitude ?? 0.0
@@ -134,7 +152,7 @@ class CoreDataServices: ObservableObject {
     }
     
     
-    func retrieveRideStats(rideID: Int) {
+    func retrieveRideStats(rideID: UUID) {
         
         var completedRides = [CompletedRide]()
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
@@ -143,7 +161,7 @@ class CoreDataServices: ObservableObject {
         //let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CompletedRide")
         
         let request: NSFetchRequest<CompletedRide> = CompletedRide.fetchRequest()
-        request.predicate = NSPredicate(format: "ride_number == %i", rideID)
+        request.predicate = NSPredicate(format: "ride_id == %@", rideID as CVarArg)
         
         
         do {
@@ -154,7 +172,7 @@ class CoreDataServices: ObservableObject {
         
         let aRide = completedRides.first
         
-        let rideMetric = RideMetric(rideNumber: aRide!.ride_number, avgWatts: aRide!.average_watts, calories: aRide!.calories, distance: aRide!.distance, rideTime: aRide!.ride_time, rideDate: aRide!.ride_date!, elevation: aRide!.elevation)
+        let rideMetric = RideMetric(rideID: rideID, avgWatts: aRide!.average_watts, calories: aRide!.calories, distance: aRide!.distance, rideTime: aRide!.ride_time, rideDate: aRide!.ride_date!, elevation: aRide!.elevation)
         
         rideMetrics.append(rideMetric)
         
@@ -194,7 +212,7 @@ class CoreDataServices: ObservableObject {
         do {
             let result = try managedContext.fetch(fetchRequest)
             for data in result as! [NSManagedObject] {
-                completedRide.rideNumber    = (data.value(forKey: "ride_number") as? UUID)!
+                completedRide.rideID    = (data.value(forKey: "ride_id") as? UUID)!
                 completedRide.avgWatts  = (data.value(forKey: "average_watts") as? Int16)!
                 completedRide.calories  = (data.value(forKey: "calories") as? Int16)!
                 completedRide.distance  = (data.value(forKey: "distance") as? Int16)!

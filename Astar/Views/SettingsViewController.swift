@@ -213,8 +213,6 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         let defaults = UserDefaults.standard
         let switchState = sender.isOn
         let setting = allSettings[sender.tag-1]
-        
-        print("Setting chosen: \(String(describing: setting.name))")
 
         switch(sender.tag) {
         case METRIC_ROW :
@@ -235,6 +233,8 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             break
         default:
             deviceManager!.saveDevice(deviceID: setting.id, state: switchState)
+            let viewController = self.tabBarController!.viewControllers![1] as! ViewController // or whatever tab index you're trying to access
+            viewController.startScanning = true
             break
         }
     }

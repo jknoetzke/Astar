@@ -14,26 +14,40 @@ struct ContentView: View {
     @ObservedObject var coreDataService: CoreDataServices
 
     var body: some View {
-        List(coreDataService.rideMetrics, id: \.rideNumber) { ride in
-            VStack(alignment: .center) {
-                DateView(ride: ride)
-                Spacer()
-                ImageView(ride: ride)
-                HStack(alignment: .lastTextBaseline) {
-                    RideTimeView(ride: ride)
-                    Spacer()
-                    DistanceView(ride: ride)
-                    Spacer()
-                    WattsView(ride:ride)
-                    Spacer()
-                    ElevationView(ride: ride)
-                    Spacer()
-                    CaloriesView(ride: ride)
+        
+        NavigationView {
+            
+            List(coreDataService.rideMetrics, id: \.rideID) { ride in
+                ZStack {
+                    RideCell(ride: ride)
+                    NavigationLink(
+                        destination: RideDetailView(ride: ride)) {
+                        EmptyView()
+                    }.buttonStyle(PlainButtonStyle())
+                    
+                    
+                    VStack(alignment: .center) {
+                        DateView(ride: ride)
+                        Spacer()
+                        ImageView(ride: ride)
+                        HStack(alignment: .lastTextBaseline) {
+                            RideTimeView(ride: ride)
+                            Spacer()
+                            DistanceView(ride: ride)
+                            Spacer()
+                            WattsView(ride:ride)
+                            Spacer()
+                            ElevationView(ride: ride)
+                            Spacer()
+                            CaloriesView(ride: ride)
+                        }
+                    }
                 }
+                .navigationTitle("Your Rides")
+                
             }
         }
     }
-    
     struct ImageView: View {
         let ride: RideMetric
         var body: some View {
@@ -157,6 +171,16 @@ func formatTime(timeInterval: Double) -> String {
     return time
     
 }
+
+struct RideCell: View {
+    let ride: RideMetric
+    
+    var body: some View {
+        Text("Hello!")
+    }
+}
+
+
 /*
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

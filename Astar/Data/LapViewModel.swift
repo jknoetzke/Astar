@@ -1,19 +1,17 @@
 //
-//  PostViewModel.swift
+//  LapViewModel.swift
 //  Astar
 //
-//  Created by Justin Knoetzke on 2020-11-19.
+//  Created by Justin Knoetzke on 2020-11-30.
 //
 
 import Foundation
 import UIKit
 
-struct RideViewModel {
+
+struct LapViewModel {
+
     private let ride: RideMetric
-    
-    var mapImage: UIImage {
-        return ride.mapImage
-    }
     
     var distance: Int16 {
         return ride.distance
@@ -27,12 +25,8 @@ struct RideViewModel {
         return ride.rideTime
     }
     
-    var rideDate: Date {
-        return ride.rideDate
-    }
-    
     var elevation: Int16 {
-        return Int16(ride.elevation)
+        return ride.elevation
     }
     
     init(ride: RideMetric) {

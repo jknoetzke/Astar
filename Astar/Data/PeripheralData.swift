@@ -22,6 +22,7 @@ public enum DeviceType: String {
 }
 
 public class PeripheralData: NSObject {
+    var rideID: UUID!
     var speed:Double = 0.0;
     var heartRate = 0
     var power: Int = 0

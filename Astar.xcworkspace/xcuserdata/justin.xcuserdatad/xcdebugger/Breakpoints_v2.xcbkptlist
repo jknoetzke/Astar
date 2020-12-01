@@ -7,49 +7,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C9CD28D4-3297-4819-A85D-F32ED6CE7425"
+            uuid = "16B49506-AC95-4ED4-85F2-116D43F69C69"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Astar/DataModel/TCXHandler.swift"
+            filePath = "Astar/Managers/DeviceManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "130"
-            endingLineNumber = "130"
-            landmarkName = "activityLaps(rideArray:)"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "scanTimeCode()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "85C00DBC-4253-406C-B006-7EF5FEC9AE8B"
-            shouldBeEnabled = "No"
+            uuid = "72948DF9-C019-4785-953E-038875554E1B"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Astar/SettingsCell.swift"
+            filePath = "Astar/Managers/CoreDataService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "init(style:reuseIdentifier:)"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "saveMetrics(ride:mapImage:rideID:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AD7277FF-5052-489E-AAE7-122C7C4EC76F"
-            shouldBeEnabled = "No"
+            uuid = "1D774DB6-D5C3-47D2-AF1F-3A84F71B7A44"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Astar/SettingsCell.swift"
+            filePath = "Astar/Views/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "switchControl"
-            landmarkType = "24">
+            startingLineNumber = "295"
+            endingLineNumber = "295"
+            landmarkName = "saveRide(tmpRideArray:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

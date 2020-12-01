@@ -7,8 +7,19 @@
         <attribute name="elevation" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="map_image" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="ride_date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="ride_number" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="ride_id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="ride_time" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="laps" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Laps" inverseName="completedrides" inverseEntity="Laps"/>
+    </entity>
+    <entity name="Laps" representedClassName="Laps" syncable="YES" codeGenerationType="class">
+        <attribute name="average_hr" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="average_speed" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="average_watts" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="distance" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="elevation" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="lap_time" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="ride_id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="completedrides" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CompletedRide" inverseName="laps" inverseEntity="CompletedRide"/>
     </entity>
     <entity name="Ride" representedClassName=".Ride" syncable="YES" codeGenerationType="class">
         <attribute name="altitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -23,7 +34,8 @@
         <attribute name="watts" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="CompletedRide" positionX="-1755" positionY="-252" width="128" height="149"/>
+        <element name="CompletedRide" positionX="-1755" positionY="-252" width="128" height="164"/>
         <element name="Ride" positionX="-1779.652709960938" positionY="-331.2987365722656" width="185.45068359375" height="179"/>
+        <element name="Laps" positionX="-1755" positionY="-234" width="128" height="149"/>
     </elements>
 </model>

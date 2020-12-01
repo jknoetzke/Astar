@@ -6,40 +6,96 @@
 //
 
 import Foundation
-import MapKit
-import CoreLocation
-import SwiftUI
-
-//struct RideMetrics: ObservableObject {
-//    var rideID: Int?
-//    var avgWatts: Int16?
-//    var calories: Int16?
-//    var distance: Int16?
-//    var rideTime: Double?
-//    var mapUUID: String?
-//    var rideDate: Date?
-//    var elevation: Int16?
-//}
 
 
 class RideCalculator {
 
-    func calculateRideMetrics(rideArray: [PeripheralData]) -> RideMetric {
+    func calculateRideMetrics(rideArray: [PeripheralData], rideID: UUID) -> RideMetric {
        
         var counter = 0.0
         var totalWatts = 0.0
         let rideTime = rideArray.last?.timeStamp.timeIntervalSince(rideArray.first!.timeStamp)
         var elevation = 0.0
         var previousElevation = 0.0
+        var currentLap = 0
+        
+        var lapArray = [RideMetric]()
+        
+        //Lap vars
+        var lapCounter = 0.0
+        var lapAverageWatts = 0
+        var lapElevation = 0.0
+        var lapPreviousElevation = 0.0
+        var lapDistance = 0.0
+        var lapRideTime = (rideArray.first?.timeStamp)!
+        var lapHeartRate = 0.0
+        var lapSpeed = 0.0
         
         for ride in rideArray {
-            counter+=1
+            counter += 1
+            lapCounter += 1
+            
             totalWatts += Double(ride.power)
+            lapAverageWatts += ride.power
+            
+            lapHeartRate += Double(ride.heartRate)
+            lapSpeed += ride.speed
+            
             
             if ride.gps.altitude > previousElevation {
                 elevation += ride.gps.altitude
             }
+
+            if ride.gps.altitude > lapPreviousElevation {
+                lapElevation += ride.gps.altitude
+            }
+
+
             previousElevation = ride.gps.altitude
+            lapPreviousElevation = ride.gps.altitude
+            
+            
+            if currentLap != ride.lap {
+                //Calculate lap data
+                
+                let tmpLapTime = ride.timeStamp.timeIntervalSince(lapRideTime)
+                let avgWatts = Double(lapAverageWatts) / lapCounter
+                let cal1 = avgWatts * tmpLapTime / 3600
+                let cal2 = cal1 * 3.60
+                
+                var iWatts = Int(avgWatts)
+
+                if iWatts < UInt16.min || iWatts > UInt16.max {
+                    iWatts = 0
+                }
+                
+                let avgHeartRate = lapHeartRate / lapCounter
+                var iHeartRate = Int(avgHeartRate)
+                
+                if iHeartRate < UInt16.min || iHeartRate > UInt16.max {
+                    iHeartRate = 0
+                }
+                
+                var iSpeed = Int(lapSpeed / lapCounter)
+                
+                if iSpeed < UInt16.min || iHeartRate > UInt16.max {
+                    iSpeed = 0
+                }
+                                
+                let rideMetric = RideMetric(rideID: rideID, avgWatts: Int16(iWatts), calories: Int16(cal2), distance: Int16(lapDistance - ride.gps.distance.value), rideTime: ride.timeStamp.timeIntervalSince(lapRideTime), elevation: Int16(lapPreviousElevation), heartRate: Int16(iHeartRate), speed: Int16(iSpeed))
+                
+                
+                lapArray.append(rideMetric)
+                
+                lapDistance = ride.gps.distance.value
+                currentLap = ride.lap
+                lapRideTime = ride.timeStamp
+                lapCounter = 0
+                lapPreviousElevation = 0
+                lapSpeed = 0
+            }
+            
+            
         }
         
         let avgWatts = totalWatts / counter
@@ -47,7 +103,9 @@ class RideCalculator {
         let cal1 = avgWatts * rideTime! / 3600
         let cal2 = cal1 * 3.60
         
-        let rideMetric = RideMetric(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16(rideArray.last?.gps.distance.value ?? 0), rideTime: rideTime!, rideDate: Date(), elevation: Int16(elevation))
+        var rideMetric = RideMetric(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16(rideArray.last?.gps.distance.value ?? 0), rideTime: rideTime!, rideDate: Date(), elevation: Int16(elevation))
+        
+        rideMetric.laps = lapArray
         
         return rideMetric
     }

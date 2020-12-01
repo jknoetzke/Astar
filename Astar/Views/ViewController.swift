@@ -44,12 +44,16 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var elapsedWattsTime = 0
     private var elapsedSpeedTime = 0
     
+    //Was a periperhal added or removed ?
+    var startScanning = true //Scan at startup then stop.
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         UIApplication.shared.isIdleTimerDisabled = true
         
         readUserPrefs()
+        
         locationManager.startLocationUpdates()
         
         deviceManager.rideDelegate = self
@@ -79,7 +83,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        deviceManager.startScanning(fullScan: false)
+        if startScanning {
+            deviceManager.startScanning(fullScan: false)
+            startScanning = false
+        }
     }
     
     func stopTimer() {
@@ -283,14 +290,16 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
   
         let coreDataServices = CoreDataServices.sharedCoreDataService
         
+        let rideID = UUID() //Create the unique ID for the ride
         //Save the Ride itself
-        coreDataServices.saveRide(tmpRideArray: tmpRideArray)
+        coreDataServices.saveRide(tmpRideArray: tmpRideArray, rideID: rideID)
 
         //Save The map
-        let rideID = UUID() //Create the unique ID for the ride
+        
         let mapViewController = tabBarController!.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
         mapViewController.generateImageFromMap(ride: tmpRideArray, rideID: rideID)
 
+        
         //Upload to Strava and Cycling Analytics
         if stravaFlag || cyclingAnalyticsFlag {
             let tcxHandler = TCXHandler()
