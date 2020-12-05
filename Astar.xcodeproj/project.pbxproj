@@ -13,7 +13,7 @@
 		D01A9680256459A30061B9B2 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01A967F256459A30061B9B2 /* CoreDataService.swift */; };
 		D01A9683256459E10061B9B2 /* RideCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01A9682256459E10061B9B2 /* RideCalculator.swift */; };
 		D01A968A2566964D0061B9B2 /* RideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01A96892566964D0061B9B2 /* RideViewModel.swift */; };
-		D02BE893257517A700509E50 /* RideDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02BE892257517A700509E50 /* RideDetailView.swift */; };
+		D02BE893257517A700509E50 /* RideDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02BE892257517A700509E50 /* RideDetailsView.swift */; };
 		D034189C2535F7DA001AD367 /* LocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03418982535F7DA001AD367 /* LocationDelegate.swift */; };
 		D034189D2535F7DA001AD367 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03418992535F7DA001AD367 /* AppDelegate.swift */; };
 		D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034189A2535F7DA001AD367 /* RideDelegate.swift */; };
@@ -31,9 +31,8 @@
 		D06D7998252CED17001961E3 /* GPSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D7997252CED17001961E3 /* GPSData.swift */; };
 		D07841602575599A00941B86 /* LapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078415F2575599A00941B86 /* LapViewModel.swift */; };
 		D078416525758EF200941B86 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = D078416425758EF200941B86 /* SwiftUICharts */; };
-		D078416825758F9300941B86 /* BarCharTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078416725758F9300941B86 /* BarCharTest.swift */; };
 		D08253B7256C605C0023D6C5 /* ActivityFeedHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */; };
-		D08253BC256C62F30023D6C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BA256C62F30023D6C5 /* ContentView.swift */; };
+		D08253BC256C62F30023D6C5 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BA256C62F30023D6C5 /* ActivityView.swift */; };
 		D08253BF256C63020023D6C5 /* RideResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BE256C63020023D6C5 /* RideResult.swift */; };
 		D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77B251A4AE200241E7E /* PeripheralData.swift */; };
 		D0AB73B4255F038E0090B1DF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AB73B3255F038E0090B1DF /* Extensions.swift */; };
@@ -54,27 +53,26 @@
 		D01A967F256459A30061B9B2 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoreDataService.swift; path = /Users/justin/Projects/Astar/Astar/Managers/CoreDataService.swift; sourceTree = "<absolute>"; };
 		D01A9682256459E10061B9B2 /* RideCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideCalculator.swift; sourceTree = "<group>"; };
 		D01A96892566964D0061B9B2 /* RideViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideViewModel.swift; sourceTree = "<group>"; };
-		D02BE892257517A700509E50 /* RideDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailView.swift; sourceTree = "<group>"; };
-		D03418982535F7DA001AD367 /* LocationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationDelegate.swift; path = Delegates/LocationDelegate.swift; sourceTree = "<group>"; };
-		D03418992535F7DA001AD367 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Delegates/AppDelegate.swift; sourceTree = "<group>"; };
-		D034189A2535F7DA001AD367 /* RideDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RideDelegate.swift; path = Delegates/RideDelegate.swift; sourceTree = "<group>"; };
-		D034189B2535F7DA001AD367 /* GPSDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GPSDelegate.swift; path = Delegates/GPSDelegate.swift; sourceTree = "<group>"; };
+		D02BE892257517A700509E50 /* RideDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailsView.swift; sourceTree = "<group>"; };
+		D03418982535F7DA001AD367 /* LocationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDelegate.swift; sourceTree = "<group>"; };
+		D03418992535F7DA001AD367 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D034189A2535F7DA001AD367 /* RideDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideDelegate.swift; sourceTree = "<group>"; };
+		D034189B2535F7DA001AD367 /* GPSDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSDelegate.swift; sourceTree = "<group>"; };
 		D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclingAnalyticsData.swift; sourceTree = "<group>"; };
 		D0539B42257150AA0008E651 /* Astar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Astar.entitlements; sourceTree = "<group>"; };
 		D0539B44257150B20008E651 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		D055FA2D252F907000D5ECA4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		D06B089E2535F82400553105 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Views/MapViewController.swift; sourceTree = "<group>"; };
-		D06B089F2535F82400553105 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Views/SettingsViewController.swift; sourceTree = "<group>"; };
-		D06B08A02535F82400553105 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = Views/ViewController.swift; sourceTree = "<group>"; };
+		D06B089E2535F82400553105 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		D06B089F2535F82400553105 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		D06B08A02535F82400553105 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D06B08A62535F84400553105 /* CyclingAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CyclingAnalyticsManager.swift; sourceTree = "<group>"; };
 		D06B08A72535F84400553105 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		D06B08AE2535F85C00553105 /* DeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		D06D79852527BCE4001961E3 /* TCXHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCXHandler.swift; sourceTree = "<group>"; };
 		D06D7997252CED17001961E3 /* GPSData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSData.swift; sourceTree = "<group>"; };
 		D078415F2575599A00941B86 /* LapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapViewModel.swift; sourceTree = "<group>"; };
-		D078416725758F9300941B86 /* BarCharTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BarCharTest.swift; path = /Users/justin/Projects/Astar/Astar/BarCharTest.swift; sourceTree = "<absolute>"; };
 		D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityFeedHostingController.swift; sourceTree = "<group>"; };
-		D08253BA256C62F30023D6C5 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D08253BA256C62F30023D6C5 /* ActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		D08253BE256C63020023D6C5 /* RideResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideResult.swift; sourceTree = "<group>"; };
 		D093A77B251A4AE200241E7E /* PeripheralData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralData.swift; sourceTree = "<group>"; };
 		D0AB73B3255F038E0090B1DF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -122,33 +120,6 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		D055FA482534920300D5ECA4 /* Delegates */ = {
-			isa = PBXGroup;
-			children = (
-				D03418992535F7DA001AD367 /* AppDelegate.swift */,
-				D034189B2535F7DA001AD367 /* GPSDelegate.swift */,
-				D03418982535F7DA001AD367 /* LocationDelegate.swift */,
-				D034189A2535F7DA001AD367 /* RideDelegate.swift */,
-				D00147062550DE9F0015B672 /* BluetoothDelegate.swift */,
-			);
-			name = Delegates;
-			sourceTree = "<group>";
-		};
-		D055FA4A2534946000D5ECA4 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D078416725758F9300941B86 /* BarCharTest.swift */,
-				D08253BA256C62F30023D6C5 /* ContentView.swift */,
-				D06B089F2535F82400553105 /* SettingsViewController.swift */,
-				D06B089E2535F82400553105 /* MapViewController.swift */,
-				D06B08A02535F82400553105 /* ViewController.swift */,
-				D0FF5799253F3F5800265638 /* SpinnerViewController.swift */,
-				D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */,
-				D02BE892257517A700509E50 /* RideDetailView.swift */,
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
 		D055FA502534B54000D5ECA4 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +157,32 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		D06DD7A62577D8E500D0D760 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				D00147062550DE9F0015B672 /* BluetoothDelegate.swift */,
+				D03418992535F7DA001AD367 /* AppDelegate.swift */,
+				D034189B2535F7DA001AD367 /* GPSDelegate.swift */,
+				D03418982535F7DA001AD367 /* LocationDelegate.swift */,
+				D034189A2535F7DA001AD367 /* RideDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
+		D06DD7A72577D94F00D0D760 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D08253BA256C62F30023D6C5 /* ActivityView.swift */,
+				D06B089F2535F82400553105 /* SettingsViewController.swift */,
+				D06B089E2535F82400553105 /* MapViewController.swift */,
+				D06B08A02535F82400553105 /* ViewController.swift */,
+				D0FF5799253F3F5800265638 /* SpinnerViewController.swift */,
+				D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */,
+				D02BE892257517A700509E50 /* RideDetailsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		D0AB73B2255F03780090B1DF /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,13 +214,13 @@
 		D0D329072503BF2B003CC73A /* Astar */ = {
 			isa = PBXGroup;
 			children = (
+				D06DD7A72577D94F00D0D760 /* View */,
+				D06DD7A62577D8E500D0D760 /* Delegate */,
 				D0539B42257150AA0008E651 /* Astar.entitlements */,
 				D0AB73B2255F03780090B1DF /* Utils */,
 				D055FA602534B7AE00D5ECA4 /* Managers */,
 				D055FA572534B5D900D5ECA4 /* Storyboards */,
 				D055FA502534B54000D5ECA4 /* Data */,
-				D055FA4A2534946000D5ECA4 /* Views */,
-				D055FA482534920300D5ECA4 /* Delegates */,
 				D0D329112503BF2B003CC73A /* Assets.xcassets */,
 				D0D329162503BF2B003CC73A /* Info.plist */,
 				D055FA2D252F907000D5ECA4 /* Constants.swift */,
@@ -359,10 +356,9 @@
 				D034189F2535F7DA001AD367 /* GPSDelegate.swift in Sources */,
 				D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */,
 				D00147042550DDBF0015B672 /* BluetoothData.swift in Sources */,
-				D02BE893257517A700509E50 /* RideDetailView.swift in Sources */,
+				D02BE893257517A700509E50 /* RideDetailsView.swift in Sources */,
 				D034189D2535F7DA001AD367 /* AppDelegate.swift in Sources */,
 				D0FF579A253F3F5800265638 /* SpinnerViewController.swift in Sources */,
-				D078416825758F9300941B86 /* BarCharTest.swift in Sources */,
 				D06B08A92535F84400553105 /* CyclingAnalyticsManager.swift in Sources */,
 				D01A9683256459E10061B9B2 /* RideCalculator.swift in Sources */,
 				D06B08A12535F82400553105 /* MapViewController.swift in Sources */,
@@ -378,7 +374,7 @@
 				D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */,
 				D0AB73B4255F038E0090B1DF /* Extensions.swift in Sources */,
 				D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */,
-				D08253BC256C62F30023D6C5 /* ContentView.swift in Sources */,
+				D08253BC256C62F30023D6C5 /* ActivityView.swift in Sources */,
 				D06B08AF2535F85C00553105 /* DeviceManager.swift in Sources */,
 				D055FA2E252F907000D5ECA4 /* Constants.swift in Sources */,
 				D08253B7256C605C0023D6C5 /* ActivityFeedHostingController.swift in Sources */,

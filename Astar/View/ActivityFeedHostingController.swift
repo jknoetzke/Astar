@@ -30,7 +30,7 @@ class ActivityFeedHostingController: UIViewController {
         let coreDataService = CoreDataServices.sharedCoreDataService
         coreDataService.retrieveAllRideStats()
         
-        let swiftUIView: some View = ContentView(coreDataService: coreDataService)
+        let swiftUIView: some View = ActivityView(coreDataService: coreDataService)
         let hostingController = UIHostingController(rootView: swiftUIView)
         addChild(hostingController)
         

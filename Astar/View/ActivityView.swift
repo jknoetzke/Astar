@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-let coreData = CoreDataServices()
 
-struct ContentView: View {
+struct ActivityView: View {
     
     @ObservedObject var coreDataService: CoreDataServices
 
@@ -21,11 +20,9 @@ struct ContentView: View {
                 ZStack {
                     RideCell(ride: ride)
                     NavigationLink(
-                        destination: RideDetailView(ride: ride)) {
+                        destination: RideDetailsView(rideMetric: ride)) {
                         EmptyView()
                     }.buttonStyle(PlainButtonStyle())
-                    
-                    
                     VStack(alignment: .center) {
                         DateView(ride: ride)
                         Spacer()
@@ -43,7 +40,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                .navigationTitle("Your Rides")
+                .navigationTitle("Rides")
                 
             }
         }
