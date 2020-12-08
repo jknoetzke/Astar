@@ -27,7 +27,6 @@ struct RideDetailsView: View {
     var body: some View {
         
         ScrollView(.vertical) {
-            Text("RideID: \(rideMetric.rideID)")
             VStack(alignment: .center) {
                 Text(formatDate(rawDate: rideMetric.rideDate))
                 
