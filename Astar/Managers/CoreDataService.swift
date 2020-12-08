@@ -248,6 +248,7 @@ class CoreDataServices: ObservableObject {
   
                 rideMetric.laps = tmpLaps
                 rideMetrics.append(rideMetric)
+                tmpLaps.removeAll()
                 
             }
  } catch {
