@@ -120,7 +120,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
         
         options.showsBuildings = false
         
-        if coordinates.count == 0 { return }
+        if coordinates.count == 0 {
+            
+            let image = #imageLiteral(resourceName: "map")
+            let coreDataServices = CoreDataServices.sharedCoreDataService
+            coreDataServices.saveMetrics(ride: ride, mapImage: image, rideID: rideID)
+            self.stopSpinnerView()
+            return
+            
+        }
         
         startSpinnerView()
         

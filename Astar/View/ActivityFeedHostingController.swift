@@ -8,31 +8,15 @@
 import Foundation
 import SwiftUI
 import UIKit
-import Combine
-
-/*
- class ActivityFeedHostingController: UIHostingController<ContentView> {
- required init?(coder aDecoder: NSCoder) {
- super.init(coder: aDecoder, rootView: ContentView())
- }
- }
- */
 
 
 class ActivityFeedHostingController: UIViewController {
     
-    private var cancellable: AnyCancellable!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        //let coreDataService = CoreDataServices.sharedCoreDataService
-        //coreDataService.retrieveAllRideStats()
-        
         let persistenceController = PersistenceController.shared
         
-//        let activityView: some View = ActivityView(coreDataService: coreDataService)
         let activityView: some View = ActivityView().environment(\.managedObjectContext, persistenceController.container.viewContext)
             
         let hostingController = UIHostingController(rootView: activityView)
@@ -56,10 +40,6 @@ class ActivityFeedHostingController: UIViewController {
         /// Notify the hosting controller that it has been moved to the current view controller.
         hostingController.didMove(toParent: self)
         
-      //  self.cancellable = coreDataService.$rideMetrics.sink { rideMetrics in
-      //      print(rideMetrics.count)
-            
-        //}
     }
 }
 

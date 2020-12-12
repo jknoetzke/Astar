@@ -14,7 +14,6 @@ struct ActivityView: View {
 
     let persistenceController = PersistenceController.shared
 
-    //@ObservedObject var coreDataService: CoreDataServices
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(

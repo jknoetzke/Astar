@@ -19,6 +19,7 @@ struct RideDetailsView: View {
     
     init(rideMetric: CompletedRide) {
         self.rideMetric = rideMetric
+        rideData = coreData.retrieveRide(rideID: rideMetric.ride_id!)!
     }
     
     

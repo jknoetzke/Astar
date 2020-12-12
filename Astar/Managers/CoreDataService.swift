@@ -109,10 +109,8 @@ class CoreDataServices: ObservableObject {
         }
     }
     
-    /*
     
     func retrieveRide(rideID: UUID) -> [PeripheralData]? {
-     //   guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil}
         
         var aRideArray = [PeripheralData]()
         var aRide = PeripheralData()
@@ -154,6 +152,7 @@ class CoreDataServices: ObservableObject {
         return aRideArray
         
     }
+    /*
     
     
     func retrieveRideStats(rideID: UUID) {
