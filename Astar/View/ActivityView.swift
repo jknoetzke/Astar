@@ -7,18 +7,27 @@
 
 import SwiftUI
 
+import CoreData
+
 
 struct ActivityView: View {
-    
-    @ObservedObject var coreDataService: CoreDataServices
 
+    let persistenceController = PersistenceController.shared
+
+    //@ObservedObject var coreDataService: CoreDataServices
+    @Environment(\.managedObjectContext) private var viewContext
+
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \CompletedRide.ride_date, ascending: false)],
+        animation: .default)
+    private var completedRide: FetchedResults<CompletedRide>
+    
     var body: some View {
         
         NavigationView {
             
-            List(coreDataService.rideMetrics, id: \.rideID) { ride in
+            List(completedRide, id: \.ride_date) { ride in
                 ZStack {
-                    RideCell(ride: ride)
                     NavigationLink(
                         destination: RideDetailsView(rideMetric: ride)) {
                         EmptyView()
@@ -26,18 +35,18 @@ struct ActivityView: View {
                     VStack(alignment: .center) {
                         DateView(ride: ride)
                         Spacer()
-                        ImageView(ride: ride)
-                        HStack(alignment: .lastTextBaseline) {
-                            RideTimeView(ride: ride)
-                            Spacer()
-                            DistanceView(ride: ride)
-                            Spacer()
-                            WattsView(ride:ride)
-                            Spacer()
-                            ElevationView(ride: ride)
-                            Spacer()
-                            CaloriesView(ride: ride)
-                        }
+                       ImageView(ride: ride)
+                       HStack(alignment: .lastTextBaseline) {
+                           RideTimeView(ride: ride)
+                           Spacer()
+                           DistanceView(ride: ride)
+                           Spacer()
+                           WattsView(ride:ride)
+                           Spacer()
+                           ElevationView(ride: ride)
+                           Spacer()
+                           CaloriesView(ride: ride)
+                       }
                     }
                 }
                 .navigationTitle("Rides")
@@ -45,11 +54,12 @@ struct ActivityView: View {
             }
         }
     }
+    
     struct ImageView: View {
-        let ride: RideMetric
+        let ride: CompletedRide
         var body: some View {
-            let mapImage = ride.mapImage
-            Image(uiImage: mapImage!)
+            let mapImage = ride.map_image
+            Image(uiImage: UIImage(data:mapImage!)!)
                 .resizable()
                 .frame(width: 340, height: 300)
                 .cornerRadius(16)
@@ -59,29 +69,29 @@ struct ActivityView: View {
     
         
     struct RideTimeView: View {
-        let ride: RideMetric
+        let ride: CompletedRide
         
         var body: some View {
             VStack(alignment: .leading) {
                 Text("Ride Time:").fixedSize().font(.system(size:10))
-                Text(formatTime(timeInterval: ride.rideTime)).fixedSize()
+                Text(formatTime(timeInterval: ride.ride_time)).fixedSize()
             }
         }
     }
     
     struct DateView: View {
-        let ride: RideMetric
+        let ride: CompletedRide
         
         var body: some View {
             VStack(alignment: .leading) {
                 Text("Date:").fixedSize().font(.system(size:10))
-                Text(formatDate(rawDate: ride.rideDate)).fixedSize()
+                Text(formatDate(rawDate: ride.ride_date ?? Date())).fixedSize()
             }
         }
     }
     
     struct DistanceView: View {
-        let ride: RideMetric
+        let ride: CompletedRide
         
         var body: some View {
             VStack(alignment: .leading) {
@@ -92,19 +102,19 @@ struct ActivityView: View {
     }
     
     struct WattsView: View {
-        let ride: RideMetric
+        let ride: CompletedRide
         
         var body: some View {
             VStack(alignment: .leading) {
                 Text("Avg Watts:").fixedSize().font(.system(size:10))
-                Text(String(ride.avgWatts)).fixedSize()
+                Text(String(ride.average_watts)).fixedSize()
             }
         }
     }
     
     
     struct ElevationView: View {
-        let ride: RideMetric
+        let ride: CompletedRide
         
         var body: some View {
             HStack(alignment: .lastTextBaseline) {
@@ -117,7 +127,7 @@ struct ActivityView: View {
     }
     
     struct CaloriesView: View {
-        let ride: RideMetric
+        let ride: CompletedRide
         
         var body: some View {
             HStack(alignment: .lastTextBaseline) {
@@ -131,12 +141,12 @@ struct ActivityView: View {
     
     
     struct MetricsView: View {
-        let ride: RideMetric
+        let ride: CompletedRide
         
         var body: some View {
-            let hours = Int(ride.rideTime) / 3600
-            let minutes = Int(ride.rideTime) / 60 % 60
-            let seconds = Int(ride.rideTime) % 60
+            let hours = Int(ride.ride_time) / 3600
+            let minutes = Int(ride.ride_time) / 60 % 60
+            let seconds = Int(ride.ride_time) % 60
             let rideTime = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
             Text(rideTime)
             Spacer()
@@ -168,20 +178,3 @@ func formatTime(timeInterval: Double) -> String {
     return time
     
 }
-
-struct RideCell: View {
-    let ride: RideMetric
-    
-    var body: some View {
-        Text("Hello!")
-    }
-}
-
-
-/*
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView(rides: CoreDataServices())
-    }
-}
- */

@@ -13,14 +13,12 @@ let coreData = CoreDataServices.sharedCoreDataService
 
 struct RideDetailsView: View {
     
-    var rideMetric: RideMetric
+    var rideMetric: CompletedRide
     var rideData = [PeripheralData]()
-
     
-    init(rideMetric: RideMetric) {
+    
+    init(rideMetric: CompletedRide) {
         self.rideMetric = rideMetric
-        rideData = coreData.retrieveRide(rideID: rideMetric.rideID)!
-
     }
     
     
@@ -28,10 +26,10 @@ struct RideDetailsView: View {
         
         ScrollView(.vertical) {
             VStack(alignment: .center) {
-                Text(formatDate(rawDate: rideMetric.rideDate))
+                Text(formatDate(rawDate: rideMetric.ride_date!))
                 
                 Spacer()
-                Image(uiImage: rideMetric.mapImage!)
+                Image(uiImage: UIImage(data: rideMetric.map_image!)!)
                     .resizable()
                     .frame(width: 340, height: 300)
                     .aspectRatio(contentMode: .fit)
@@ -43,11 +41,11 @@ struct RideDetailsView: View {
                     Spacer()
                 }
                 RideBarChart(ride: rideData)
-                     .frame(width: 340, height: 380)
+                    .frame(width: 340, height: 380)
                 
                 Spacer()
                 if rideMetric.laps != nil {
-                    LapView(rideMetric: rideMetric)
+                    LapView(laps: rideMetric)
                 }
             }
             
@@ -57,52 +55,53 @@ struct RideDetailsView: View {
 
 struct LapView: View {
     
-    let rideMetric: RideMetric
+    let laps:CompletedRide
     
     var body: some View {
         Text("Laps")
         Spacer()
-        ForEach(rideMetric.laps!, id: \.lapNumber) { ride in
+        ForEach(laps.lapsArray, id: \.lap_number) { lap in
             HStack(alignment: .firstTextBaseline) {
                 Spacer()
                 VStack(alignment: .leading) {
                     Text("Ride Time:").fixedSize().font(.system(size:10))
-                    Text(formatTime(timeInterval: ride.rideTime)).fixedSize()
+                    Text(formatTime(timeInterval: lap.lap_time)).fixedSize()
                 }
                 Spacer()
                 VStack(alignment: .leading) {
                     Text("Avg Watts:").fixedSize().font(.system(size:10))
-                    Text(String(ride.avgWatts)).fixedSize()
+                    Text(String(lap.average_watts)).fixedSize()
                 }
                 Spacer()
                 VStack(alignment: .leading) {
                     Text("Distance:").fixedSize().font(.system(size:10))
-                    Text(String(ride.distance)).fixedSize()
+                    Text(String(lap.distance)).fixedSize()
                 }
                 Spacer()
                 VStack(alignment: .leading) {
                     Text("Heart Rate:").fixedSize().font(.system(size:10))
-                    Text(String(ride.heartRate)).fixedSize()
+                    Text(String(lap.average_hr)).fixedSize()
                 }
                 
             }
         }
     }
 }
+ 
 
 struct MetricsView: View {
     
-    let rideMetric: RideMetric
+    let rideMetric: CompletedRide
     
     var body: some View {
         VStack(alignment: .leading) {
             Text("Ride Time:").fixedSize().font(.system(size:10))
-            Text(formatTime(timeInterval: rideMetric.rideTime)).fixedSize()
+            Text(formatTime(timeInterval: rideMetric.ride_time)).fixedSize()
         }
         Spacer()
         VStack(alignment: .leading) {
             Text("Avg Watts:").fixedSize().font(.system(size:10))
-            Text(String(rideMetric.avgWatts)).fixedSize()
+            Text(String(rideMetric.average_watts)).fixedSize()
         }
         Spacer()
         VStack(alignment: .leading) {
@@ -121,84 +120,48 @@ struct MetricsView: View {
 
 struct RideBarChart: View {
     
-     var ride: [PeripheralData]
-     let FTP = 240.0
-     var points = [DataPoint]()
-     var legendDict:[Int:Legend] = [:]
-     let activeRecovery = Legend(color: .blue, label: "Active Recovery", order: 1)
-     let endurance = Legend(color: .purple, label: "Endurance", order: 2)
-     let tempo = Legend(color: .green, label: "Tempo", order: 3)
-     let sweetSpot = Legend(color: .yellow, label: "Sweet Spot", order: 4)
-     let threshold = Legend(color: .black, label: "Threshold", order: 5)
-     let vo2max = Legend(color: .gray, label: "VO2Max", order: 6)
-     let anaerobic =  Legend(color: .orange, label: "Anaerobic", order: 7)
-     let neuro =  Legend(color: .red, label: "Neuromuscular", order: 8)
-     
-     init(ride: [PeripheralData]) {
-     
-     self.ride = ride
-     legendDict[1] = activeRecovery
-     legendDict[2] =  endurance
-     legendDict[3] =  tempo
-     legendDict[4] =  sweetSpot
-     legendDict[5] =  threshold
-     legendDict[6] =  vo2max
-     legendDict[7] =  anaerobic
-     legendDict[8] =  neuro
-     
-     points = loadPoints(rides: ride, points: points, legendDict: legendDict, FTP: FTP)
-     
-     
-     
-     }
-     
-     var body: some View {
-     let limit = DataPoint(value: FTP, label: LocalizedStringKey(String(FTP)), legend: threshold)
-     BarChartView(dataPoints: points, limit: limit )
-     }
+    var ride: [PeripheralData]
     
- /*
-    var body: some View {
-        let highIntensity = Legend(color: .orange, label: "High Intensity", order: 5)
-        let buildFitness = Legend(color: .yellow, label: "Build Fitness", order: 4)
-        let fatBurning = Legend(color: .green, label: "Fat Burning", order: 3)
-        let warmUp = Legend(color: .blue, label: "Warm Up", order: 2)
-        let low = Legend(color: .gray, label: "Low", order: 1)
+    let defaults = UserDefaults.standard
+    let FTP:Int!
+    var points = [DataPoint]()
+    var legendDict:[Int:Legend] = [:]
+    let activeRecovery = Legend(color: .blue, label: "Active Recovery", order: 1)
+    let endurance = Legend(color: .purple, label: "Endurance", order: 2)
+    let tempo = Legend(color: .green, label: "Tempo", order: 3)
+    let sweetSpot = Legend(color: .yellow, label: "Sweet Spot", order: 4)
+    let threshold = Legend(color: .black, label: "Threshold", order: 5)
+    let vo2max = Legend(color: .gray, label: "VO2Max", order: 6)
+    let anaerobic =  Legend(color: .orange, label: "Anaerobic", order: 7)
+    let neuro =  Legend(color: .red, label: "Neuromuscular", order: 8)
+    
+    init(ride: [PeripheralData]) {
         
-        let limit = DataPoint(value: 130, label: "5", legend: fatBurning)
+        self.ride = ride
+        legendDict[1] = activeRecovery
+        legendDict[2] =  endurance
+        legendDict[3] =  tempo
+        legendDict[4] =  sweetSpot
+        legendDict[5] =  threshold
+        legendDict[6] =  vo2max
+        legendDict[7] =  anaerobic
+        legendDict[8] =  neuro
+
+        FTP = defaults.integer(forKey: "FTP")
+
         
-        let points: [DataPoint] = [
-            .init(value: 70, label: "1", legend: low),
-            .init(value: 90, label: "2", legend: warmUp),
-            .init(value: 91, label: "3", legend: warmUp),
-            .init(value: 92, label: "4", legend: warmUp),
-            .init(value: 130, label: "5", legend: fatBurning),
-            .init(value: 124, label: "6", legend: fatBurning),
-            .init(value: 135, label: "7", legend: fatBurning),
-            .init(value: 133, label: "8", legend: fatBurning),
-            .init(value: 136, label: "9", legend: fatBurning),
-            .init(value: 138, label: "10", legend: fatBurning),
-            .init(value: 150, label: "11", legend: buildFitness),
-            .init(value: 151, label: "12", legend: buildFitness),
-            .init(value: 150, label: "13", legend: buildFitness),
-            .init(value: 136, label: "14", legend: fatBurning),
-            .init(value: 135, label: "15", legend: fatBurning),
-            .init(value: 130, label: "16", legend: fatBurning),
-            .init(value: 130, label: "17", legend: fatBurning),
-            .init(value: 150, label: "18", legend: buildFitness),
-            .init(value: 151, label: "19", legend: buildFitness),
-            .init(value: 150, label: "20", legend: buildFitness),
-            .init(value: 160, label: "21", legend: highIntensity),
-            .init(value: 159, label: "22", legend: highIntensity),
-            .init(value: 161, label: "23", legend: highIntensity),
-            .init(value: 158, label: "24", legend: highIntensity),
-        ]
+        points = loadPoints(rides: ride, points: points, legendDict: legendDict, FTP: Double(FTP))
         
         
-        BarChartView(dataPoints: points, limit: limit)
+        
     }
-    */
     
+    var body: some View {
+        let limit = DataPoint(value: Double(FTP), label: LocalizedStringKey(String(FTP)), legend: threshold)
+        BarChartView(dataPoints: points, limit: limit )
+    }
+    
+   
 }
 func legend(watts: Int, FTP: Double, legendDict: [Int : Legend]) -> Legend {
     

@@ -32,12 +32,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+        
         return true
     }
-    
+  
+    /*
     // MARK: - Core Data stack
-    
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
         /*
          The persistent container for the application. This implementation
@@ -66,6 +66,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
         container.viewContext.automaticallyMergesChangesFromParent = true
     
+        
+        
         return container
     }()
     
@@ -84,4 +86,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+     
+*/
 }

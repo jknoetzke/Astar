@@ -27,11 +27,17 @@ class ActivityFeedHostingController: UIViewController {
         super.viewDidLoad()
         
         
-        let coreDataService = CoreDataServices.sharedCoreDataService
-        coreDataService.retrieveAllRideStats()
+        //let coreDataService = CoreDataServices.sharedCoreDataService
+        //coreDataService.retrieveAllRideStats()
         
-        let swiftUIView: some View = ActivityView(coreDataService: coreDataService)
-        let hostingController = UIHostingController(rootView: swiftUIView)
+        let persistenceController = PersistenceController.shared
+        
+//        let activityView: some View = ActivityView(coreDataService: coreDataService)
+        let activityView: some View = ActivityView().environment(\.managedObjectContext, persistenceController.container.viewContext)
+            
+        let hostingController = UIHostingController(rootView: activityView)
+        
+        
         addChild(hostingController)
         
         view.addSubview(hostingController.view)
@@ -50,10 +56,10 @@ class ActivityFeedHostingController: UIViewController {
         /// Notify the hosting controller that it has been moved to the current view controller.
         hostingController.didMove(toParent: self)
         
-        self.cancellable = coreDataService.$rideMetrics.sink { rideMetrics in
-            print(rideMetrics.count)
+      //  self.cancellable = coreDataService.$rideMetrics.sink { rideMetrics in
+      //      print(rideMetrics.count)
             
-        }
+        //}
     }
 }
 

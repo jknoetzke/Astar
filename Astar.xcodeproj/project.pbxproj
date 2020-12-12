@@ -40,6 +40,11 @@
 		D0D329102503BF2B003CC73A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D3290E2503BF2B003CC73A /* Main.storyboard */; };
 		D0D329122503BF2B003CC73A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0D329112503BF2B003CC73A /* Assets.xcassets */; };
 		D0D329152503BF2B003CC73A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0D329132503BF2B003CC73A /* LaunchScreen.storyboard */; };
+		D0D6227D258406AE00792442 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6227C258406AE00792442 /* Persistence.swift */; };
+		D0D6228F258446F900792442 /* Laps+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6228B258446F900792442 /* Laps+CoreDataClass.swift */; };
+		D0D62290258446F900792442 /* Laps+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6228C258446F900792442 /* Laps+CoreDataProperties.swift */; };
+		D0D62291258446F900792442 /* CompletedRide+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6228D258446F900792442 /* CompletedRide+CoreDataClass.swift */; };
+		D0D62292258446F900792442 /* CompletedRide+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6228E258446F900792442 /* CompletedRide+CoreDataProperties.swift */; };
 		D0FF579A253F3F5800265638 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF5799253F3F5800265638 /* SpinnerViewController.swift */; };
 		D0FF579E253F840A00265638 /* StravaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF579D253F840A00265638 /* StravaManager.swift */; };
 		D0FF57AA2540CC5500265638 /* StravaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF57A92540CC5500265638 /* StravaData.swift */; };
@@ -82,6 +87,11 @@
 		D0D329112503BF2B003CC73A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D0D329142503BF2B003CC73A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D0D329162503BF2B003CC73A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0D6227C258406AE00792442 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		D0D6228B258446F900792442 /* Laps+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Laps+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		D0D6228C258446F900792442 /* Laps+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Laps+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		D0D6228D258446F900792442 /* CompletedRide+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CompletedRide+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		D0D6228E258446F900792442 /* CompletedRide+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CompletedRide+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		D0FF5799253F3F5800265638 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		D0FF579D253F840A00265638 /* StravaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaManager.swift; sourceTree = "<group>"; };
 		D0FF57A92540CC5500265638 /* StravaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaData.swift; sourceTree = "<group>"; };
@@ -123,6 +133,10 @@
 		D055FA502534B54000D5ECA4 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				D0D6228B258446F900792442 /* Laps+CoreDataClass.swift */,
+				D0D6228C258446F900792442 /* Laps+CoreDataProperties.swift */,
+				D0D6228D258446F900792442 /* CompletedRide+CoreDataClass.swift */,
+				D0D6228E258446F900792442 /* CompletedRide+CoreDataProperties.swift */,
 				D0C757F02508FA1200C923C4 /* AStar.xcdatamodeld */,
 				D01A96892566964D0061B9B2 /* RideViewModel.swift */,
 				D06D7997252CED17001961E3 /* GPSData.swift */,
@@ -132,6 +146,7 @@
 				D0FF57A92540CC5500265638 /* StravaData.swift */,
 				D00147032550DDBF0015B672 /* BluetoothData.swift */,
 				D078415F2575599A00941B86 /* LapViewModel.swift */,
+				D0D6227C258406AE00792442 /* Persistence.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -355,21 +370,25 @@
 				D034189C2535F7DA001AD367 /* LocationDelegate.swift in Sources */,
 				D034189F2535F7DA001AD367 /* GPSDelegate.swift in Sources */,
 				D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */,
+				D0D6228F258446F900792442 /* Laps+CoreDataClass.swift in Sources */,
 				D00147042550DDBF0015B672 /* BluetoothData.swift in Sources */,
 				D02BE893257517A700509E50 /* RideDetailsView.swift in Sources */,
 				D034189D2535F7DA001AD367 /* AppDelegate.swift in Sources */,
 				D0FF579A253F3F5800265638 /* SpinnerViewController.swift in Sources */,
 				D06B08A92535F84400553105 /* CyclingAnalyticsManager.swift in Sources */,
 				D01A9683256459E10061B9B2 /* RideCalculator.swift in Sources */,
+				D0D62292258446F900792442 /* CompletedRide+CoreDataProperties.swift in Sources */,
 				D06B08A12535F82400553105 /* MapViewController.swift in Sources */,
 				D06D7998252CED17001961E3 /* GPSData.swift in Sources */,
 				D06B08A22535F82400553105 /* SettingsViewController.swift in Sources */,
 				D01A968A2566964D0061B9B2 /* RideViewModel.swift in Sources */,
 				D00147072550DE9F0015B672 /* BluetoothDelegate.swift in Sources */,
+				D0D62291258446F900792442 /* CompletedRide+CoreDataClass.swift in Sources */,
 				D07841602575599A00941B86 /* LapViewModel.swift in Sources */,
 				D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */,
 				D0FF579E253F840A00265638 /* StravaManager.swift in Sources */,
 				D01A9680256459A30061B9B2 /* CoreDataService.swift in Sources */,
+				D0D62290258446F900792442 /* Laps+CoreDataProperties.swift in Sources */,
 				D06B08AA2535F84400553105 /* LocationManager.swift in Sources */,
 				D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */,
 				D0AB73B4255F038E0090B1DF /* Extensions.swift in Sources */,
@@ -378,6 +397,7 @@
 				D06B08AF2535F85C00553105 /* DeviceManager.swift in Sources */,
 				D055FA2E252F907000D5ECA4 /* Constants.swift in Sources */,
 				D08253B7256C605C0023D6C5 /* ActivityFeedHostingController.swift in Sources */,
+				D0D6227D258406AE00792442 /* Persistence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
