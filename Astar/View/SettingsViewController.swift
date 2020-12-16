@@ -20,7 +20,6 @@ let DEVICES_SECTION = 2
 class SettingsViewController : UIViewController, UITableViewDataSource, UITableViewDelegate, BluetoothDelegate {
     
     @IBOutlet weak var deviceTableView: UITableView!
-    @IBOutlet var txtFTP: UITextField!
     
     var deviceManager:DeviceManager?
     
@@ -46,10 +45,18 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
 
     }
     
+    private func registerTableViewCells() {
+        let textFieldCell = UINib(nibName: "CustomTableViewCell",
+                                  bundle: nil)
+        deviceTableView.register(textFieldCell,
+                                forCellReuseIdentifier: "CustomTableViewCell")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         deviceTableView.dataSource = self
         deviceTableView.delegate = self
+        registerTableViewCells()
         deviceManager = DeviceManager.deviceManagerInstance
         deviceManager?.bleDelegate = self
         
@@ -122,9 +129,16 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath)
         var switchTag = 0
         var switchState = false
-
+        
         switch indexPath.section {
         case SETTINGS_SECTION:
+            switchTag = settings[indexPath.row].tag
+            if switchTag == 2 {
+                if let customCell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell") as? CustomTableViewCell {
+                    return customCell
+                }
+            }
+            
             cell.textLabel?.text =  settings[indexPath.row].name
             switchTag = settings[indexPath.row].tag
             switchState = defaults.bool(forKey: "metric")
@@ -153,36 +167,11 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             
         }
         
-        if switchTag == 2 {
-            txtFTP = UITextField(frame: CGRect(x: 330, y: 1, width: 50, height: 50))
-            
-            let defaults = UserDefaults.standard
-            let ftp = defaults.string(forKey: "FTP")
-
-            if ftp == nil {
-                txtFTP.placeholder = "FTP"
-            } else {
-                txtFTP.text = ftp
-            }
-            txtFTP.borderStyle = .roundedRect
-            txtFTP.translatesAutoresizingMaskIntoConstraints = false
-            txtFTP.font = UIFont.systemFont(ofSize: 15)
-            txtFTP.addTarget(self, action: #selector(valueChanged), for: .editingChanged)
-            
-            txtFTP.delegate = self
-            
-            txtFTP.keyboardType = .numberPad
-            
-        
-            cell.addSubview(txtFTP)
-        } else {
-            let switchView = UISwitch(frame: .zero)
-            switchView.setOn(switchState, animated: true)
-            switchView.tag = switchTag // for detect which row switch Changed
-            switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
-            cell.accessoryView = switchView
-        }
-        
+        let switchView = UISwitch(frame: .zero)
+        switchView.setOn(switchState, animated: true)
+        switchView.tag = switchTag // for detect which row switch Changed
+        switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
+        cell.accessoryView = switchView
         return cell
     }
     
@@ -267,37 +256,6 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             break
         }
     }
-    
-    @objc func valueChanged(_ textField: UITextField) {
-        let defaults = UserDefaults.standard
-        defaults.setValue(txtFTP.text, forKey: "FTP")
-    }
-    
-}
-
-
-extension SettingsViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        let currentText = textField.text ?? ""
-        
-        // attempt to read the range they are trying to change, or exit if we can't
-        guard let stringRange = Range(range, in: currentText) else { return false }
-        
-        // add their new text to the existing text
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
-        let num = Int(updatedText)
-        
-        if num == nil && updatedText.count != 0  {
-            return false
-        }
-        
-        // make sure the result is under 3 characters
-        return updatedText.count <= 3
-    }
-    
-    
     
 }
 

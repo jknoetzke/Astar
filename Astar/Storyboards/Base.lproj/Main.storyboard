@@ -467,7 +467,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xPL-XJ-SsG"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBlueColor"/>
                         <constraints>
                             <constraint firstItem="AqK-bW-eNX" firstAttribute="bottom" secondItem="xPL-XJ-SsG" secondAttribute="bottom" id="5Jt-bt-U6y"/>
                             <constraint firstItem="AqK-bW-eNX" firstAttribute="top" secondItem="xPL-XJ-SsG" secondAttribute="top" id="6SO-mL-e5L"/>

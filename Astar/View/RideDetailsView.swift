@@ -121,10 +121,13 @@ struct MetricsView: View {
 
 struct RideBarChart: View {
     
+    
+    @AppStorage("FTP") var FTP: Int = 240
+    
     var ride: [PeripheralData]
     
     let defaults = UserDefaults.standard
-    let FTP:Int!
+    //let FTP:Int!
     var points = [DataPoint]()
     var legendDict:[Int:Legend] = [:]
     let activeRecovery = Legend(color: .blue, label: "Active Recovery", order: 1)
@@ -148,13 +151,8 @@ struct RideBarChart: View {
         legendDict[7] =  anaerobic
         legendDict[8] =  neuro
 
-        FTP = defaults.integer(forKey: "FTP")
-
-        
+        //FTP = defaults.integer(forKey: "FTP")
         points = loadPoints(rides: ride, points: points, legendDict: legendDict, FTP: Double(FTP))
-        
-        
-        
     }
     
     var body: some View {

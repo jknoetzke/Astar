@@ -21,6 +21,9 @@
 		D05374462536467700C6FB91 /* CyclingAnalyticsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */; };
 		D0539B45257150B20008E651 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0539B44257150B20008E651 /* CloudKit.framework */; };
 		D055FA2E252F907000D5ECA4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D055FA2D252F907000D5ECA4 /* Constants.swift */; };
+		D05764592589A883009D6DBC /* FDTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05764582589A883009D6DBC /* FDTextFieldTableViewCell.swift */; };
+		D057645E258A2EF4009D6DBC /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D057645C258A2EF4009D6DBC /* CustomTableViewCell.swift */; };
+		D057645F258A2EF4009D6DBC /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D057645D258A2EF4009D6DBC /* CustomTableViewCell.xib */; };
 		D06B08A12535F82400553105 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B089E2535F82400553105 /* MapViewController.swift */; };
 		D06B08A22535F82400553105 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B089F2535F82400553105 /* SettingsViewController.swift */; };
 		D06B08A32535F82400553105 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B08A02535F82400553105 /* ViewController.swift */; };
@@ -67,6 +70,9 @@
 		D0539B42257150AA0008E651 /* Astar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Astar.entitlements; sourceTree = "<group>"; };
 		D0539B44257150B20008E651 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		D055FA2D252F907000D5ECA4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D05764582589A883009D6DBC /* FDTextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FDTextFieldTableViewCell.swift; sourceTree = "<group>"; };
+		D057645C258A2EF4009D6DBC /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		D057645D258A2EF4009D6DBC /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		D06B089E2535F82400553105 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D06B089F2535F82400553105 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D06B08A02535F82400553105 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +162,8 @@
 			children = (
 				D0D329132503BF2B003CC73A /* LaunchScreen.storyboard */,
 				D0D3290E2503BF2B003CC73A /* Main.storyboard */,
+				D057645C258A2EF4009D6DBC /* CustomTableViewCell.swift */,
+				D057645D258A2EF4009D6DBC /* CustomTableViewCell.xib */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -204,6 +212,7 @@
 				D0AB73B3255F038E0090B1DF /* Extensions.swift */,
 				D06D79852527BCE4001961E3 /* TCXHandler.swift */,
 				D01A9682256459E10061B9B2 /* RideCalculator.swift */,
+				D05764582589A883009D6DBC /* FDTextFieldTableViewCell.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -310,6 +319,7 @@
 			files = (
 				D0D329152503BF2B003CC73A /* LaunchScreen.storyboard in Resources */,
 				D0D329122503BF2B003CC73A /* Assets.xcassets in Resources */,
+				D057645F258A2EF4009D6DBC /* CustomTableViewCell.xib in Resources */,
 				D0D329102503BF2B003CC73A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -364,8 +374,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0FF57AA2540CC5500265638 /* StravaData.swift in Sources */,
+				D057645E258A2EF4009D6DBC /* CustomTableViewCell.swift in Sources */,
 				D05374462536467700C6FB91 /* CyclingAnalyticsData.swift in Sources */,
 				D08253BF256C63020023D6C5 /* RideResult.swift in Sources */,
+				D05764592589A883009D6DBC /* FDTextFieldTableViewCell.swift in Sources */,
 				D06B08A32535F82400553105 /* ViewController.swift in Sources */,
 				D034189C2535F7DA001AD367 /* LocationDelegate.swift in Sources */,
 				D034189F2535F7DA001AD367 /* GPSDelegate.swift in Sources */,
