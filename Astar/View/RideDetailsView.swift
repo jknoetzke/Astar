@@ -122,7 +122,7 @@ struct MetricsView: View {
 struct RideBarChart: View {
     
     
-    @AppStorage("FTP") var FTP: Int = 240
+    @AppStorage("FTP") var FTP: String = ""
     
     var ride: [PeripheralData]
     
@@ -152,11 +152,11 @@ struct RideBarChart: View {
         legendDict[8] =  neuro
 
         //FTP = defaults.integer(forKey: "FTP")
-        points = loadPoints(rides: ride, points: points, legendDict: legendDict, FTP: Double(FTP))
+        points = loadPoints(rides: ride, points: points, legendDict: legendDict, FTP: Double(FTP)!)
     }
     
     var body: some View {
-        let limit = DataPoint(value: Double(FTP), label: LocalizedStringKey(String(FTP)), legend: threshold)
+        let limit = DataPoint(value: Double($FTP.wrappedValue)!, label: LocalizedStringKey($FTP.wrappedValue), legend: threshold)
         BarChartView(dataPoints: points, limit: limit )
     }
     
