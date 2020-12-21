@@ -18,8 +18,9 @@ let POWER_CONTROL = "2A66"
 let POWER_MEASUREMENT = "2A63"
 let POWER_FEATURE = "2A65"
 
-let POWER_CRANK = 44
-let POWER_TRAINER = 39
+let POWER_CRANK:UInt8 = 44
+let POWER_TRAINER:UInt8 = 39
+let POWER_HUB:UInt8 = 52
 
 class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
@@ -236,13 +237,14 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         var crankEvent = false
         
-        
         // the first 16bits contains the data for the flags
         // The next 16bits make up the power reading
         let byteArray = [UInt8](characteristicData)
-        
-        if byteArray[0] == POWER_CRANK {
-            
+
+       // print(byteArray)
+
+        switch byteArray[0] {
+        case POWER_CRANK:
             let byteArray1 = Int(byteArray[2])
             let byteArray2 = Int(byteArray[3])
             let overFlow = byteArray2 * 255
@@ -252,9 +254,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             crankTime = Double((UInt16(byteArray[9]) << 8) + UInt16(byteArray[8]))
             
             crankEvent = true
-            
-        } else if byteArray[0] == POWER_TRAINER {
-            
+        case POWER_TRAINER:
             let byteArray1 = Int(byteArray[2])
             let byteArray2 = Int(byteArray[3])
             let overFlow = byteArray2 * 255
@@ -264,9 +264,18 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             crankTime = Double((UInt16(byteArray[14]) << 8) + UInt16(byteArray[13]))
             
             crankEvent = true
-        } else {
+        case POWER_HUB:
+            let byteArray1 = Int(byteArray[2])
+            let byteArray2 = Int(byteArray[3])
+            let overFlow = byteArray2 * 255
+            watts = byteArray1+overFlow
+         
+            crankEvent = true
+            
+        default:
             return
         }
+        
         
         let cumulativeRevs = rollOver(current: crankRev, previous: reading.previousCrankCount, max: UInt16.max)
         let cumulativeTime = rollOver(current: crankTime, previous: reading.previousCrankTimeEvent, max: UInt16.max)
