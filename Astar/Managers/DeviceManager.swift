@@ -241,7 +241,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         // The next 16bits make up the power reading
         let byteArray = [UInt8](characteristicData)
 
-       // print(byteArray)
+        print(byteArray)
 
         switch byteArray[0] {
         case POWER_CRANK:

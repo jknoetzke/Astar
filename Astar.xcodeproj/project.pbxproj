@@ -31,6 +31,7 @@
 		D06B08AF2535F85C00553105 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06B08AE2535F85C00553105 /* DeviceManager.swift */; };
 		D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D79852527BCE4001961E3 /* TCXHandler.swift */; };
 		D06D7998252CED17001961E3 /* GPSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D7997252CED17001961E3 /* GPSData.swift */; };
+		D06F20C125914DB10052C629 /* RecordEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F20C025914DB10052C629 /* RecordEditor.swift */; };
 		D07841602575599A00941B86 /* LapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078415F2575599A00941B86 /* LapViewModel.swift */; };
 		D078416525758EF200941B86 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = D078416425758EF200941B86 /* SwiftUICharts */; };
 		D08253B7256C605C0023D6C5 /* ActivityFeedHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */; };
@@ -79,6 +80,7 @@
 		D06B08AE2535F85C00553105 /* DeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		D06D79852527BCE4001961E3 /* TCXHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCXHandler.swift; sourceTree = "<group>"; };
 		D06D7997252CED17001961E3 /* GPSData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSData.swift; sourceTree = "<group>"; };
+		D06F20C025914DB10052C629 /* RecordEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEditor.swift; sourceTree = "<group>"; };
 		D078415F2575599A00941B86 /* LapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapViewModel.swift; sourceTree = "<group>"; };
 		D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityFeedHostingController.swift; sourceTree = "<group>"; };
 		D08253BA256C62F30023D6C5 /* ActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				D06B089F2535F82400553105 /* SettingsViewController.swift */,
 				D06B089E2535F82400553105 /* MapViewController.swift */,
 				D06B08A02535F82400553105 /* ViewController.swift */,
+				D06F20C025914DB10052C629 /* RecordEditor.swift */,
 				D0FF5799253F3F5800265638 /* SpinnerViewController.swift */,
 				D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */,
 				D02BE892257517A700509E50 /* RideDetailsView.swift */,
@@ -399,6 +402,7 @@
 				D0D62290258446F900792442 /* Laps+CoreDataProperties.swift in Sources */,
 				D06B08AA2535F84400553105 /* LocationManager.swift in Sources */,
 				D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */,
+				D06F20C125914DB10052C629 /* RecordEditor.swift in Sources */,
 				D0AB73B4255F038E0090B1DF /* Extensions.swift in Sources */,
 				D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */,
 				D08253BC256C62F30023D6C5 /* ActivityView.swift in Sources */,
