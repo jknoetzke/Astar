@@ -14,6 +14,7 @@
 		D01A9683256459E10061B9B2 /* RideCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01A9682256459E10061B9B2 /* RideCalculator.swift */; };
 		D01A968A2566964D0061B9B2 /* RideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01A96892566964D0061B9B2 /* RideViewModel.swift */; };
 		D02BE893257517A700509E50 /* RideDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02BE892257517A700509E50 /* RideDetailsView.swift */; };
+		D03335BA2594C1DA00983F12 /* RecordEditingHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03335B92594C1DA00983F12 /* RecordEditingHostingController.swift */; };
 		D034189C2535F7DA001AD367 /* LocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03418982535F7DA001AD367 /* LocationDelegate.swift */; };
 		D034189D2535F7DA001AD367 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03418992535F7DA001AD367 /* AppDelegate.swift */; };
 		D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034189A2535F7DA001AD367 /* RideDelegate.swift */; };
@@ -34,6 +35,7 @@
 		D06F20C125914DB10052C629 /* RecordEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F20C025914DB10052C629 /* RecordEditor.swift */; };
 		D07841602575599A00941B86 /* LapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078415F2575599A00941B86 /* LapViewModel.swift */; };
 		D078416525758EF200941B86 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = D078416425758EF200941B86 /* SwiftUICharts */; };
+		D079FB6F25967AC400682DE8 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D079FB6E25967AC400682DE8 /* HealthKit.framework */; };
 		D08253B7256C605C0023D6C5 /* ActivityFeedHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */; };
 		D08253BC256C62F30023D6C5 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BA256C62F30023D6C5 /* ActivityView.swift */; };
 		D08253BF256C63020023D6C5 /* RideResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BE256C63020023D6C5 /* RideResult.swift */; };
@@ -62,6 +64,7 @@
 		D01A9682256459E10061B9B2 /* RideCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideCalculator.swift; sourceTree = "<group>"; };
 		D01A96892566964D0061B9B2 /* RideViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideViewModel.swift; sourceTree = "<group>"; };
 		D02BE892257517A700509E50 /* RideDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailsView.swift; sourceTree = "<group>"; };
+		D03335B92594C1DA00983F12 /* RecordEditingHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEditingHostingController.swift; sourceTree = "<group>"; };
 		D03418982535F7DA001AD367 /* LocationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDelegate.swift; sourceTree = "<group>"; };
 		D03418992535F7DA001AD367 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D034189A2535F7DA001AD367 /* RideDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +85,7 @@
 		D06D7997252CED17001961E3 /* GPSData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSData.swift; sourceTree = "<group>"; };
 		D06F20C025914DB10052C629 /* RecordEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEditor.swift; sourceTree = "<group>"; };
 		D078415F2575599A00941B86 /* LapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapViewModel.swift; sourceTree = "<group>"; };
+		D079FB6E25967AC400682DE8 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityFeedHostingController.swift; sourceTree = "<group>"; };
 		D08253BA256C62F30023D6C5 /* ActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		D08253BE256C63020023D6C5 /* RideResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideResult.swift; sourceTree = "<group>"; };
@@ -110,6 +114,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D078416525758EF200941B86 /* SwiftUICharts in Frameworks */,
+				D079FB6F25967AC400682DE8 /* HealthKit.framework in Frameworks */,
 				2AA39BFEA396EB459BD868B8 /* Pods_Astar.framework in Frameworks */,
 				D0539B45257150B20008E651 /* CloudKit.framework in Frameworks */,
 			);
@@ -121,6 +126,7 @@
 		4854A358B909476D69A44E28 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D079FB6E25967AC400682DE8 /* HealthKit.framework */,
 				D0539B44257150B20008E651 /* CloudKit.framework */,
 				DED44B6417E23A0211499F92 /* Pods_Astar.framework */,
 			);
@@ -203,6 +209,7 @@
 				D0FF5799253F3F5800265638 /* SpinnerViewController.swift */,
 				D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */,
 				D02BE892257517A700509E50 /* RideDetailsView.swift */,
+				D03335B92594C1DA00983F12 /* RecordEditingHostingController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -403,6 +410,7 @@
 				D06B08AA2535F84400553105 /* LocationManager.swift in Sources */,
 				D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */,
 				D06F20C125914DB10052C629 /* RecordEditor.swift in Sources */,
+				D03335BA2594C1DA00983F12 /* RecordEditingHostingController.swift in Sources */,
 				D0AB73B4255F038E0090B1DF /* Extensions.swift in Sources */,
 				D0C757F22508FA1200C923C4 /* AStar.xcdatamodeld in Sources */,
 				D08253BC256C62F30023D6C5 /* ActivityView.swift in Sources */,

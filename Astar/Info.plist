@@ -63,6 +63,10 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>NSHealthShareUsageDescription</key>
+	<string>We will be sharing the distance you cycled.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>We will be sharing the distance you cycled.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
