@@ -321,14 +321,6 @@
             </objects>
             <point key="canvasLocation" x="1623" y="-54"/>
         </scene>
-        <!--Record Editing Hosting Controller-->
-        <scene sceneID="8rw-0e-fL3">
-            <objects>
-                <hostingController storyboardIdentifier="RecordEditingHostingController" id="PmV-W8-18w" customClass="RecordEditingHostingController" customModule="Astar" customModuleProvider="target" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3WI-v5-4jp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2031" y="732"/>
-        </scene>
         <!--Maps-->
         <scene sceneID="FlA-mQ-Hpi">
             <objects>
