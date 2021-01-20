@@ -122,7 +122,7 @@ struct MetricsView: View {
 struct RideBarChart: View {
     
     
-    @AppStorage("FTP") var FTP: String = ""
+    @AppStorage("FTP") var FTP: String = "230"
     
     var ride: [PeripheralData]
     

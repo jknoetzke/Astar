@@ -10,8 +10,8 @@ import UIKit
 import Security
 
 let METRIC_ROW = 1
-let STRAVA_ROW = 2
-let CYCLING_ANALYTICS_ROW = 3
+let STRAVA_ROW = 4
+let CYCLING_ANALYTICS_ROW = 5
 
 let SETTINGS_SECTION = 0
 let UPLOADS_SECTION = 1
@@ -24,11 +24,12 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
     var deviceManager:DeviceManager?
     
     var settings: [Settings] = [ Settings(name: "Metric/Imperial", id: "1", checked: false, tag: 1),
-                                 Settings(name: "FTP", id: "2", tag: 2, input: "240")]
+                                 Settings(name: "FTP", id: "2", tag: 2, input: "240"),
+                                 Settings(name: "Modify Layout", id: "3", tag: 3)]
 
 
-    var uploads: [Settings] = [ Settings(name: "Strava", id: "3", checked: false, tag: 3),
-                                Settings(name: "Cycling Analytics", id: "4", checked: false, tag: 4)]
+    var uploads: [Settings] = [ Settings(name: "Strava", id: "4", checked: false, tag: 4),
+                                Settings(name: "Cycling Analytics", id: "5", checked: false, tag: 5)]
     
     var devices: [Settings] = []
     var allSettings: [Settings] = []
@@ -46,16 +47,21 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
     }
     
     private func registerTableViewCells() {
-        let textFieldCell = UINib(nibName: "CustomTableViewCell",
-                                  bundle: nil)
-        deviceTableView.register(textFieldCell,
-                                forCellReuseIdentifier: "CustomTableViewCell")
+        let textFieldCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
+        deviceTableView.register(textFieldCell, forCellReuseIdentifier: "CustomTableViewCell")
+        
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         deviceTableView.dataSource = self
         deviceTableView.delegate = self
+        
+        
+        deviceTableView.allowsSelection = true
+        deviceTableView.isUserInteractionEnabled = true
+        
         registerTableViewCells()
         deviceManager = DeviceManager.deviceManagerInstance
         deviceManager?.bleDelegate = self
@@ -63,10 +69,16 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         allSettings = settings + uploads
         
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+        tap.cancelsTouchesInView = false;
         view.addGestureRecognizer(tap)
         
         deviceManager?.stopScanning()
         deviceManager?.startScanning(fullScan: true)
+    }
+    
+    @objc func rowSelected()
+    {
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -137,6 +149,9 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
                 if let customCell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell") as? CustomTableViewCell {
                     return customCell
                 }
+            } else if switchTag == 3 {
+                cell.textLabel?.text =  settings[indexPath.row].name
+                return cell
             }
             
             cell.textLabel?.text =  settings[indexPath.row].name
@@ -179,7 +194,7 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         return 3
     }
     
-    func storeCyclingAnalyticsCreds(checked: Bool) {
+    func storeCyclingAnalyticsCreds(checked: Bool, toggle: UISwitch) {
         
         if checked {
             let alert = UIAlertController(title: "Enter your credentials", message: "Please enter your user name and password for Cycling Analytics", preferredStyle: .alert)
@@ -195,7 +210,10 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             
             // 3. Grab the value from the text field, and print it when the user clicks OK.
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { [weak alert] (_) in
-                print("Canceled")
+                print("User Canceled")
+                toggle.setOn(false, animated: true)
+                let defaults = UserDefaults.standard
+                defaults.set(false, forKey: "cycling_analytics")
             }))
             
             alert.addAction(UIAlertAction(title: "Accept", style: .default, handler: { [weak alert] (_) in
@@ -205,10 +223,11 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
                 print("Text field: \(String(describing: txtPassword!.text))")
                 let userName = txtUserName!.text
                 let password = txtPassword!.text
-                let defaults = UserDefaults.standard
                 
+                let defaults = UserDefaults.standard
                 defaults.setValue(userName, forKey: "cycling_analytics_username")
                 defaults.setValue(password, forKey: "cycling_analytics_password")
+                
                 
                 
             }))
@@ -220,6 +239,7 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             defaults.removeObject(forKey: "cycling_analytics_username")
             defaults.removeObject(forKey: "cycling_analytics_password")
         }
+        
     }
     
     @objc func switchChanged(_ sender : UISwitch!){
@@ -246,7 +266,7 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             }
             break
         case CYCLING_ANALYTICS_ROW:
-            storeCyclingAnalyticsCreds(checked: switchState)
+            storeCyclingAnalyticsCreds(checked: switchState, toggle: sender)
             defaults.set(switchState, forKey: "cycling_analytics")
             break
         default:
@@ -255,6 +275,17 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             viewController.startScanning = true
             break
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.section == 0 && indexPath.row == 2 {
+            print("Call SwiftUI!")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "RecordEditingHostingController")
+            self.present(vc, animated: true)
+        }
+        
     }
     
 }
