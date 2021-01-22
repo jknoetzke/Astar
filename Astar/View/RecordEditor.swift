@@ -10,14 +10,22 @@ import SwiftUI
 struct RecordEditor: View {
     
     var body: some View {
-        
+        NavigationView {
             ZStack {
                 Color.blue
                     .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                
+               
                 HStack {
                     VStack {
-                        
+                        NavigationLink(destination: MenuPicker()) {
+                            Text("Edit")
+                                .foregroundColor(.white)
+                                .font(.largeTitle)
+                                .frame(maxWidth: .infinity)
+                                .background(Color.blue)
+                        }
+                        Spacer()
+                        Spacer()
                         Watts()
                         Spacer()
                         HStack {
@@ -34,47 +42,12 @@ struct RecordEditor: View {
                             Lap()
                             LapAvgWatts()
                         }
-                        
-                        
-                        Spacer()
-                        HStack {
-                            Button(action: {
-                                print("Play Pressed")
-                            }, label: {
-                                ZStack {
-                                    Image(systemName: "play")
-                                        .resizable()
-                                        .frame(width: 120, height: 80)
-                                        .font(.largeTitle)
-                                        .foregroundColor(.black)
-                                    Text("Start")
-                                        .font(.largeTitle)
-                                        .foregroundColor(.white)
-                                    
-                                }
-                            })
-                            Button(action: {
-                                print("Lap Pressed")
-                            }, label: {
-                                ZStack {
-                                    Image(systemName: "repeat")
-                                        .resizable()
-                                        .frame(width: 120, height: 80)
-                                        .font(.largeTitle)
-                                        .foregroundColor(.black)
-                                    Text("Lap")
-                                        .font(.largeTitle)
-                                        .foregroundColor(.white)
-                                }
-                            })
-                            
-                        }
-                        
                     }
                 }
             }
         }
     }
+}
 
 
 
@@ -83,26 +56,17 @@ struct RecordEditor: View {
 struct Watts: View {
     
     var body: some View {
-        NavigationView {
-            NavigationLink(destination: MenuPicker()) {
-                    Text("Watts")
-                }
-     //           .navigationBarTitle("Navigation")
-        
-        
-        //Text("Watts")
-        //    .foregroundColor(.white)
-        //    .font(.title)
-        //    .frame(maxWidth: .infinity)
-        //    .background(Color.blue)
-        
+        Text("Watts")
+            .foregroundColor(.white)
+            .font(.largeTitle)
+            .frame(maxWidth: .infinity)
+            .background(Color.blue)
         Text("100")
             .foregroundColor(.white)
             .font(.system(size: 150))
             .frame(maxWidth: .infinity)
             .background(Color.green)
         
-    }
     }
     
 }
@@ -230,18 +194,67 @@ struct MenuPicker: View {
     @State private var selectedStrength = 0
 
     var body: some View {
-        NavigationView {
+       // NavigationView {
             Form {
                 Section {
-                    Picker(selection: $selectedStrength, label: Text("S∫trength")) {
+                    Picker(selection: $selectedStrength, label: Text("1st Row")) {
                         ForEach(0 ..< strengths.count) {
                             Text(self.strengths[$0])
 
                         }
                     }
                 }
-            }.navigationBarTitle("Select your cheese")
+                Section {
+                    Picker(selection: $selectedStrength, label: Text("2nd Row, 1st Column")) {
+                        ForEach(0 ..< strengths.count) {
+                            Text(self.strengths[$0])
+
+                        }
+                    }
+                }
+                Section {
+                    Picker(selection: $selectedStrength, label: Text("2nd Row, 2nd Column")) {
+                        ForEach(0 ..< strengths.count) {
+                            Text(self.strengths[$0])
+
+                        }
+                    }
+                }
+                Section {
+                    Picker(selection: $selectedStrength, label: Text("3rd Row, 1st Column")) {
+                        ForEach(0 ..< strengths.count) {
+                            Text(self.strengths[$0])
+
+                        }
+                    }
+                }
+                Section {
+                    Picker(selection: $selectedStrength, label: Text("3rd Row, 2nd Column")) {
+                        ForEach(0 ..< strengths.count) {
+                            Text(self.strengths[$0])
+
+                        }
+                    }
+                }
+                Section {
+                    Picker(selection: $selectedStrength, label: Text("4th Row, 1st Column")) {
+                        ForEach(0 ..< strengths.count) {
+                            Text(self.strengths[$0])
+
+                        }
+                    }
+                }
+                Section {
+                    Picker(selection: $selectedStrength, label: Text("4th Row, 2nd Column")) {
+                        ForEach(0 ..< strengths.count) {
+                            Text(self.strengths[$0])
+
+                        }
+                    }
+                }
+
+            }.navigationBarTitle("Recording Fields")
 
         }
-    }
+   // }
 }

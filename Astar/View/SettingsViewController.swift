@@ -280,18 +280,8 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 0 && indexPath.row == 2 {
-            print("Call SwiftUI!")
-            
             performSegue(withIdentifier: "RecordEditorSegue", sender: nil)
-            
-            //let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            //let vc = storyboard.instantiateViewController(withIdentifier: "RecordEditingHostingController")
-            //vc.modalPresentationStyle = .fullScreen
-            //navigationController?.pushViewController(vc, animated: true)
-            //performSegue(withIdentifier: "RecordEditorSegue", sender: self)
-            ////self.present(vc, animated: true)
         }
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
