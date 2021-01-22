@@ -281,11 +281,23 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         
         if indexPath.section == 0 && indexPath.row == 2 {
             print("Call SwiftUI!")
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "RecordEditingHostingController")
-            self.present(vc, animated: true)
+            
+            performSegue(withIdentifier: "RecordEditorSegue", sender: nil)
+            
+            //let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            //let vc = storyboard.instantiateViewController(withIdentifier: "RecordEditingHostingController")
+            //vc.modalPresentationStyle = .fullScreen
+            //navigationController?.pushViewController(vc, animated: true)
+            //performSegue(withIdentifier: "RecordEditorSegue", sender: self)
+            ////self.present(vc, animated: true)
         }
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "RecordEditorSegue" {
+            // Setup new view controller
+        }
     }
     
 }

@@ -151,7 +151,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-<<<<<<< HEAD
             uuid = "5FC34F23-263A-45FC-A3EF-58D92647FC96"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -163,19 +162,6 @@
             endingLineNumber = "10"
             landmarkName = "application(_:open:options:)"
             landmarkType = "7">
-=======
-            uuid = "C303B929-A407-44CE-A353-922248F1C615"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Astar/View/RideDetailsView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2"
-            endingLineNumber = "2"
-            landmarkName = "unknown"
-            landmarkType = "0">
->>>>>>> c84ae320113f67816e036ad29799d61094f08966
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
