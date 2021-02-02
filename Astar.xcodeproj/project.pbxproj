@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2AA39BFEA396EB459BD868B8 /* Pods_Astar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED44B6417E23A0211499F92 /* Pods_Astar.framework */; };
 		D00147042550DDBF0015B672 /* BluetoothData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00147032550DDBF0015B672 /* BluetoothData.swift */; };
 		D00147072550DE9F0015B672 /* BluetoothDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00147062550DE9F0015B672 /* BluetoothDelegate.swift */; };
 		D01A9680256459A30061B9B2 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01A967F256459A30061B9B2 /* CoreDataService.swift */; };
@@ -19,6 +18,8 @@
 		D034189D2535F7DA001AD367 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03418992535F7DA001AD367 /* AppDelegate.swift */; };
 		D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034189A2535F7DA001AD367 /* RideDelegate.swift */; };
 		D034189F2535F7DA001AD367 /* GPSDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034189B2535F7DA001AD367 /* GPSDelegate.swift */; };
+		D03F02A525C99D7500607E5D /* TcxDataProtocol in Frameworks */ = {isa = PBXBuildFile; productRef = D03F02A425C99D7500607E5D /* TcxDataProtocol */; };
+		D03F02A825C9D5A700607E5D /* RecordingPreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03F02A725C9D5A700607E5D /* RecordingPreferencesManager.swift */; };
 		D05374462536467700C6FB91 /* CyclingAnalyticsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */; };
 		D0539B45257150B20008E651 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0539B44257150B20008E651 /* CloudKit.framework */; };
 		D055FA2E252F907000D5ECA4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D055FA2D252F907000D5ECA4 /* Constants.swift */; };
@@ -56,8 +57,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4E9F9E60D9FDA5E0B96F0730 /* Pods-Astar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Astar.debug.xcconfig"; path = "Target Support Files/Pods-Astar/Pods-Astar.debug.xcconfig"; sourceTree = "<group>"; };
-		955A3ACC2F09105D7B44DCD3 /* Pods-Astar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Astar.release.xcconfig"; path = "Target Support Files/Pods-Astar/Pods-Astar.release.xcconfig"; sourceTree = "<group>"; };
 		D00147032550DDBF0015B672 /* BluetoothData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothData.swift; sourceTree = "<group>"; };
 		D00147062550DE9F0015B672 /* BluetoothDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDelegate.swift; sourceTree = "<group>"; };
 		D01A967F256459A30061B9B2 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoreDataService.swift; path = /Users/justin/Projects/Astar/Astar/Managers/CoreDataService.swift; sourceTree = "<absolute>"; };
@@ -69,6 +68,7 @@
 		D03418992535F7DA001AD367 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D034189A2535F7DA001AD367 /* RideDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideDelegate.swift; sourceTree = "<group>"; };
 		D034189B2535F7DA001AD367 /* GPSDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSDelegate.swift; sourceTree = "<group>"; };
+		D03F02A725C9D5A700607E5D /* RecordingPreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RecordingPreferencesManager.swift; path = Astar/Managers/RecordingPreferencesManager.swift; sourceTree = SOURCE_ROOT; };
 		D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclingAnalyticsData.swift; sourceTree = "<group>"; };
 		D0539B42257150AA0008E651 /* Astar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Astar.entitlements; sourceTree = "<group>"; };
 		D0539B44257150B20008E651 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -105,7 +105,6 @@
 		D0FF5799253F3F5800265638 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		D0FF579D253F840A00265638 /* StravaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaManager.swift; sourceTree = "<group>"; };
 		D0FF57A92540CC5500265638 /* StravaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaData.swift; sourceTree = "<group>"; };
-		DED44B6417E23A0211499F92 /* Pods_Astar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Astar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,7 +114,7 @@
 			files = (
 				D078416525758EF200941B86 /* SwiftUICharts in Frameworks */,
 				D079FB6F25967AC400682DE8 /* HealthKit.framework in Frameworks */,
-				2AA39BFEA396EB459BD868B8 /* Pods_Astar.framework in Frameworks */,
+				D03F02A525C99D7500607E5D /* TcxDataProtocol in Frameworks */,
 				D0539B45257150B20008E651 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -128,18 +127,8 @@
 			children = (
 				D079FB6E25967AC400682DE8 /* HealthKit.framework */,
 				D0539B44257150B20008E651 /* CloudKit.framework */,
-				DED44B6417E23A0211499F92 /* Pods_Astar.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		684E8D4AE32CB70B9326692D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				4E9F9E60D9FDA5E0B96F0730 /* Pods-Astar.debug.xcconfig */,
-				955A3ACC2F09105D7B44DCD3 /* Pods-Astar.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		D055FA502534B54000D5ECA4 /* Data */ = {
@@ -177,6 +166,7 @@
 		D055FA602534B7AE00D5ECA4 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				D03F02A725C9D5A700607E5D /* RecordingPreferencesManager.swift */,
 				D01A967F256459A30061B9B2 /* CoreDataService.swift */,
 				D06B08A62535F84400553105 /* CyclingAnalyticsManager.swift */,
 				D06B08AE2535F85C00553105 /* DeviceManager.swift */,
@@ -229,7 +219,6 @@
 			children = (
 				D0D329072503BF2B003CC73A /* Astar */,
 				D0D329062503BF2B003CC73A /* Products */,
-				684E8D4AE32CB70B9326692D /* Pods */,
 				4854A358B909476D69A44E28 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -279,6 +268,7 @@
 			name = Astar;
 			packageProductDependencies = (
 				D078416425758EF200941B86 /* SwiftUICharts */,
+				D03F02A425C99D7500607E5D /* TcxDataProtocol */,
 			);
 			productName = Astar;
 			productReference = D0D329052503BF2B003CC73A /* Astar.app */;
@@ -309,6 +299,7 @@
 			mainGroup = D0D328FC2503BF2B003CC73A;
 			packageReferences = (
 				D078416325758EF200941B86 /* XCRemoteSwiftPackageReference "SwiftUICharts" */,
+				D02A9F2625C9998200F9D64F /* XCRemoteSwiftPackageReference "TcxDataProtocol" */,
 			);
 			productRefGroup = D0D329062503BF2B003CC73A /* Products */;
 			projectDirPath = "";
@@ -336,19 +327,19 @@
 /* Begin PBXShellScriptBuildPhase section */
 		601C9D0C287CC56965317F47 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Astar/Pods-Astar-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Astar/Pods-Astar-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Astar/Pods-Astar-frameworks.sh\"\n";
+			shellScript = "
+";
 			showEnvVarsInLog = 0;
 		};
 		B576FBDAE4427E1E597C2048 /* [CP] Check Pods Manifest.lock */ = {
@@ -370,7 +361,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "
+";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -402,6 +394,7 @@
 				D01A968A2566964D0061B9B2 /* RideViewModel.swift in Sources */,
 				D00147072550DE9F0015B672 /* BluetoothDelegate.swift in Sources */,
 				D0D62291258446F900792442 /* CompletedRide+CoreDataClass.swift in Sources */,
+				D03F02A825C9D5A700607E5D /* RecordingPreferencesManager.swift in Sources */,
 				D07841602575599A00941B86 /* LapViewModel.swift in Sources */,
 				D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */,
 				D0FF579E253F840A00265638 /* StravaManager.swift in Sources */,
@@ -561,7 +554,6 @@
 		};
 		D0D3291A2503BF2B003CC73A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E9F9E60D9FDA5E0B96F0730 /* Pods-Astar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -585,7 +577,6 @@
 		};
 		D0D3291B2503BF2B003CC73A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 955A3ACC2F09105D7B44DCD3 /* Pods-Astar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -631,6 +622,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D02A9F2625C9998200F9D64F /* XCRemoteSwiftPackageReference "TcxDataProtocol" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FitnessKit/TcxDataProtocol";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.1;
+			};
+		};
 		D078416325758EF200941B86 /* XCRemoteSwiftPackageReference "SwiftUICharts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mecid/SwiftUICharts.git";
@@ -642,6 +641,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D03F02A425C99D7500607E5D /* TcxDataProtocol */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D02A9F2625C9998200F9D64F /* XCRemoteSwiftPackageReference "TcxDataProtocol" */;
+			productName = TcxDataProtocol;
+		};
 		D078416425758EF200941B86 /* SwiftUICharts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D078416325758EF200941B86 /* XCRemoteSwiftPackageReference "SwiftUICharts" */;
