@@ -44,9 +44,9 @@ struct RecordEditor: View {
 }
 
 struct Row1: View {
-    var recordingPreferences = RecordingPreferencesManager()
+    @AppStorage("ROW1") private var selectedField: Int = 0
     var body: some View {
-        NavigationLink(destination: MenuPicker(selectedField: recordingPreferences.rowColPreference(rowcol: "ROW1"))) {
+        NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
             Text("Watts")
                 .foregroundColor(.white)
                 .font(.largeTitle)
@@ -65,13 +65,13 @@ struct Row1: View {
 
 
 struct Row2Col1: View {
-    var recordingPreferences = RecordingPreferencesManager()
+    @AppStorage("ROW2COL1") private var selectedField: Int = 0
     
     var body: some View {
         
         HStack {
             VStack {
-                NavigationLink(destination: MenuPicker(selectedField: recordingPreferences.rowColPreference(rowcol: "ROW2COL1"))) {
+                NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
                     Text("Heart Rate")
                         .foregroundColor(.white)
                         .font(.largeTitle)
@@ -91,12 +91,12 @@ struct Row2Col1: View {
 
 struct Row2Col2: View {
     
-    var recordingPreferences = RecordingPreferencesManager()
-    
+    @AppStorage("ROW2COL2") private var selectedField: Int = 0
+
     var body: some View {
         VStack {
-            NavigationLink(destination: MenuPicker(selectedField: recordingPreferences.rowColPreference(rowcol: "ROW2COL2"))) {
-                
+            NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
+
                 Text("Speed")
                     .foregroundColor(.white)
                     .font(.largeTitle)
@@ -113,11 +113,11 @@ struct Row2Col2: View {
 }
 
 struct Row3Col1: View {
-    var recordingPreferences = RecordingPreferencesManager()
-    
+    @AppStorage("ROW3COL1") private var selectedField: Int = 0
+
     var body: some View {
         VStack {
-            NavigationLink(destination: MenuPicker(selectedField: recordingPreferences.rowColPreference(rowcol: "ROW3COL1"))) {
+            NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
                 Text("Ride Time")
                     .foregroundColor(.white)
                     .font(.largeTitle)
@@ -135,11 +135,11 @@ struct Row3Col1: View {
 
 struct Row3Col2: View {
 
-    var recordingPreferences = RecordingPreferencesManager()
+    @AppStorage("ROW3COL2") private var selectedField: Int = 0
 
     var body: some View {
         VStack {
-            NavigationLink(destination: MenuPicker(selectedField: recordingPreferences.rowColPreference(rowcol: "ROW3COL2"))) {
+            NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
 
                 Text("Cadence")
                     .foregroundColor(.white)
@@ -157,11 +157,12 @@ struct Row3Col2: View {
 }
 
 struct Row4Col1: View {
-    var recordingPreferences = RecordingPreferencesManager()
+    @AppStorage("ROW4COL1") private var selectedField: Int = 0
+
     var body: some View {
         VStack {
-            NavigationLink(destination: MenuPicker(selectedField: recordingPreferences.rowColPreference(rowcol: "ROW4COL1"))) {
-                
+            NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
+
                 Text("Lap #")
                     .foregroundColor(.white)
                     .font(.title)
@@ -178,11 +179,12 @@ struct Row4Col1: View {
 }
 
 struct Row4Col2: View {
-    var recordingPreferences = RecordingPreferencesManager()
+    @AppStorage("ROW4COL2") private var selectedField: Int = 0
+
     var body: some View {
         VStack {
-            NavigationLink(destination: MenuPicker(selectedField: recordingPreferences.rowColPreference(rowcol: "ROW4COL2"))) {
-                
+            NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
+
                 Text("Lap AVG Watts")
                     .foregroundColor(.white)
                     .font(.title)
@@ -207,28 +209,19 @@ struct RecordEditor_Previews: PreviewProvider {
 
 struct MenuPicker: View {
     
-    @AppStorage("ROW1")     var row1 = 0
-    @AppStorage("ROW2COL1") var row2col1 = 0
-    @AppStorage("ROW2COL2") var row2col2 = 0
-    @AppStorage("ROW3COL1") var row3col1 = 0
-    @AppStorage("ROW3COL2") var row3col2 = 0
-    @AppStorage("ROW4COL1") var row4col1 = 0
-    @AppStorage("ROW4COL2") var row4col2 = 0
+    @Binding var selectedField: Int
     
     var fields = ["Watts", "Heart Rate", "Speed", "Ride Time", "Cadence", "Lap #", "Lap AVG Watts"]
-    
-    
-    @State var selectedField: Int
-    
+  
     var body: some View {
         Form {
             Section {
                 Picker(selection: $selectedField, label: Text("Select Field")) {
                     ForEach(0 ..< fields.count) {
                         Text(self.fields[$0])
-                        
                     }
                 }
+                
             }
         }.navigationBarTitle("Recording Fields")
         
