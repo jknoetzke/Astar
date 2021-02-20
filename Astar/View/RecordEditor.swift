@@ -7,8 +7,12 @@
 
 import SwiftUI
 
-struct RecordEditor: View {
 
+var fields = ["Watts", "Heart Rate", "Speed", "Ride Time", "Cadence", "Lap #", "Lap AVG Watts"]
+var metrics = ["220", "146", "35", "1:24:43", "112", "2", "243"]
+
+struct RecordEditor: View {
+ 
     var body: some View {
         NavigationView {
             ZStack {
@@ -31,7 +35,7 @@ struct RecordEditor: View {
                         Spacer()
                         HStack {
                             Row4Col1()
-                            Row4Col1()
+                            Row4Col2()
                         }
                         
                     }
@@ -45,40 +49,41 @@ struct RecordEditor: View {
 
 struct Row1: View {
     @AppStorage("ROW1") private var selectedField: Int = 0
+    
+    
     var body: some View {
         NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
-            Text("Watts")
+            Text(fields[selectedField])
                 .foregroundColor(.white)
                 .font(.largeTitle)
                 .frame(maxWidth: .infinity)
                 .background(Color.blue)
         }
-        Text("100")
+        Text(metrics[selectedField])
             .foregroundColor(.white)
             .font(.system(size: 100))
             .frame(maxWidth: .infinity)
             .background(Color.green)
         
     }
-    
 }
 
 
 struct Row2Col1: View {
-    @AppStorage("ROW2COL1") private var selectedField: Int = 0
-    
+    @AppStorage("ROW2COL1") private var selectedField: Int = 1
+
     var body: some View {
         
         HStack {
             VStack {
                 NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
-                    Text("Heart Rate")
+                    Text(fields[selectedField])
                         .foregroundColor(.white)
                         .font(.largeTitle)
                         .frame(maxWidth: .infinity)
                         .background(Color.blue)
                 }
-                Text("146")
+                Text(metrics[selectedField])
                     .foregroundColor(.white)
                     .font(.system(size: 100))
                     .frame(maxWidth: .infinity)
@@ -91,19 +96,18 @@ struct Row2Col1: View {
 
 struct Row2Col2: View {
     
-    @AppStorage("ROW2COL2") private var selectedField: Int = 0
-
+    @AppStorage("ROW2COL2") private var selectedField: Int = 2
+ 
     var body: some View {
         VStack {
             NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
-
-                Text("Speed")
+                Text(fields[selectedField])
                     .foregroundColor(.white)
                     .font(.largeTitle)
                     .frame(maxWidth: .infinity)
                     .background(Color.blue)
             }
-            Text("42")
+            Text(metrics[selectedField])
                 .foregroundColor(.white)
                 .font(.system(size: 100))
                 .frame(maxWidth: .infinity)
@@ -113,18 +117,18 @@ struct Row2Col2: View {
 }
 
 struct Row3Col1: View {
-    @AppStorage("ROW3COL1") private var selectedField: Int = 0
-
+    @AppStorage("ROW3COL1") private var selectedField: Int = 3
+ 
     var body: some View {
         VStack {
             NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
-                Text("Ride Time")
+                Text(fields[selectedField])
                     .foregroundColor(.white)
                     .font(.largeTitle)
                     .frame(maxWidth: .infinity)
                     .background(Color.blue)
             }
-            Text("00:00:00")
+            Text(metrics[selectedField])
                 .foregroundColor(.white)
                 .font(.system(size: 40))
                 .frame(maxWidth: .infinity)
@@ -135,19 +139,19 @@ struct Row3Col1: View {
 
 struct Row3Col2: View {
 
-    @AppStorage("ROW3COL2") private var selectedField: Int = 0
-
+    @AppStorage("ROW3COL2") private var selectedField: Int = 4
+ 
+    
     var body: some View {
         VStack {
             NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
-
-                Text("Cadence")
+                Text(fields[selectedField])
                     .foregroundColor(.white)
                     .font(.largeTitle)
                     .frame(maxWidth: .infinity)
                     .background(Color.blue)
             }
-            Text("96")
+            Text(metrics[selectedField])
                 .foregroundColor(.white)
                 .font(.system(size: 40))
                 .frame(maxWidth: .infinity)
@@ -157,19 +161,18 @@ struct Row3Col2: View {
 }
 
 struct Row4Col1: View {
-    @AppStorage("ROW4COL1") private var selectedField: Int = 0
+    @AppStorage("ROW4COL1") private var selectedField: Int = 5
 
     var body: some View {
         VStack {
             NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
-
-                Text("Lap #")
+                Text(fields[selectedField])
                     .foregroundColor(.white)
                     .font(.title)
                     .frame(maxWidth: .infinity)
                     .background(Color.blue)
             }
-            Text("1")
+            Text(metrics[selectedField])
                 .foregroundColor(.white)
                 .font(.system(size: 80))
                 .frame(maxWidth: .infinity)
@@ -179,19 +182,18 @@ struct Row4Col1: View {
 }
 
 struct Row4Col2: View {
-    @AppStorage("ROW4COL2") private var selectedField: Int = 0
+    @AppStorage("ROW4COL2") private var selectedField: Int = 6
 
     var body: some View {
         VStack {
             NavigationLink(destination: MenuPicker(selectedField: $selectedField)) {
-
-                Text("Lap AVG Watts")
+                Text(fields[selectedField])
                     .foregroundColor(.white)
                     .font(.title)
                     .frame(maxWidth: .infinity)
                     .background(Color.blue)
             }
-            Text("224")
+            Text(metrics[selectedField])
                 .foregroundColor(.white)
                 .font(.system(size: 80))
                 .frame(maxWidth: .infinity)
@@ -211,19 +213,16 @@ struct MenuPicker: View {
     
     @Binding var selectedField: Int
     
-    var fields = ["Watts", "Heart Rate", "Speed", "Ride Time", "Cadence", "Lap #", "Lap AVG Watts"]
-  
     var body: some View {
         Form {
             Section {
                 Picker(selection: $selectedField, label: Text("Select Field")) {
                     ForEach(0 ..< fields.count) {
-                        Text(self.fields[$0])
+                        Text(fields[$0])
                     }
                 }
-                
             }
+
         }.navigationBarTitle("Recording Fields")
-        
     }
 }
