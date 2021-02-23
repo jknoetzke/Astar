@@ -24,12 +24,24 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     @IBOutlet weak var lblWatts: UILabel!
     @IBOutlet weak var lblHeartRate: UILabel!
     @IBOutlet weak var lblSpeed: UILabel!
+    @IBOutlet weak var lblRideTime: UILabel!
+    @IBOutlet weak var lblCadence: UILabel!
+    @IBOutlet weak var lblLap: UILabel!
     @IBOutlet weak var lblAvgWatts: UILabel!
+
     @IBOutlet weak var btnStart: UIButton!
     @IBOutlet weak var btnLap: UIButton!
-    @IBOutlet weak var lblLap: UILabel!
-    @IBOutlet weak var lblCadence: UILabel!
-    @IBOutlet weak var lblRideTime: UILabel!
+
+    
+    @IBOutlet weak var ROW1: UILabel!
+    @IBOutlet weak var ROW2COL1: UILabel!
+    @IBOutlet weak var ROW2COL2: UILabel!
+    @IBOutlet weak var ROW3COL1: UILabel!
+    @IBOutlet weak var ROW3COL2: UILabel!
+    @IBOutlet weak var ROW4COL1: UILabel!
+    @IBOutlet weak var ROW4COL2: UILabel!
+    
+    
     
     let child = SpinnerViewController()
     
@@ -83,9 +95,62 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        //Reset view for possible new custom layout
+        
+        setCustomUI()
+        
+        
         if startScanning {
             deviceManager.startScanning(fullScan: false)
             startScanning = false
+        }
+    }
+    
+    func setCustomUI() {
+        
+        let customFields = ["ROW1", "ROW2COL1", "ROW2COL2", "ROW3COL1", "ROW3COL2", "ROW4COL1", "ROW4COL2"]
+
+        for i in 0..<fields.count {
+            switch(i) {
+            case 0:
+                if getCustomField(customField: customFields[i]) != -1 {
+                    ROW1.text = fields[getCustomField(customField: customFields[i])]
+                }
+                break;
+            case 1:
+                if getCustomField(customField: customFields[i]) != -1 {
+                    ROW2COL1.text = fields[getCustomField(customField: customFields[i])]
+                }
+                break;
+            case 2:
+                if getCustomField(customField: customFields[i]) != -1 {
+                   ROW2COL2.text = fields[getCustomField(customField: customFields[i])]
+                }
+                break;
+            case 3:
+                if getCustomField(customField: customFields[i]) != -1 {
+                    ROW3COL1.text = fields[getCustomField(customField: customFields[i])]
+                }
+                break;
+            case 4:
+                if getCustomField(customField: customFields[i]) != -1 {
+                    ROW3COL2.text = fields[getCustomField(customField: customFields[i])]
+                }
+                break;
+            case 5:
+                if getCustomField(customField: customFields[i]) != -1 {
+                   ROW4COL1.text = fields[getCustomField(customField: customFields[i])]
+                }
+                break;
+            case 6:
+                if getCustomField(customField: customFields[i]) != -1 {
+                   ROW4COL2.text = fields[getCustomField(customField: customFields[i])]
+                }
+                break;
+            default:
+                print("Oops")
+            }
+            
         }
     }
     
@@ -200,6 +265,23 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         }
     }
     
+    func getCustomField(customField: String) -> Int  {
+        
+        let defaults = UserDefaults.standard
+        
+        let rc = defaults.integer(forKey: customField)
+        if rc == 0 {
+            if !isKeyPresentInUserDefaults(key: customField) {
+                return -1
+            }
+        }
+        return rc
+    }
+    
+    func isKeyPresentInUserDefaults(key: String) -> Bool {
+        return UserDefaults.standard.object(forKey: key) != nil
+    }
+
     func resetRide() {
         rideArray.removeAll()
         timerIsPaused = true
