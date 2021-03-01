@@ -225,8 +225,8 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHT-uF-OcQ">
-                                                        <rect key="frame" x="0.0" y="20.333333333333321" width="187" height="112.66666666666669"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHT-uF-OcQ">
+                                                        <rect key="frame" x="0.0" y="18.333333333333314" width="187" height="112.66666666666669"/>
                                                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="70"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -307,21 +307,21 @@
                     <tabBarItem key="tabBarItem" title="Record" image="record.circle" catalog="system" selectedImage="record.circle" id="L7R-yn-hZA"/>
                     <connections>
                         <outlet property="ROW1" destination="CT2-o1-xif" id="lJ5-Rk-afK"/>
-                        <outlet property="ROW2COL1" destination="Nyp-RX-ix4" id="SrB-cf-7JG"/>
+                        <outlet property="ROW1Metric" destination="f30-mw-p9g" id="1bt-gv-Kqo"/>
+                        <outlet property="ROW2COL1" destination="Nyp-RX-ix4" id="pN3-yu-tJ3"/>
+                        <outlet property="ROW2COL1Metric" destination="HqF-qi-6Z2" id="pvV-rJ-nKm"/>
                         <outlet property="ROW2COL2" destination="a8q-vP-eox" id="q9Q-tg-rlF"/>
+                        <outlet property="ROW2COL2Metric" destination="ypT-iN-Anx" id="MMW-bC-QNp"/>
                         <outlet property="ROW3COL1" destination="rAV-ft-Hus" id="t3X-eN-bYm"/>
+                        <outlet property="ROW3COL1Metric" destination="6QD-EE-XaW" id="ROY-YJ-h6N"/>
                         <outlet property="ROW3COL2" destination="ITC-BA-BSP" id="wRT-Vl-Liy"/>
+                        <outlet property="ROW3COL2Metric" destination="zen-7q-Ins" id="Lnh-hE-V08"/>
                         <outlet property="ROW4COL1" destination="7q3-lM-b4O" id="spz-jc-9IB"/>
+                        <outlet property="ROW4COL1Metric" destination="Xyv-G5-VJK" id="AW2-Uc-B2X"/>
                         <outlet property="ROW4COL2" destination="81f-Wn-FvJ" id="dDo-Nf-m5m"/>
+                        <outlet property="ROW4COL2Metric" destination="UHT-uF-OcQ" id="sYM-Sy-ibm"/>
                         <outlet property="btnLap" destination="Z62-HF-01r" id="YUj-NS-tfN"/>
                         <outlet property="btnStart" destination="n9S-iO-BK5" id="6Xt-Uo-axi"/>
-                        <outlet property="lblAvgWatts" destination="UHT-uF-OcQ" id="8VU-et-6Dz"/>
-                        <outlet property="lblCadence" destination="zen-7q-Ins" id="5Mm-dL-hwC"/>
-                        <outlet property="lblHeartRate" destination="HqF-qi-6Z2" id="IhU-2I-foB"/>
-                        <outlet property="lblLap" destination="Xyv-G5-VJK" id="jBy-Rl-mPa"/>
-                        <outlet property="lblRideTime" destination="6QD-EE-XaW" id="tw8-bg-bHY"/>
-                        <outlet property="lblSpeed" destination="ypT-iN-Anx" id="NB2-aw-wkq"/>
-                        <outlet property="lblWatts" destination="f30-mw-p9g" id="ijQ-eo-JLD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aMC-cH-BBG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
