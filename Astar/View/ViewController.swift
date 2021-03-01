@@ -80,7 +80,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         readUserPrefs()
         
         //Create an array of all metrics
-        metrics = [ROW1Metric, ROW2COL1Metric, ROW2COL1Metric, ROW2COL2Metric, ROW3COL1Metric, ROW3COL2Metric, ROW4COL1Metric, ROW4COL2Metric]
+        metrics = [ROW1Metric, ROW2COL1Metric, ROW2COL2Metric, ROW3COL1Metric, ROW3COL2Metric, ROW4COL1Metric, ROW4COL2Metric]
         
         locationManager.startLocationUpdates()
         
@@ -119,52 +119,21 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             startScanning = false
         }
     }
-    
-    /*
-    
-    func getRowCol(metric: Int) -> UILabel {
-        ///Pass it a field type return a customField. Take custom field, return proper label
-        
-        if getCustomField(customField: customFields[metric]) != -1 {
-            return metrics[getCustomField(customField: customFields[metric])]
-        }
-        
-        switch(metric) {
-        case ViewController.WATTS:
-            return ROW1Metric
-        case ViewController.HEART_RATE:
-            return ROW2COL1Metric
-        case ViewController.SPEED:
-            return ROW2COL2Metric
-        case ViewController.RIDE_TIME:
-            return ROW3COL1Metric
-        case ViewController.CADENCE:
-            return ROW3COL2Metric
-        case ViewController.LAP:
-            return ROW4COL1Metric
-        case ViewController.LAP_AVERAGE_WATTS:
-            return ROW4COL2Metric
-        default:
-            return UILabel()
-        }
-    }
-    */
-    
-    
+
     //Finds the metric field based on the label
     func metricField(fieldID: Int, metric: String) {
         
-        print("CustomField: \(fieldID)")
+        print("CustomField: \(fields[fieldID])")
         print("metric: \(metric)")
 
         //Loop through all the ROWCOLS
         for i in 0..<fields.count {
             let rc = getCustomField(customField: customFields[i])
-            print("RC: \(rc)")
             if rc != -1 {
                 //We found a custom ROWCO. Which one is it ?
+                print("RC: \(customFields[rc])")
                 if rc == fieldID {
-                   metrics[i].text = metric
+                   metrics[rc].text = metric
                    return
                 }
             }
