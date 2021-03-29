@@ -8,8 +8,8 @@
 import SwiftUI
 
 
-var fields = ["Watts", "Heart Rate", "Speed", "Ride Time", "Cadence", "Lap #", "Lap AVG Watts"]
-var metrics = ["220", "146", "35", "1:24:43", "112", "2", "243"]
+var fields = ["Watts", "Heart Rate", "Speed", "Ride Time", "Cadence", "Lap #", "Lap AVG Watts", "Distance"]
+var metrics = ["220", "146", "35", "1:24:43", "112", "2", "243", "25"]
 
 struct RecordEditor: View {
  

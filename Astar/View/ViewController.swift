@@ -5,7 +5,7 @@ import UserNotifications
 
 
 class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarControllerDelegate {
-
+    
     private var rideTimer: Timer?
     private var seconds = 0
     private var startTime: DispatchTime?
@@ -16,11 +16,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var rideArray =  [PeripheralData]()
     private var stravaFlag  = false
     private var cyclingAnalyticsFlag = false
-
+    
     private var currentRideID = 0
     
     private var container: NSPersistentContainer!
-    
     
     @IBOutlet weak var ROW1Metric: UILabel!
     @IBOutlet weak var ROW2COL1Metric: UILabel!
@@ -32,7 +31,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     @IBOutlet weak var btnStart: UIButton!
     @IBOutlet weak var btnLap: UIButton!
-
+    
     
     @IBOutlet weak var ROW1: UILabel!
     @IBOutlet weak var ROW2COL1: UILabel!
@@ -58,8 +57,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var elapsedSpeedTime = 0
     
     let customFields = ["ROW1", "ROW2COL1", "ROW2COL2", "ROW3COL1", "ROW3COL2", "ROW4COL1", "ROW4COL2"]
-
-    //var fields = ["Watts", "Heart Rate", "Speed", "Ride Time", "Cadence", "Lap #", "Lap AVG Watts"]
+    
     static let WATTS = 0
     static let HEART_RATE = 1
     static let SPEED = 2
@@ -67,6 +65,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     static let CADENCE = 4
     static let LAP = 5
     static let LAP_AVERAGE_WATTS = 6
+    static let DISTANCE = 7
+    static let LAP_AVERAGE_SPEED = 8
+    
     
     
     //Was a periperhal added or removed ?
@@ -96,13 +97,13 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     }
     
     /*
-    public func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if tabBarController.selectedIndex == 1 {
-            var mapViewController = tabBarController.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
-            mapViewController = mapController as! MapViewController
-        }
-    }
-    */
+     public func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+     if tabBarController.selectedIndex == 1 {
+     var mapViewController = tabBarController.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
+     mapViewController = mapController as! MapViewController
+     }
+     }
+     */
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -119,33 +120,32 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             startScanning = false
         }
     }
-
+    
     //Finds the metric field based on the label
     func metricField(fieldID: Int, metric: String) {
-        
-        print("CustomField: \(fields[fieldID])")
-        print("metric: \(metric)")
-
-        //Loop through all the ROWCOLS
-        for i in 0..<fields.count {
-            let rc = getCustomField(customField: customFields[i])
-            if rc != -1 {
-                //We found a custom ROWCO. Which one is it ?
-                print("RC: \(customFields[rc])")
-                if rc == fieldID {
-                   metrics[rc].text = metric
-                   return
-                }
-            }
-        }
-        //Not configured
-        metrics[fieldID].text = metric
+        let rc = getRowCol(fieldType: fieldID)
+        //if rc == fieldID {
+        metrics[rc].text = metric
+           // return
+       // }
     }
     
+    func getRowCol(fieldType: Int) -> Int {
+    
+        //Return the RowCol for a given fieldType
+        for i in 0..<customFields.count {
+            let rc = getCustomField(customField: customFields[i])
+            if rc == fieldType {
+                return i
+            }
+        }
+        
+        return -1
+    }
     
     func setCustomUI() {
         
-       
+        
         for i in 0..<fields.count {
             switch(i) {
             case 0:
@@ -160,7 +160,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 break;
             case 2:
                 if getCustomField(customField: customFields[i]) != -1 {
-                   ROW2COL2.text = fields[getCustomField(customField: customFields[i])]
+                    ROW2COL2.text = fields[getCustomField(customField: customFields[i])]
                 }
                 break;
             case 3:
@@ -175,12 +175,12 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 break;
             case 5:
                 if getCustomField(customField: customFields[i]) != -1 {
-                   ROW4COL1.text = fields[getCustomField(customField: customFields[i])]
+                    ROW4COL1.text = fields[getCustomField(customField: customFields[i])]
                 }
                 break;
             case 6:
                 if getCustomField(customField: customFields[i]) != -1 {
-                   ROW4COL2.text = fields[getCustomField(customField: customFields[i])]
+                    ROW4COL2.text = fields[getCustomField(customField: customFields[i])]
                 }
                 break;
             default:
@@ -199,16 +199,13 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         reading = ride
         
         if reading.hrEvent {
-           // lblHeartRate.text = String(reading.heartRate)
             metricField(fieldID: ViewController.HEART_RATE, metric: String(reading.heartRate))
         }
         
         if reading.powerEvent {
             //Find ROWCOL for Watts
             metricField(fieldID: ViewController.WATTS, metric: String(reading.power))
-//            lblWatts.text = String(reading.power)
             metricField(fieldID: ViewController.CADENCE, metric: String(reading.cadence))
-  //          lblCadence.text = String(reading.cadence)
             elapsedWattsTime = 0
             
             if timerIsPaused == false {
@@ -216,7 +213,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 wattCounter = wattCounter + 1
                 let averageWatts = totalWatts / wattCounter
                 metricField(fieldID: ViewController.LAP_AVERAGE_WATTS, metric: String(averageWatts))
-                //lblAvgWatts.text = String(averageWatts)
             }
         }
     }
@@ -224,15 +220,15 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     func didNewGPSData(_ sender: LocationManager, gps: GPSData) {
         reading.gps = gps
         metricField(fieldID: ViewController.SPEED, metric: String(format: "%.0f", gps.speed))
-        //lblSpeed.text = String(format: "%.0f", gps.speed)
         elapsedSpeedTime = 0
+        metricField(fieldID: ViewController.DISTANCE, metric: String(format: "%.0f", gps.distance.value/1000.0))
+        
     }
     
     @IBAction func lapClicked(_ sender: Any) {
         
         lapCounter = lapCounter + 1
         metricField(fieldID: ViewController.LAP, metric: String(lapCounter))
-        //lblLap.text = String(lapCounter)
         
         totalWatts = 0
         wattCounter = 0
@@ -275,7 +271,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             let minutes = 0
             let seconds = 0
             metricField(fieldID: ViewController.RIDE_TIME, metric: String(format:"%02i:%02i:%02i", hours, minutes, seconds))
-            //lblRideTime.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
             let stopImage = UIImage(systemName: "stop")
             btnStart.setImage(stopImage, for: .normal)
             btnStart.setBackgroundImage(stopImage, for: .normal)
@@ -302,7 +297,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 print("Discarded Ride")
                 self.resetRide()
             }))
-
+            
             self.present(alert, animated: true)
             
         }
@@ -323,7 +318,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     func isKeyPresentInUserDefaults(key: String) -> Bool {
         return UserDefaults.standard.object(forKey: key) != nil
     }
-
+    
     func resetRide() {
         rideArray.removeAll()
         timerIsPaused = true
@@ -335,10 +330,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         btnStart.setBackgroundImage(startImage, for: .normal)
         btnStart.setTitle("Start", for: .normal)
         metricField(fieldID: ViewController.LAP_AVERAGE_WATTS, metric: "0")
-//        lblAvgWatts.text = "0"
-//        lblLap.text = "0"
         metricField(fieldID: ViewController.LAP, metric: "0")
-
+        
     }
     
     @objc func runTimedCode() {
@@ -351,18 +344,14 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         if elapsedWattsTime >= 3 {
             reading.power = 0
             reading.cadence = 0
-//            lblWatts.text = "0"
             metricField(fieldID: ViewController.WATTS, metric: "0")
-            //lblCadence.text = "0"
             metricField(fieldID: ViewController.CADENCE, metric: "0")
-
+            
         }
         
         if elapsedSpeedTime >= 3 {
             reading.speed = 0
-//            lblSpeed.text = "0"
             metricField(fieldID: ViewController.SPEED, metric: "0")
-
         }
         
         if !timerIsPaused {
@@ -374,7 +363,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 let hours = Int(timeInterval) / 3600
                 let minutes = Int(timeInterval) / 60 % 60
                 let seconds = Int(timeInterval) % 60
-               // lblRideTime.text = String(format:"%02i:%02i:%02i", hours, minutes, seconds)
                 metricField(fieldID: ViewController.RIDE_TIME, metric: String(format:"%02i:%02i:%02i", hours, minutes, seconds))
                 
                 if reading.gps.location == nil { //Don't add if we haven't gotten a location yet
@@ -411,6 +399,19 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         currentRideID = defaults.integer(forKey: "RideID")
         stravaFlag = defaults.bool(forKey: "strava")
         cyclingAnalyticsFlag = defaults.bool(forKey: "cycling_analytics")
+        
+        let rc = getCustomField(customField: "ROW1")
+        if rc == -1 {
+            //First time connecting to record view
+            //Set defaults for ROWCOL
+            defaults.set(0, forKey: "ROW1")
+            defaults.set(1, forKey: "ROW2COL1")
+            defaults.set(2, forKey: "ROW2COL2")
+            defaults.set(3, forKey: "ROW3COL1")
+            defaults.set(4, forKey: "ROW3COL2")
+            defaults.set(5, forKey: "ROW4COL1")
+            defaults.set(6, forKey: "ROW4COL2")
+        }
     }
     
     func getDocumentsDirectory() -> URL {
@@ -419,18 +420,18 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     }
     
     private func saveRide(tmpRideArray: [PeripheralData]) {
-  
+        
         let coreDataServices = CoreDataServices.sharedCoreDataService
         
         let rideID = UUID() //Create the unique ID for the ride
         //Save the Ride itself
         coreDataServices.saveRide(tmpRideArray: tmpRideArray, rideID: rideID)
-
+        
         //Save The map
         
         let mapViewController = tabBarController!.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
         mapViewController.generateImageFromMap(ride: tmpRideArray, rideID: rideID)
-
+        
         
         //Upload to Strava and Cycling Analytics
         if stravaFlag || cyclingAnalyticsFlag {

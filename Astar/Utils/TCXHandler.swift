@@ -46,7 +46,6 @@ class TCXHandler {
         var totalHR = 0.0
         var totalSpeed = 0.0
         var counter = 1.0
-        var distance = 0.0
         var maxSpeed = 0.0
         var cadence = 0.0
         var heartRate = 0.0
@@ -54,7 +53,6 @@ class TCXHandler {
         var firstRecordedTime: Date?
         var lastRecordedTime: Date?
         var totalElapsedTime: TimeInterval?
-        let totalDistance = 0.0
         var totalCadence = 0.0
         
         
@@ -62,6 +60,8 @@ class TCXHandler {
         var activityLap = [ActivityLap]()
         var tracks: [Trackpoint] = [Trackpoint]()
         var allTracks = [Track]()
+        
+        var distance = 0.0
         
         for ride in rideArray {
             if previousLap == ride.lap {
@@ -95,6 +95,8 @@ class TCXHandler {
                 lastRecordedTime = ride.timeStamp
                 counter += 1
                 
+                distance = ride.gps.distance.value
+                
             } else { //Do some math..
                 
                 //We completed a lap, add it.
@@ -103,7 +105,6 @@ class TCXHandler {
                 totalElapsedTime = lastRecordedTime?.timeIntervalSince(firstRecordedTime!)
 
                 //Get the averages
-                distance = totalDistance / counter
                 cadence = totalCadence / counter
                 let heartRate = totalHR / counter
                 let avgWatts = totalWatts / counter
@@ -126,7 +127,7 @@ class TCXHandler {
                 let calories = UInt16(cal2)
                 
                 let heartBeatsPerMinute = HeartRateInBeatsPerMinute(heartRate: UInt8(iHeartRate))
-                let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime ?? 0), distance: distance, maximumSpeed: maxSpeed, calories: calories, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(iCadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
+                let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime ?? 0), distance: ride.gps.distance.value, maximumSpeed: maxSpeed, calories: calories, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(iCadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
                 
                 activityLap.append(lap)
                 allTracks.removeAll()
@@ -143,7 +144,6 @@ class TCXHandler {
 
         allTracks.append(Track(trackPoint: tracks))
         
-        distance = totalDistance / counter
         cadence = totalCadence / counter
         heartRate = totalHR / counter
         let avgWatts = totalWatts / counter
@@ -183,7 +183,7 @@ class TCXHandler {
     func encodeTCX(rideArray: [PeripheralData]) -> String {
         
         let build = Build(version: Version(major: 0, minor: 1, buildMajor: 0, buildMinor: 0), time: nil, builder: nil, type: .alpha)
-        let author = Author(name: "Astar iPhone App", build: build, language: nil, partNumber: "11-22-33")
+        let author = Author(name: "Justin Knoetzke", build: build, language: nil, partNumber: "11-22-33")
         let version = Version(major: 0, minor: 1, buildMajor: 0, buildMinor: 0)
         let creator = Creator(name: "Astar iPhone App", version: version, unitIdentification: nil, productIdentification: "Astar iPhone Cycle Computer")
         let activity = Activity(sport: .biking, identification: Date(), lap: activityLaps(rideArray: rideArray), notes: nil, training: nil, creator: creator)
