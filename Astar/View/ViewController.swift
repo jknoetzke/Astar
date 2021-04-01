@@ -9,6 +9,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var rideTimer: Timer?
     private var seconds = 0
     private var startTime: DispatchTime?
+    private var lapTime: DispatchTime?
     private var timerIsPaused = true
     private var lapCounter = 0
     private var locationManager = LocationManager.sharedLocationManager
@@ -52,6 +53,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var totalWatts = 0
     private var wattCounter = 0
     
+    //For Lap Averages
+    private var lapDistance = 0.0
+    
     //Used to determine if we've stopped pedaling or moving
     private var elapsedWattsTime = 0
     private var elapsedSpeedTime = 0
@@ -67,8 +71,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     static let LAP_AVERAGE_WATTS = 6
     static let DISTANCE = 7
     static let LAP_AVERAGE_SPEED = 8
-    
-    
     
     //Was a periperhal added or removed ?
     var startScanning = true //Scan at startup then stop.
@@ -121,15 +123,16 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         }
     }
     
-    //Finds the metric field based on the label
+    //Displays the field metric for the correct ROWCOL
     func metricField(fieldID: Int, metric: String) {
         let rc = getRowCol(fieldType: fieldID)
-        //if rc == fieldID {
+        if(rc == -1) {
+            return
+        }
         metrics[rc].text = metric
-           // return
-       // }
     }
     
+    //Pass it a field, returns the corresponding ROWCOL
     func getRowCol(fieldType: Int) -> Int {
     
         //Return the RowCol for a given fieldType
@@ -219,19 +222,42 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     func didNewGPSData(_ sender: LocationManager, gps: GPSData) {
         reading.gps = gps
+        
+        if timerIsPaused == false {
+            if lapDistance == 0 {
+                lapDistance = gps.distance.value / 1000
+            }
+            
+            let tmpTime = DispatchTime.now().uptimeNanoseconds - lapTime!.uptimeNanoseconds
+            let elapsedTime = Double(tmpTime) / 3600000000000
+            
+            print("ElapsedTime:  \(elapsedTime)")
+            print("lapDistance:  \(lapDistance)")
+            print("Current Distance:  \(gps.distance.value)")
+
+            metricField(fieldID: ViewController.LAP_AVERAGE_SPEED, metric: String(format: "%.0f", ((gps.distance.value / 1000) - lapDistance) / elapsedTime))
+            
+        }
+
         metricField(fieldID: ViewController.SPEED, metric: String(format: "%.0f", gps.speed))
-        elapsedSpeedTime = 0
         metricField(fieldID: ViewController.DISTANCE, metric: String(format: "%.0f", gps.distance.value/1000.0))
+        
+        elapsedSpeedTime = 0
         
     }
     
     @IBAction func lapClicked(_ sender: Any) {
+        
+        lapTime = DispatchTime.now()
         
         lapCounter = lapCounter + 1
         metricField(fieldID: ViewController.LAP, metric: String(lapCounter))
         
         totalWatts = 0
         wattCounter = 0
+        
+        lapCounter = 0
+        lapDistance = 0
         
     }
     
@@ -267,6 +293,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         if timerIsPaused {
             rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
             startTime = DispatchTime.now()
+            lapTime = DispatchTime.now()
             let hours = 0
             let minutes = 0
             let seconds = 0
