@@ -82,7 +82,6 @@ class CoreDataServices: ObservableObject {
     
     
     func saveRide(tmpRideArray: [PeripheralData], rideID: UUID) {
-       // let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
         var dataRide = Ride(context: context)
         

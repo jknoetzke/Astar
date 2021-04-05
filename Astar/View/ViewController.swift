@@ -231,10 +231,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             let tmpTime = DispatchTime.now().uptimeNanoseconds - lapTime!.uptimeNanoseconds
             let elapsedTime = Double(tmpTime) / 3600000000000
             
-            print("ElapsedTime:  \(elapsedTime)")
-            print("lapDistance:  \(lapDistance)")
-            print("Current Distance:  \(gps.distance.value)")
-
             metricField(fieldID: ViewController.LAP_AVERAGE_SPEED, metric: String(format: "%.0f", ((gps.distance.value / 1000) - lapDistance) / elapsedTime))
             
         }

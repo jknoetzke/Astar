@@ -75,7 +75,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
         }
         
         
-        gpsData.altitude = altitude
+        
+        //gpsData.altitude = altitude
+        gpsData.altitude = Double.random(in: 0...100)
         gpsData.speed = speed
         gpsData.distance = distance
         gpsData.location = currentPosition

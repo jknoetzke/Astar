@@ -151,17 +151,16 @@ struct RideBarChart: View {
         legendDict[7] =  anaerobic
         legendDict[8] =  neuro
 
-        //FTP = defaults.integer(forKey: "FTP")
         points = loadPoints(rides: ride, points: points, legendDict: legendDict, FTP: Double(FTP)!)
+   
     }
     
     var body: some View {
         let limit = DataPoint(value: Double($FTP.wrappedValue)!, label: LocalizedStringKey($FTP.wrappedValue), legend: threshold)
         BarChartView(dataPoints: points, limit: limit )
     }
-    
-   
 }
+
 func legend(watts: Int, FTP: Double, legendDict: [Int : Legend]) -> Legend {
     
     switch watts {
@@ -188,14 +187,19 @@ func legend(watts: Int, FTP: Double, legendDict: [Int : Legend]) -> Legend {
 func loadPoints(rides: [PeripheralData], points: [DataPoint], legendDict: [Int : Legend], FTP: Double) -> [DataPoint] {
     
     var count = 1
-    
     var points = points
+    var totalWatts = 0
+    let smoother = rides.count / 1000
     
     for ride in rides {
         
-        //        DataPoint(value: 200.0,      label: "Foobar",      legend: legend(watts: ride.power, FTP: FTP, legendDict: legendDict))
-        points.append(DataPoint(value: Double(ride.power), label: LocalizedStringKey(String(count)), legend: legend(watts: ride.power, FTP: FTP, legendDict: legendDict)))
+        if count == smoother {
+            points.append(DataPoint(value: Double(ride.power), label: LocalizedStringKey(String(count)), legend: legend(watts: ride.power, FTP: FTP, legendDict: legendDict)))
+            count = 0
+            totalWatts = 0
+        }
         count += 1
+        totalWatts = totalWatts + ride.power
     }
     
     return points
