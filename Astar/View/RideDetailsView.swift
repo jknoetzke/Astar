@@ -10,6 +10,16 @@ import SwiftUICharts
 
 let coreData = CoreDataServices.sharedCoreDataService
 
+var points = [DataPoint]()
+var legendDict:[Int:Legend] = [:]
+let activeRecovery = Legend(color: .blue, label: "Active Recovery", order: 1)
+let endurance = Legend(color: .purple, label: "Endurance", order: 2)
+let tempo = Legend(color: .green, label: "Tempo", order: 3)
+let sweetSpot = Legend(color: .yellow, label: "Sweet Spot", order: 4)
+let threshold = Legend(color: .black, label: "Threshold", order: 5)
+let vo2max = Legend(color: .gray, label: "VO2Max", order: 6)
+let anaerobic =  Legend(color: .orange, label: "Anaerobic", order: 7)
+let neuro =  Legend(color: .red, label: "Neuromuscular", order: 8)
 
 struct RideDetailsView: View {
     
@@ -128,16 +138,7 @@ struct RideBarChart: View {
     
     let defaults = UserDefaults.standard
     //let FTP:Int!
-    var points = [DataPoint]()
-    var legendDict:[Int:Legend] = [:]
-    let activeRecovery = Legend(color: .blue, label: "Active Recovery", order: 1)
-    let endurance = Legend(color: .purple, label: "Endurance", order: 2)
-    let tempo = Legend(color: .green, label: "Tempo", order: 3)
-    let sweetSpot = Legend(color: .yellow, label: "Sweet Spot", order: 4)
-    let threshold = Legend(color: .black, label: "Threshold", order: 5)
-    let vo2max = Legend(color: .gray, label: "VO2Max", order: 6)
-    let anaerobic =  Legend(color: .orange, label: "Anaerobic", order: 7)
-    let neuro =  Legend(color: .red, label: "Neuromuscular", order: 8)
+    
     
     init(ride: [PeripheralData]) {
         
@@ -189,12 +190,15 @@ func loadPoints(rides: [PeripheralData], points: [DataPoint], legendDict: [Int :
     var count = 1
     var points = points
     var totalWatts = 0
-    let smoother = rides.count / 1000
+    let smoother = rides.count / 50
     
     for ride in rides {
         
+        var totalCount = 0
+        totalCount += 1
         if count == smoother {
-            points.append(DataPoint(value: Double(ride.power), label: LocalizedStringKey(String(count)), legend: legend(watts: ride.power, FTP: FTP, legendDict: legendDict)))
+            let watts = totalWatts / count
+            points.append(DataPoint(value: Double(watts), label: LocalizedStringKey(""), legend: legend(watts: watts, FTP: FTP, legendDict: legendDict)))
             count = 0
             totalWatts = 0
         }
