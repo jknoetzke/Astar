@@ -21,11 +21,14 @@ let vo2max = Legend(color: .gray, label: "VO2Max", order: 6)
 let anaerobic =  Legend(color: .orange, label: "Anaerobic", order: 7)
 let neuro =  Legend(color: .red, label: "Neuromuscular", order: 8)
 
+var maxWatts = 0
+var totalRideTime = 0.0
+var smoothRideTime = 0.0
+
 struct RideDetailsView: View {
     
     var rideMetric: CompletedRide
     var rideData = [PeripheralData]()
-    
     
     init(rideMetric: CompletedRide) {
         self.rideMetric = rideMetric
@@ -54,6 +57,9 @@ struct RideDetailsView: View {
                 RideBarChart(ride: rideData)
                 .frame(width: 340, height: 380)
                 
+                Text(String(format: "Samples smoothed to %.0f seconds", smoothRideTime))
+                    .font(.footnote)
+                    
                 Spacer()
                 if rideMetric.laps != nil {
                     LapView(laps: rideMetric)
@@ -98,7 +104,6 @@ struct LapView: View {
         }
     }
 }
- 
 
 struct MetricsView: View {
     
@@ -137,8 +142,6 @@ struct RideBarChart: View {
     var ride: [PeripheralData]
     
     let defaults = UserDefaults.standard
-    //let FTP:Int!
-    
     
     init(ride: [PeripheralData]) {
         
@@ -156,52 +159,15 @@ struct RideBarChart: View {
    
     }
     
+    
     var body: some View {
-        let limit = DataPoint(value: Double($FTP.wrappedValue)!, label: "FTP", legend: threshold)
+
+        //let thresholdLimit = maxWatts / Int(FTP)!
+        let thresholdLimit = Double(maxWatts) / Double(FTP)!
+        let limitBar = (Double(maxWatts) / thresholdLimit) * 1.95
+        let limit = DataPoint(value: Double(limitBar), label: LocalizedStringKey("FTP:  \(FTP)" ), legend: threshold)
         BarChartView(dataPoints: points, limit: limit )
     }
- 
- 
-/*
-    var body: some View {
-        let highIntensity = Legend(color: .orange, label: "High Intensity", order: 5)
-        let buildFitness = Legend(color: .yellow, label: "Build Fitness", order: 4)
-        let fatBurning = Legend(color: .green, label: "Fat Burning", order: 3)
-        let warmUp = Legend(color: .blue, label: "Warm Up", order: 2)
-        let low = Legend(color: .gray, label: "Low", order: 1)
-        
-        let limit = DataPoint(value: 130, label: "5", legend: fatBurning)
-        
-        let points: [DataPoint] = [
-            .init(value: 70, label: "", legend: low),
-            .init(value: 90, label: "", legend: warmUp),
-            .init(value: 91, label: "", legend: warmUp),
-            .init(value: 92, label: "", legend: warmUp),
-            .init(value: 130, label: "", legend: fatBurning),
-            .init(value: 124, label: "", legend: fatBurning),
-            .init(value: 135, label: "", legend: fatBurning),
-            .init(value: 133, label: "", legend: fatBurning),
-            .init(value: 136, label: "", legend: fatBurning),
-            .init(value: 138, label: "", legend: fatBurning),
-            .init(value: 150, label: "", legend: buildFitness),
-            .init(value: 151, label: "", legend: buildFitness),
-            .init(value: 150, label: "", legend: buildFitness),
-            .init(value: 136, label: "", legend: fatBurning),
-            .init(value: 135, label: "", legend: fatBurning),
-            .init(value: 130, label: "", legend: fatBurning),
-            .init(value: 130, label: "", legend: fatBurning),
-            .init(value: 150, label: "", legend: buildFitness),
-            .init(value: 151, label: "", legend: buildFitness),
-            .init(value: 150, label: "", legend: buildFitness),
-            .init(value: 160, label: "", legend: highIntensity),
-            .init(value: 159, label: "", legend: highIntensity),
-            .init(value: 161, label: "", legend: highIntensity),
-            .init(value: 158, label: "", legend: highIntensity),
-        ]
-        
-        BarChartView(dataPoints: points, limit: limit)
-    }
- */
 }
 
 func legend(watts: Int, FTP: Double, legendDict: [Int : Legend]) -> Legend {
@@ -233,20 +199,39 @@ func loadPoints(rides: [PeripheralData], points: [DataPoint], legendDict: [Int :
     var points = points
     var totalWatts = 0
     let smoother = rides.count / 25
+    let timeSmoother = rides.count / 3
+    var timeLabel = ""
+    let firstTimestamp = (rides.first?.timeStamp)!
+    var totalCount = 0
     
     for ride in rides {
         
-        var totalCount = 0
         totalCount += 1
+        if timeSmoother == totalCount {
+            let timeSplit = ride.timeStamp.timeIntervalSince(firstTimestamp)
+            timeLabel = formatTime(timeInterval: timeSplit)
+            totalCount = 0
+        }
+
         if count == smoother {
             let watts = totalWatts / count
-            points.append(DataPoint(value: Double(watts), label: LocalizedStringKey(""), legend: legend(watts: watts, FTP: FTP, legendDict: legendDict)))
+
+            if maxWatts < watts {
+                maxWatts = watts
+            }
+            
+            points.append(DataPoint(value: Double(watts), label: LocalizedStringKey(timeLabel), legend: legend(watts: watts, FTP: FTP, legendDict: legendDict)))
             count = 0
             totalWatts = 0
+            timeLabel = ""
         }
         count += 1
         totalWatts = totalWatts + ride.power
+        
     }
+    
+    totalRideTime = rides.last!.timeStamp.timeIntervalSince(firstTimestamp)
+    smoothRideTime = (totalRideTime / Double(smoother))
     
     return points
 }
