@@ -37,14 +37,15 @@ struct ActivityView: View {
                        ImageView(ride: ride)
                        HStack(alignment: .lastTextBaseline) {
                            RideTimeView(ride: ride)
-                           Spacer()
+                        //   Divider()
                            DistanceView(ride: ride)
-                           Spacer()
+                         //  Divider()
                            WattsView(ride:ride)
-                           Spacer()
+                         //  Divider()
                            ElevationView(ride: ride)
-                           Spacer()
+                          // Divider()
                            CaloriesView(ride: ride)
+                           //Spacer()
                        }
                     }
                 }
@@ -71,8 +72,8 @@ struct ActivityView: View {
         let ride: CompletedRide
         
         var body: some View {
-            VStack(alignment: .leading) {
-                Text("Ride Time:").fixedSize().font(.system(size:10))
+            VStack() {
+                Text("Ride Time").fixedSize().font(.system(size:10))
                 Text(formatTime(timeInterval: ride.ride_time)).fixedSize()
             }
         }
@@ -82,8 +83,8 @@ struct ActivityView: View {
         let ride: CompletedRide
         
         var body: some View {
-            VStack(alignment: .leading) {
-                Text("Date:").fixedSize().font(.system(size:10))
+            VStack() {
+                Text("Date").fixedSize().font(.system(size:15))
                 Text(formatDate(rawDate: ride.ride_date ?? Date())).fixedSize()
             }
         }
@@ -93,9 +94,11 @@ struct ActivityView: View {
         let ride: CompletedRide
         
         var body: some View {
-            VStack(alignment: .leading) {
-                Text("Distance:").fixedSize().font(.system(size:10))
-                Text(String(ride.distance / 1000)).fixedSize()
+            VStack() {
+                Text("Distance").fixedSize().font(.system(size:10))
+                Text(String(ride.distance)+"km").fixedSize()
+               
+
             }
         }
     }
@@ -104,8 +107,8 @@ struct ActivityView: View {
         let ride: CompletedRide
         
         var body: some View {
-            VStack(alignment: .leading) {
-                Text("Avg Watts:").fixedSize().font(.system(size:10))
+            VStack() {
+                Text("Avg Watts").fixedSize().font(.system(size:10))
                 Text(String(ride.average_watts)).fixedSize()
             }
         }
@@ -117,8 +120,8 @@ struct ActivityView: View {
         
         var body: some View {
             HStack(alignment: .lastTextBaseline) {
-                VStack(alignment: .leading) {
-                    Text("Elevation:").fixedSize().font(.system(size:10))
+                VStack() {
+                    Text("Elevation").fixedSize().font(.system(size:10))
                     Text(String(ride.elevation)).fixedSize()
                 }
             }
@@ -130,8 +133,8 @@ struct ActivityView: View {
         
         var body: some View {
             HStack(alignment: .lastTextBaseline) {
-                VStack(alignment: .leading) {
-                    Text("Calories:").fixedSize().font(.system(size:10))
+                VStack() {
+                    Text("Calories").fixedSize().font(.system(size:10))
                     Text(String(ride.calories)).fixedSize()
                 }
             }

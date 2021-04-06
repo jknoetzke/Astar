@@ -36,7 +36,7 @@ struct RideDetailsView: View {
     var body: some View {
         
         ScrollView(.vertical) {
-            VStack(alignment: .center) {
+            VStack() {
                 Text(formatDate(rawDate: rideMetric.ride_date!))
                 
                 Spacer()
@@ -105,22 +105,22 @@ struct MetricsView: View {
     let rideMetric: CompletedRide
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack() {
             Text("Ride Time:").fixedSize().font(.system(size:10))
             Text(formatTime(timeInterval: rideMetric.ride_time)).fixedSize()
         }
         Spacer()
-        VStack(alignment: .leading) {
+        VStack() {
             Text("Avg Watts:").fixedSize().font(.system(size:10))
             Text(String(rideMetric.average_watts)).fixedSize()
         }
         Spacer()
-        VStack(alignment: .leading) {
+        VStack() {
             Text("Distance:").fixedSize().font(.system(size:10))
             Text(String(rideMetric.distance)).fixedSize()
         }
         Spacer()
-        VStack(alignment: .leading) {
+        VStack() {
             Text("Calories:").fixedSize().font(.system(size:10))
             Text(String(rideMetric.calories)).fixedSize()
         }
@@ -157,7 +157,7 @@ struct RideBarChart: View {
     }
     
     var body: some View {
-        let limit = DataPoint(value: Double($FTP.wrappedValue)!, label: LocalizedStringKey($FTP.wrappedValue), legend: threshold)
+        let limit = DataPoint(value: Double($FTP.wrappedValue)!, label: "FTP", legend: threshold)
         BarChartView(dataPoints: points, limit: limit )
     }
 }
