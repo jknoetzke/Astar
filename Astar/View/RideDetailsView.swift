@@ -52,7 +52,7 @@ struct RideDetailsView: View {
                     Spacer()
                 }
                 RideBarChart(ride: rideData)
-                    .frame(width: 340, height: 380)
+                .frame(width: 340, height: 380)
                 
                 Spacer()
                 if rideMetric.laps != nil {
@@ -160,6 +160,48 @@ struct RideBarChart: View {
         let limit = DataPoint(value: Double($FTP.wrappedValue)!, label: "FTP", legend: threshold)
         BarChartView(dataPoints: points, limit: limit )
     }
+ 
+ 
+/*
+    var body: some View {
+        let highIntensity = Legend(color: .orange, label: "High Intensity", order: 5)
+        let buildFitness = Legend(color: .yellow, label: "Build Fitness", order: 4)
+        let fatBurning = Legend(color: .green, label: "Fat Burning", order: 3)
+        let warmUp = Legend(color: .blue, label: "Warm Up", order: 2)
+        let low = Legend(color: .gray, label: "Low", order: 1)
+        
+        let limit = DataPoint(value: 130, label: "5", legend: fatBurning)
+        
+        let points: [DataPoint] = [
+            .init(value: 70, label: "", legend: low),
+            .init(value: 90, label: "", legend: warmUp),
+            .init(value: 91, label: "", legend: warmUp),
+            .init(value: 92, label: "", legend: warmUp),
+            .init(value: 130, label: "", legend: fatBurning),
+            .init(value: 124, label: "", legend: fatBurning),
+            .init(value: 135, label: "", legend: fatBurning),
+            .init(value: 133, label: "", legend: fatBurning),
+            .init(value: 136, label: "", legend: fatBurning),
+            .init(value: 138, label: "", legend: fatBurning),
+            .init(value: 150, label: "", legend: buildFitness),
+            .init(value: 151, label: "", legend: buildFitness),
+            .init(value: 150, label: "", legend: buildFitness),
+            .init(value: 136, label: "", legend: fatBurning),
+            .init(value: 135, label: "", legend: fatBurning),
+            .init(value: 130, label: "", legend: fatBurning),
+            .init(value: 130, label: "", legend: fatBurning),
+            .init(value: 150, label: "", legend: buildFitness),
+            .init(value: 151, label: "", legend: buildFitness),
+            .init(value: 150, label: "", legend: buildFitness),
+            .init(value: 160, label: "", legend: highIntensity),
+            .init(value: 159, label: "", legend: highIntensity),
+            .init(value: 161, label: "", legend: highIntensity),
+            .init(value: 158, label: "", legend: highIntensity),
+        ]
+        
+        BarChartView(dataPoints: points, limit: limit)
+    }
+ */
 }
 
 func legend(watts: Int, FTP: Double, legendDict: [Int : Legend]) -> Legend {
@@ -190,7 +232,7 @@ func loadPoints(rides: [PeripheralData], points: [DataPoint], legendDict: [Int :
     var count = 1
     var points = points
     var totalWatts = 0
-    let smoother = rides.count / 50
+    let smoother = rides.count / 25
     
     for ride in rides {
         
