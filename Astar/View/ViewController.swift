@@ -251,8 +251,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         totalWatts = 0
         wattCounter = 0
-        
-        lapCounter = 0
         lapDistance = 0
         
     }
