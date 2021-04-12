@@ -51,7 +51,6 @@
 		D0D62290258446F900792442 /* Laps+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6228C258446F900792442 /* Laps+CoreDataProperties.swift */; };
 		D0D62291258446F900792442 /* CompletedRide+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6228D258446F900792442 /* CompletedRide+CoreDataClass.swift */; };
 		D0D62292258446F900792442 /* CompletedRide+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D6228E258446F900792442 /* CompletedRide+CoreDataProperties.swift */; };
-		D0FF579A253F3F5800265638 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF5799253F3F5800265638 /* SpinnerViewController.swift */; };
 		D0FF579E253F840A00265638 /* StravaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF579D253F840A00265638 /* StravaManager.swift */; };
 		D0FF57AA2540CC5500265638 /* StravaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FF57A92540CC5500265638 /* StravaData.swift */; };
 /* End PBXBuildFile section */
@@ -102,7 +101,6 @@
 		D0D6228C258446F900792442 /* Laps+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Laps+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		D0D6228D258446F900792442 /* CompletedRide+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CompletedRide+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		D0D6228E258446F900792442 /* CompletedRide+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CompletedRide+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		D0FF5799253F3F5800265638 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		D0FF579D253F840A00265638 /* StravaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaManager.swift; sourceTree = "<group>"; };
 		D0FF57A92540CC5500265638 /* StravaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -196,7 +194,6 @@
 				D06B089E2535F82400553105 /* MapViewController.swift */,
 				D06B08A02535F82400553105 /* ViewController.swift */,
 				D06F20C025914DB10052C629 /* RecordEditor.swift */,
-				D0FF5799253F3F5800265638 /* SpinnerViewController.swift */,
 				D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */,
 				D02BE892257517A700509E50 /* RideDetailsView.swift */,
 				D03335B92594C1DA00983F12 /* RecordEditingHostingController.swift */,
@@ -384,7 +381,6 @@
 				D00147042550DDBF0015B672 /* BluetoothData.swift in Sources */,
 				D02BE893257517A700509E50 /* RideDetailsView.swift in Sources */,
 				D034189D2535F7DA001AD367 /* AppDelegate.swift in Sources */,
-				D0FF579A253F3F5800265638 /* SpinnerViewController.swift in Sources */,
 				D06B08A92535F84400553105 /* CyclingAnalyticsManager.swift in Sources */,
 				D01A9683256459E10061B9B2 /* RideCalculator.swift in Sources */,
 				D0D62292258446F900792442 /* CompletedRide+CoreDataProperties.swift in Sources */,

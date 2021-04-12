@@ -44,8 +44,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     var metrics = [UILabel]()
     
-    let child = SpinnerViewController()
-    
     private var reading = PeripheralData()
     
     private var cyclingAnalyticsToken: String?
@@ -255,33 +253,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
     }
     
-    func startSpinnerView() {
-        // add the spinner view controller
-        addChild(child)
-        child.view.frame = view.frame
-        view.addSubview(child.view)
-        child.didMove(toParent: self)
-    }
-    
-    func stopSpinnerView()
-    {
-        child.willMove(toParent: nil)
-        child.view.removeFromSuperview()
-        child.removeFromParent()
-        
-        // the alert view
-        let alert = UIAlertController(title: "", message: "Uploading Ride...", preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        
-        // change to desired number of seconds (in this case 3 seconds)
-        let when = DispatchTime.now() + 3
-        DispatchQueue.main.asyncAfter(deadline: when){
-            // your code with delay
-            alert.dismiss(animated: true, completion: nil)
-        }
-    }
-    
-    
     @IBAction func startClicked(_ sender: Any) {
         
         if timerIsPaused {
@@ -458,14 +429,12 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         if stravaFlag || cyclingAnalyticsFlag {
             let tcxHandler = TCXHandler()
             let xml = tcxHandler.encodeTCX(rideArray: tmpRideArray)
-            startSpinnerView()
             if cyclingAnalyticsFlag {
                 uploadToCyclingAnalytics(xml: xml)
             }
             if stravaFlag {
                 uploadToStrava(xml:xml)
             }
-            stopSpinnerView()
         }
     }
     

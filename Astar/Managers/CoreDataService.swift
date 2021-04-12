@@ -54,6 +54,7 @@ class CoreDataServices: ObservableObject {
         completedRide.average_watts = tmpRideMetric.avgWatts
         completedRide.map_image = mapImage.pngData()
         completedRide.ride_id = rideID
+        completedRide.elevation = tmpRideMetric.elevation
         
         if tmpRideMetric.laps != nil {
             for lap in tmpRideMetric.laps! {

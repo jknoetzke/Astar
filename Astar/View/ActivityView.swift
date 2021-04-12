@@ -37,15 +37,10 @@ struct ActivityView: View {
                        ImageView(ride: ride)
                        HStack(alignment: .lastTextBaseline) {
                            RideTimeView(ride: ride)
-                        //   Divider()
                            DistanceView(ride: ride)
-                         //  Divider()
                            WattsView(ride:ride)
-                         //  Divider()
                            ElevationView(ride: ride)
-                          // Divider()
                            CaloriesView(ride: ride)
-                           //Spacer()
                        }
                     }
                 }

@@ -21,9 +21,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
     private var coordinates =  [CLLocationCoordinate2D]()
     private var boundingRect = MKMapRect()
     
-    let child = SpinnerViewController()
-
-    
     var pinched = false
     private var pinchCounter = 0
     
@@ -125,18 +122,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
             let image = #imageLiteral(resourceName: "map")
             let coreDataServices = CoreDataServices.sharedCoreDataService
             coreDataServices.saveMetrics(ride: ride, mapImage: image, rideID: rideID)
-            self.stopSpinnerView()
             return
             
         }
         
-        startSpinnerView()
         
         MKMapSnapshotter(options: options).start() { snapshot, error in
             guard let snapshot = snapshot else { return }
             let mapImage = snapshot.image
 
-            self.startSpinnerView()
             let finalImage = UIGraphicsImageRenderer(size: mapImage.size).image { _ in
                 
                 // draw the map image
@@ -162,38 +156,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, LocationDelegate {
      
             let coreDataServices = CoreDataServices.sharedCoreDataService
             coreDataServices.saveMetrics(ride: ride, mapImage: finalImage, rideID: rideID)
-            
-             self.stopSpinnerView()
         }
     }
-
-    func startSpinnerView() {
-        // add the spinner view controller
-        addChild(child)
-        child.view.frame = view.frame
-        view.addSubview(child.view)
-        child.didMove(toParent: self)
-    }
-    
-    func stopSpinnerView()
-    {
-        child.willMove(toParent: nil)
-        child.view.removeFromSuperview()
-        child.removeFromParent()
-        
-        // the alert view
-        let alert = UIAlertController(title: "", message: "Saving Ride...", preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        
-        // change to desired number of seconds (in this case 3 seconds)
-        let when = DispatchTime.now() + 3
-        DispatchQueue.main.asyncAfter(deadline: when){
-            // your code with delay
-            alert.dismiss(animated: true, completion: nil)
-        }
-    }
-
-
 }
 
 extension Notification.Name {
@@ -203,6 +167,3 @@ extension Notification.Name {
 struct NewRide {
     let title: String
 }
-
-
-
