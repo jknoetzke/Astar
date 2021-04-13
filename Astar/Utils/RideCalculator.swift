@@ -50,6 +50,12 @@ class RideCalculator {
             if ride.gps.altitude > previousElevation && previousElevation != 0 {
                 let increasedElevation = ride.gps.altitude - previousElevation
                 elevation += increasedElevation
+
+                /*
+                print("currentElevation \(ride.gps.altitude)")
+                print("increasedElevation: \(increasedElevation)")
+                print("Elevation: \(elevation)")
+                */
             }
 
             if ride.gps.altitude > lapPreviousElevation && lapPreviousElevation != 0 {

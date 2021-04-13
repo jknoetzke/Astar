@@ -78,6 +78,17 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         UIApplication.shared.isIdleTimerDisabled = true
         
+        /*
+        let coreData = CoreDataServices()
+        let uuid = UUID(uuidString: "206C9586-8758-4CA6-8065-E1AFE7725158")
+        
+        print("UUID: \(uuid?.uuidString)")
+        
+        let tmpRideData = coreData.retrieveRide(rideID: uuid!)
+        
+        let rideCalc = RideCalculator()
+        let rideMetric = rideCalc.calculateRideMetrics(rideArray: tmpRideData!, rideID: uuid!)
+        */
         readUserPrefs()
         
         //Create an array of all metrics

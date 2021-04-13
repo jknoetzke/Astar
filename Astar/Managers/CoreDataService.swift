@@ -130,13 +130,13 @@ class CoreDataServices: ObservableObject {
             for data in result as! [NSManagedObject] {
                 aRide.power = data.value(forKey: "watts") as! Int
                 aRide.heartRate = data.value(forKey: "heartrate") as! Int
-                aRide.gps.altitude = data.value(forKey: "altitude") as! Double
+                gpsData.altitude = data.value(forKey: "altitude") as! Double
                 aRide.cadence = data.value(forKey: "cadence") as! Int
                 aRide.lap = data.value(forKey: "lap") as! Int
                 gps.latitude = data.value(forKey: "latitude") as! Double
                 gps.longitude = data.value(forKey: "longitude") as! Double
                 aRide.timeStamp = data.value(forKey: "timestamp") as! Date
-                aRide.gps.speed = data.value(forKey: "speed") as! Double
+                gpsData.speed = data.value(forKey: "speed") as! Double
                 gpsData.location = gps
                 aRide.gps = gpsData
                 

@@ -19,12 +19,17 @@ let POWER_MEASUREMENT = "2A63"
 let POWER_FEATURE = "2A65"
 
 let POWER_CRANK:UInt8 = 44
+let POWER_DUAL_CRANK_1:UInt8 = 45
+let POWER_DUAL_CRANK_2:UInt8 = 47
 let POWER_TRAINER:UInt8 = 39
 let POWER_HUB:UInt8 = 52
+
 
 class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     private var peripheral: CBPeripheral!
+    private var calibPeripheral: CBPeripheral!
+
     private var centralManager: CBCentralManager!
     private var reading: PeripheralData!
     private var devices: [CBPeripheral]!
@@ -55,16 +60,11 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        print("Dropped Connection!")
-        print("Dropped Name: \(String(describing: peripheral.name?.debugDescription))");
-        print("Dropped UUID: \(peripheral.identifier.uuidString)")
+        print("Dropped Device: \(String(describing: peripheral.name?.debugDescription))");
         
-        if let index = savedDevices.firstIndex(of: peripheral.identifier.uuidString) {
-            
-            savedDevices.remove(at: index)
-            centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID, powerMeterServiceCBUUID])
-            
-        }
+        if savedDevices.firstIndex(of: peripheral.identifier.uuidString) != nil {
+            centralManager.connect(peripheral, options: nil)
+       }
     }
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -99,18 +99,30 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         stopScanning()
     }
     
+    /*
+    func calibratePowermeter() {
+
+        var rawArray:[UInt8] = [0x0C];
+        let data = NSData(bytes: &rawArray, length: rawArray.count)
+        calibPeripheral.writeValue(data as Data, for: calib, type: CBCharacteristicWriteType.withResponse)
+    }
+ */
     func centralManager(_ central: CBCentralManager, didDiscover tmpPeripheral: CBPeripheral,
                         advertisementData: [String : Any], rssi RSSI: NSNumber) {
 
+        print("Peripheral Found: \(tmpPeripheral.identifier.uuidString)")
         peripheral = tmpPeripheral
         peripheral.delegate = self
         centralManager.connect(peripheral)
         
         if fullScan == false {
             if let _ = savedDevices.firstIndex(of: tmpPeripheral.identifier.uuidString) {
-              
                 devices.append(peripheral)
             }
+        }
+
+        if tmpPeripheral.identifier.uuidString == "235335A5-27F1-0A39-52B6-F46DD290D4DD" {
+            calibPeripheral = tmpPeripheral
         }
     }
     
@@ -166,6 +178,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
         
+        print("Found peripheral: \(service.peripheral.identifier.uuidString)")
+        
         if let _ = savedDevices.firstIndex(of: service.peripheral.identifier.uuidString) {
             
             if service.uuid == heartRateServiceCBUUID {
@@ -199,7 +213,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 print("Found a power meter")
                 
                 for characteristic in service.characteristics! as [CBCharacteristic] {
-                    print(characteristic)
+                   print(characteristic)
                     
                     switch characteristic.uuid.uuidString {
                     case POWER_CONTROL:
@@ -240,7 +254,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         // the first 16bits contains the data for the flags
         // The next 16bits make up the power reading
         let byteArray = [UInt8](characteristicData)
-
+       
         print(byteArray)
 
         switch byteArray[0] {
@@ -271,22 +285,53 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             watts = byteArray1+overFlow
          
             crankEvent = true
+        case POWER_DUAL_CRANK_1:
+            let byteArray1 = Int(byteArray[2])
+            let byteArray2 = Int(byteArray[3])
+            let overFlow = byteArray2 * 255
+            watts = byteArray1+overFlow
             
+            crankRev = Double(byteArray[7]) + (Double(byteArray[8]) * 255.0)
+            crankTime = Double((UInt16(byteArray[10]) << 8) + UInt16(byteArray[9]))
+            
+            crankEvent = true
+     
+        case POWER_DUAL_CRANK_2:
+            let byteArray1 = Int(byteArray[2])
+            let byteArray2 = Int(byteArray[3])
+            let overFlow = byteArray2 * 255
+            let rightWatts = byteArray1+overFlow
+            
+            if rightWatts != 0 {
+                let percent = watts / rightWatts
+                
+                if percent > 1 {
+                    //Left Leg is more powerful
+                    let leftPercent = (percent * 100) - 100
+                    print("Left Percent: \(leftPercent)")
+                }
+                else {
+                    //Right Leg is more powerful
+                    let rightPercent = abs((percent * 100) - 100)
+                    print("Right Percent: \(rightPercent)")
+                }
+                return //Don't confuse cadence and watts for the other leg
+            }
         default:
             return
         }
         
-        
+        //This is for cadence
         let cumulativeRevs = rollOver(current: crankRev, previous: reading.previousCrankCount, max: UInt16.max)
         let cumulativeTime = rollOver(current: crankTime, previous: reading.previousCrankTimeEvent, max: UInt16.max)
-        
         
         if (reading.previousCrankTimeEvent != crankTime) || (reading.previousCrankCount != crankRev) {
             if cumulativeTime != 0 {
                 cadence = Double((60 * cumulativeRevs / cumulativeTime) * 1024 )
             }
         }
-        
+
+        //Store the values and pass it along.
         reading.power = Int(watts)
         reading.cadence = Int(cadence)
         reading.deviceType = DeviceType.PowerMeter
@@ -326,7 +371,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         let byteArray = [UInt8](characteristicData)
         var heartRate = 0
         
-        // See: https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.heart_rate_measurement.xml
         // The heart rate mesurement is in the 2nd, or in the 2nd and 3rd bytes, i.e. one one or in two bytes
         // The first byte of the first bit specifies the length of the heart rate data, 0 == 1 byte, 1 == 2 bytes
         let firstBitValue = byteArray[0] & 0x01

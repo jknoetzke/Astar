@@ -70,13 +70,14 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
                 gpsData.lastLocation = lastLocation
             }
             locationList.append(newLocation)
-            altitude = newLocation.altitude
             
+            if( newLocation.verticalAccuracy > 20) {
+                altitude = newLocation.altitude
+            }
         }
         
         gpsData.distance = distance
         gpsData.altitude = altitude
-        //gpsData.altitude = Double.random(in: 0...10)
 
         gpsData.speed = speed
         gpsData.location = currentPosition
