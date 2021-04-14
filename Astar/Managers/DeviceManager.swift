@@ -12,11 +12,21 @@ import CoreBluetooth
 let heartRateServiceCBUUID = CBUUID(string: "0x180D")
 let heartRateMeasurementCharacteristicCBUUID = CBUUID(string: "2A37")
 let powerMeterMeasurementCharacteristicCBUUID = CBUUID(string: POWER_MEASUREMENT)
+let powerMeterMeasurementFeatureCBUUID = CBUUID(string: POWER_FEATURE)
 let bodySensorLocationCharacteristicCBUUID = CBUUID(string: "2A38")
 let powerMeterServiceCBUUID = CBUUID(string: "1818")
+let deviceInfoServiceUUID = CBUUID(string: "180A")
+let batteryServiceUUID = CBUUID(string: "180F")
+let batteryCharacteristic = CBUUID(string: BATTERY_LEVEL)
+let manufactureServiceUUID = CBUUID(string: MANUFACTURER_NAME)
+let manufactureServiceModelUUID = "Manufacturer Name String"
+
 let POWER_CONTROL = "2A66"
 let POWER_MEASUREMENT = "2A63"
 let POWER_FEATURE = "2A65"
+let BATTERY_LEVEL = "2A19"
+let BATTERY_LEVEL_STATE = "2A1B"
+let MANUFACTURER_NAME = "2A29"
 
 let POWER_CRANK:UInt8 = 44
 let POWER_DUAL_CRANK_1:UInt8 = 45
@@ -25,14 +35,20 @@ let POWER_TRAINER:UInt8 = 39
 let POWER_HUB:UInt8 = 52
 
 
+
 class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
-    private var peripheral: CBPeripheral!
-    private var calibPeripheral: CBPeripheral!
-
+    //private var aPeripheral: CBPeripheral!
     private var centralManager: CBCentralManager!
     private var reading: PeripheralData!
+
+    //Devices Saved for regular use
+    var savedDevices: [String] = []
     private var devices: [CBPeripheral]!
+
+    //Devices that were scanned during full scan but not saved
+    var scannedDevicesStrings: [String] = []
+    private var scannedDevices: [CBPeripheral]!
     
     private var MAX_SCAN_TIMER = 300
     
@@ -42,7 +58,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     var bleDelegate: BluetoothDelegate?
     var fullScan = false
     
-    var savedDevices: [String] = []
     
     var deviceCount = 0
     
@@ -51,8 +66,9 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     override init() {
         super.init()
         
-        reading = PeripheralData();
+        reading = PeripheralData()
         devices = [CBPeripheral]()
+        scannedDevices = [CBPeripheral]()
         
         let defaults = UserDefaults.standard
         savedDevices = defaults.object(forKey:"saved_devices") as? [String] ?? [String]()
@@ -81,7 +97,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             print("central.state is .poweredOff")
         case .poweredOn:
             print("central.state is .poweredOn")
-            centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID, powerMeterServiceCBUUID])
+            centralManager.scanForPeripherals(withServices: [heartRateServiceCBUUID, powerMeterServiceCBUUID, deviceInfoServiceUUID, batteryServiceUUID])
         @unknown default:
             print("Unknown case")
         }
@@ -107,28 +123,30 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         calibPeripheral.writeValue(data as Data, for: calib, type: CBCharacteristicWriteType.withResponse)
     }
  */
-    func centralManager(_ central: CBCentralManager, didDiscover tmpPeripheral: CBPeripheral,
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral,
                         advertisementData: [String : Any], rssi RSSI: NSNumber) {
 
-        print("Peripheral Found: \(tmpPeripheral.identifier.uuidString)")
-        peripheral = tmpPeripheral
-        peripheral.delegate = self
-        centralManager.connect(peripheral)
-        
-        if fullScan == false {
-            if let _ = savedDevices.firstIndex(of: tmpPeripheral.identifier.uuidString) {
-                devices.append(peripheral)
-            }
-        }
+        print("Peripheral Found: \(peripheral.identifier.uuidString)")
 
-        if tmpPeripheral.identifier.uuidString == "235335A5-27F1-0A39-52B6-F46DD290D4DD" {
-            calibPeripheral = tmpPeripheral
+        if !fullScan {
+            if savedDevices.firstIndex(of: peripheral.identifier.uuidString) != nil {
+                //aPeripheral = tmpPeripheral
+                peripheral.delegate = self
+                devices.append(peripheral)
+                centralManager.connect(peripheral, options: nil)
+            }
+        } else {
+            peripheral.delegate = self
+            scannedDevices.append(peripheral)
+            centralManager.connect(peripheral, options: nil)
         }
     }
     
     func stopScanning() {
         if centralManager != nil && centralManager.state == .poweredOn && centralManager.isScanning {
             print("Stop scanning")
+            scannedDevices.removeAll()
+            scannedDevicesStrings.removeAll()
             centralManager.stopScan()
         }
     }
@@ -162,7 +180,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 deviceCount = deviceCount + 1
             }
         }
-        peripheral.discoverServices([heartRateServiceCBUUID, powerMeterServiceCBUUID])
+        //peripheral.discoverServices([heartRateServiceCBUUID, powerMeterServiceCBUUID, deviceInfoServiceUUID, batteryServiceUUID])
+        peripheral.discoverServices(nil)
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
@@ -177,74 +196,141 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
-        
-        print("Found peripheral: \(service.peripheral.identifier.uuidString)")
-        
-        if let _ = savedDevices.firstIndex(of: service.peripheral.identifier.uuidString) {
+        //print("Found peripheral: \(service.peripheral.identifier.uuidString)")
+       // print("Service UUID Found: \(service.uuid)")
+        switch service.uuid {
+        case heartRateServiceCBUUID:
             
-            if service.uuid == heartRateServiceCBUUID {
-                
-                print("Found a Heart Rate Monitor")
-                
-                var deviceInfo = DeviceInfo()
-                deviceInfo.uuid = service.uuid.uuidString
-                deviceInfo.description = "Heart Rate Monitor"
-                deviceInfo.name = peripheral.name
-                
-                for characteristic in characteristics {
-                    print(characteristic)
-                    
-                    if characteristic.properties.contains(.read) {
-                        print("\(characteristic.uuid): properties contains .read")
-                        peripheral.readValue(for: characteristic)
-                    }
+            print("Found a Heart Rate Monitor")
+            
+            var deviceInfo = DeviceInfo()
+            deviceInfo.uuid = service.uuid.uuidString
+            deviceInfo.description = "Heart Rate Monitor"
+            deviceInfo.name = peripheral.name
+            
+            for characteristic in characteristics {
+                print(characteristic)
+                if characteristic.properties.contains(.read) {
+                    print("\(characteristic.uuid): properties contains .read")
+                    peripheral.readValue(for: characteristic)
+                }
+                if characteristic.properties.contains(.notify) {
+                    print("\(characteristic.uuid): properties contains .notify")
+                    peripheral.setNotifyValue(true, for: characteristic)
+                }
+            }
+        case powerMeterServiceCBUUID:
+            
+            var deviceInfo = DeviceInfo()
+            deviceInfo.uuid = service.uuid.uuidString
+            deviceInfo.description = "Power Meter"
+            deviceInfo.name = peripheral.name
+            
+            print("Found a power meter")
+
+            for characteristic in service.characteristics! as [CBCharacteristic] {
+                switch characteristic.uuid.uuidString {
+                case POWER_CONTROL:
+                    var rawArray:[UInt8] = [0x01];
+                    let data = NSData(bytes: &rawArray, length: rawArray.count)
+                    peripheral.writeValue(data as Data, for: characteristic, type: CBCharacteristicWriteType.withResponse)
+                    print("POWER CONTROL")
+                case POWER_MEASUREMENT:
                     if characteristic.properties.contains(.notify) {
-                        print("\(characteristic.uuid): properties contains .notify")
+                        print("POWER MEASUREMENT")
+                        peripheral.setNotifyValue(true, for: characteristic)
+                    }
+                case POWER_FEATURE:
+                    if characteristic.properties.contains(.notify) {
+                        print("POWER FEATURE")
+                        peripheral.setNotifyValue(true, for: characteristic)
+                    }
+                    if characteristic.properties.contains(.read) {
+                      print("\(characteristic.uuid): properties contains .read")
+                      peripheral.readValue(for: characteristic)
+                    }
+                default:
+                    print(characteristic)
+                    peripheral.setNotifyValue(true, for: characteristic)
+                }
+            }
+            
+        case batteryServiceUUID:
+            for characteristic in service.characteristics! as [CBCharacteristic] {
+                switch characteristic.uuid.uuidString {
+                case BATTERY_LEVEL:
+                    print("BATTERY_LEVEL")
+                    if characteristic.properties.contains(.notify) {
+                        peripheral.setNotifyValue(true, for: characteristic)
+                    }
+                    if characteristic.properties.contains(.read) {
+                      print("\(characteristic.uuid): properties contains .read")
+                      peripheral.readValue(for: characteristic)
+                    }
+                case BATTERY_LEVEL_STATE:
+                    print("BATTERY_STATE")
+                    if characteristic.properties.contains(.notify) {
+                        peripheral.setNotifyValue(true, for: characteristic)
+                    }
+                    if characteristic.properties.contains(.read) {
+                      print("\(characteristic.uuid): properties contains .read")
+                      peripheral.readValue(for: characteristic)
+                    }
+                default:
+                    if characteristic.properties.contains(.notify) {
                         peripheral.setNotifyValue(true, for: characteristic)
                     }
                 }
-            } else if service.uuid == powerMeterServiceCBUUID {
-                
-                var deviceInfo = DeviceInfo()
-                deviceInfo.uuid = service.uuid.uuidString
-                deviceInfo.description = "Power Meter"
-                deviceInfo.name = peripheral.name
-                
-                print("Found a power meter")
-                
-                for characteristic in service.characteristics! as [CBCharacteristic] {
-                   print(characteristic)
-                    
-                    switch characteristic.uuid.uuidString {
-                    case POWER_CONTROL:
-                        var rawArray:[UInt8] = [0x01];
-                        let data = NSData(bytes: &rawArray, length: rawArray.count)
-                        peripheral.writeValue(data as Data, for: characteristic, type: CBCharacteristicWriteType.withResponse)
-                        print("POWER CONTROL")
-                    case POWER_MEASUREMENT:
-                        if characteristic.properties.contains(.notify) {
-                            print("POWER MEASUREMENT")
-                            peripheral.setNotifyValue(true, for: characteristic);
-                        }
-                    // this should set the cumulative count back to zero
-                    case POWER_FEATURE:
-                        if characteristic.properties.contains(.notify) {
-                            print("POWER FEATURE")
-                            peripheral.setNotifyValue(true, for: characteristic);
-                        }
-                    default:
-                        peripheral.setNotifyValue(true, for: characteristic);
+            }
+        case deviceInfoServiceUUID:
+            for characteristic in service.characteristics! as [CBCharacteristic] {
+                switch characteristic.uuid.uuidString {
+                case MANUFACTURER_NAME:
+                    print("MANUFACTURER_NAME")
+                    if characteristic.properties.contains(.notify) {
+                        peripheral.setNotifyValue(true, for: characteristic)
+                    }
+                    if characteristic.properties.contains(.read) {
+                      print("\(characteristic.uuid): properties contains .read")
+                      peripheral.readValue(for: characteristic)
+                    }
+                default:
+                    if characteristic.properties.contains(.notify) {
+                        peripheral.setNotifyValue(true, for: characteristic)
                     }
                 }
+            }
+        case batteryServiceUUID:
+            for characteristic in service.characteristics! as [CBCharacteristic] {
+            if characteristic.properties.contains(.read) {
+                print("\(characteristic.uuid): properties contains .read")
+                peripheral.readValue(for: characteristic)
+            }
+        }
+        default:
+            for characteristic in service.characteristics! as [CBCharacteristic] {
+                peripheral.setNotifyValue(true, for: characteristic)
+              //  print("unhandled service: \(service.uuid.uuidString) unhandled characteristic: \(characteristic.uuid.uuidString)")
             }
         }
     }
     
+    func updateBattery(_ peripheral:CBPeripheral, value:Data){
+
+        var buffer = [UInt8](repeating: 0x00, count: value.count)
+        value.copyBytes(to: &buffer, count: buffer.count)
+        
+        let batlevel = UInt8(buffer[0])
+        let batteryLevel = Int16(batlevel)
+        print("Battery Level: \(batteryLevel)%")
+
+    }
+    
     func updatePower(from characteristic: CBCharacteristic) {
         
-        var cadence = 0.0
         guard let characteristicData = characteristic.value else { return }
-        
+       
+        var cadence = 0.0
         var crankRev = 0.0
         var crankTime = 0.0
         var watts:Int = 0
@@ -254,7 +340,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         // the first 16bits contains the data for the flags
         // The next 16bits make up the power reading
         let byteArray = [UInt8](characteristicData)
-       
         print(byteArray)
 
         switch byteArray[0] {
@@ -285,7 +370,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             watts = byteArray1+overFlow
          
             crankEvent = true
-        case POWER_DUAL_CRANK_1:
+        case POWER_DUAL_CRANK_1, POWER_DUAL_CRANK_2:
             let byteArray1 = Int(byteArray[2])
             let byteArray2 = Int(byteArray[3])
             let overFlow = byteArray2 * 255
@@ -296,27 +381,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             
             crankEvent = true
      
-        case POWER_DUAL_CRANK_2:
-            let byteArray1 = Int(byteArray[2])
-            let byteArray2 = Int(byteArray[3])
-            let overFlow = byteArray2 * 255
-            let rightWatts = byteArray1+overFlow
-            
-            if rightWatts != 0 {
-                let percent = watts / rightWatts
-                
-                if percent > 1 {
-                    //Left Leg is more powerful
-                    let leftPercent = (percent * 100) - 100
-                    print("Left Percent: \(leftPercent)")
-                }
-                else {
-                    //Right Leg is more powerful
-                    let rightPercent = abs((percent * 100) - 100)
-                    print("Right Percent: \(rightPercent)")
-                }
-                return //Don't confuse cadence and watts for the other leg
-            }
         default:
             return
         }
@@ -356,14 +420,55 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        
+        print("characteristic UUID: \(characteristic.uuid.uuidString)")
+        
         switch characteristic.uuid {
         case heartRateMeasurementCharacteristicCBUUID:
             updateHeartRate(from: characteristic)
         case powerMeterMeasurementCharacteristicCBUUID:
             updatePower(from: characteristic)
+        case batteryCharacteristic:
+            updateBattery(peripheral, value: characteristic.value!)
+       case manufactureServiceUUID:
+            print("Manufacture Service: \(String(describing: characteristic.value))");
+        //case manufactureServiceModelUUID:
+        //    print("\(String(describing: characteristic.value))");
+        case powerMeterMeasurementFeatureCBUUID:
+            updatePowerMeterFeatures(peripheral, value: characteristic.value!)
         default:
             print("Unhandled Characteristic UUID: \(characteristic.uuid)")
+//            let chara = characteristic.uuid
+//            print("Chara String: \(chara.uuidString)")
         }
+    }
+    
+    func updatePowerMeterFeatures(_ peripheral:CBPeripheral, value:Data){
+        var index: Int = 0
+        let bytes = value.map { $0 }
+        let rawFlags: UInt16 = UInt16(bytes[index++=]) | UInt16(bytes[index++=]) << 8
+        let flags = MeasurementFlags(rawValue: rawFlags)
+        print("AccumulatedEnergyPresent \(flags.contains(.AccumulatedEnergyPresent))")
+        print("AccumulatedTorquePresent \(flags.contains(.AccumulatedTorquePresent))")
+        print("BottomDeadSpotAnglePresent \(flags.contains(.BottomDeadSpotAnglePresent))")
+        print("CrankRevolutionDataPresent \(flags.contains(.CrankRevolutionDataPresent))")
+        print("ExtremeAnglesPresent \(flags.contains(.ExtremeAnglesPresent))")
+        print("ExtremeForceMagnitudesPresent \(flags.contains(.ExtremeForceMagnitudesPresent))")
+        print("ExtremeTorqueMagnitudesPresent \(flags.contains(.ExtremeTorqueMagnitudesPresent))")
+        print("OffsetCompensationIndicator \(flags.contains(.OffsetCompensationIndicator))")
+        print("PedalPowerBalancePresent \(flags.contains(.PedalPowerBalancePresent))")
+        print("TopDeadSpotAnglePresent \(flags.contains(.TopDeadSpotAnglePresent))")
+        print("WheelRevolutionDataPresent \(flags.contains(.WheelRevolutionDataPresent))")
+    }
+    
+    public func readFeatures(_ data: Data) -> Features {
+        let bytes = data.map { $0 }
+        var rawFeatures: UInt32 = 0
+        if bytes.count > 0 { rawFeatures |= UInt32(bytes[0]) }
+        if bytes.count > 1 { rawFeatures |= UInt32(bytes[1]) << 8 }
+        if bytes.count > 2 { rawFeatures |= UInt32(bytes[2]) << 16 }
+        if bytes.count > 3 { rawFeatures |= UInt32(bytes[3]) << 24 }
+        return Features(rawValue: rawFeatures)
     }
     
     private func updateHeartRate(from characteristic: CBCharacteristic) {
