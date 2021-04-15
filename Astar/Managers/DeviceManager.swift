@@ -38,7 +38,7 @@ let POWER_HUB:UInt8 = 52
 
 class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
-    //private var aPeripheral: CBPeripheral!
+    private var aPeripheral: CBPeripheral!
     private var centralManager: CBCentralManager!
     private var reading: PeripheralData!
 
@@ -77,6 +77,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         print("Dropped Device: \(String(describing: peripheral.name?.debugDescription))");
+        
+        print("Error: \(String(describing: error))")
         
         if savedDevices.firstIndex(of: peripheral.identifier.uuidString) != nil {
             centralManager.connect(peripheral, options: nil)
@@ -125,13 +127,15 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
  */
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral,
                         advertisementData: [String : Any], rssi RSSI: NSNumber) {
-
+        
         print("Peripheral Found: \(peripheral.identifier.uuidString)")
-
+        
         if !fullScan {
             if savedDevices.firstIndex(of: peripheral.identifier.uuidString) != nil {
                 //aPeripheral = tmpPeripheral
-                peripheral.delegate = self
+                //peripheral.delegate = self
+                aPeripheral = peripheral
+                aPeripheral.delegate = self
                 devices.append(peripheral)
                 centralManager.connect(peripheral, options: nil)
             }
@@ -158,8 +162,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         } else {
             if let index = savedDevices.firstIndex(of: deviceID) {
                 savedDevices.remove(at: index)
-                let tmpPeripheral = devices[index]
-                centralManager.cancelPeripheralConnection(tmpPeripheral)
+                //let tmpPeripheral = devices[index]
+                //centralManager.cancelPeripheralConnection(tmpPeripheral)
             }
         }
         defaults.set(savedDevices, forKey: "saved_devices")
@@ -189,7 +193,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         guard let services = peripheral.services else { return }
         
         for service in services {
-            print("Services: \(service)")
+           // print("Services: \(service)")
             peripheral.discoverCharacteristics(nil, for: service)
         }
     }
@@ -231,9 +235,9 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             for characteristic in service.characteristics! as [CBCharacteristic] {
                 switch characteristic.uuid.uuidString {
                 case POWER_CONTROL:
-                    var rawArray:[UInt8] = [0x01];
-                    let data = NSData(bytes: &rawArray, length: rawArray.count)
-                    peripheral.writeValue(data as Data, for: characteristic, type: CBCharacteristicWriteType.withResponse)
+                  //  var rawArray:[UInt8] = [0x01];
+                  //  let data = NSData(bytes: &rawArray, length: rawArray.count)
+                  //  peripheral.writeValue(data as Data, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
                     print("POWER CONTROL")
                 case POWER_MEASUREMENT:
                     if characteristic.properties.contains(.notify) {
@@ -421,7 +425,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         
-        print("characteristic UUID: \(characteristic.uuid.uuidString)")
+       // print("characteristic UUID: \(characteristic.uuid.uuidString)")
         
         switch characteristic.uuid {
         case heartRateMeasurementCharacteristicCBUUID:
