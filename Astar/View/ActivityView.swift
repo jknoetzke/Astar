@@ -56,7 +56,9 @@ struct ActivityView: View {
             let mapImage = ride.map_image
             Image(uiImage: UIImage(data:mapImage!)!)
                 .resizable()
-                .frame(width: 340, height: 300)
+                .scaledToFit()
+                .layoutPriority(-1)
+                //.frame(width: 340, height: 300)
                 .cornerRadius(16)
                 .padding()
         }
