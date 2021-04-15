@@ -425,7 +425,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             }
             
             powerEvent = true
-            cadenceEvent = true
+            
             
         case POWER_DUAL_CRANK_2:
             let byteArray1 = Int(byteArray[2])
@@ -449,8 +449,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             if (reading.previousCrankTimeEvent != crankTime) || (reading.previousCrankCount != crankRev) {
                 if cumulativeTime != 0 {
                     cadence = Int(Double((60 * cumulativeRevs / cumulativeTime) * 1024 ))
+                    cadenceEvent = true
                 }
-                reading.cadence = cadence
             }
             
         }
@@ -458,16 +458,19 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         reading.power = Int(watts)
         reading.deviceType = DeviceType.PowerMeter
         reading.powerEvent = powerEvent
+        reading.cadence = cadence
         reading.cadenceEvent = cadenceEvent
         reading.leftPercent = leftRightPercent
         reading.rightPercent = abs(leftRightPercent - 100)
 
-        print("leftPercent: \(reading.leftPercent)")
-        print("rightPercent: \(reading.rightPercent)")
+       // print("leftPercent: \(reading.leftPercent)")
+       // print("rightPercent: \(reading.rightPercent)")
         
         
         updateRide(ride: reading)
-        
+
+        let prevCrankCount = reading.previousCrankCount
+        let prevCrankTimeEvent = reading.previousCrankTimeEvent
         reading = PeripheralData()
         
         if byteArray[0] != POWER_DUAL_CRANK_2 {
@@ -475,6 +478,9 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 reading.previousCrankCount = crankRev
                 reading.previousCrankTimeEvent = crankTime
             }
+        } else {
+            reading.previousCrankCount = prevCrankCount
+            reading.previousCrankTimeEvent = prevCrankTimeEvent
         }
     }
     

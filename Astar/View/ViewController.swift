@@ -70,6 +70,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     static let LAP_AVERAGE_WATTS = 6
     static let DISTANCE = 7
     static let LAP_AVERAGE_SPEED = 8
+    static let LEFTRIGHT = 9
     
     //Was a periperhal added or removed ?
     var startScanning = true //Scan at startup then stop.
@@ -218,8 +219,11 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         if reading.powerEvent {
             //Find ROWCOL for Watts
             metricField(fieldID: ViewController.WATTS, metric: String(reading.power))
+            let leftSide = String(format: "%.0f", reading.leftPercent)
+            let rightSide = String(format: "%.0f", reading.leftPercent)
+            metricField(fieldID: ViewController.LEFTRIGHT, metric: String(leftSide + "/" + rightSide))
             elapsedWattsTime = 0
-            
+
             if timerIsPaused == false {
                 totalWatts = totalWatts + reading.power
                 wattCounter = wattCounter + 1
@@ -227,11 +231,13 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 metricField(fieldID: ViewController.LAP_AVERAGE_WATTS, metric: String(averageWatts))
             }
         }
-        
+
         if reading.cadenceEvent {
             metricField(fieldID: ViewController.CADENCE, metric: String(reading.cadence))
             elapsedCadenceTime = 0
         }
+
+        
     }
     
     func didNewGPSData(_ sender: LocationManager, gps: GPSData) {
