@@ -36,7 +36,7 @@ class RideCalculator {
             counter += 1
             lapCounter += 1
             
-            if distance != 0 {
+            if ride.gps.distance.value != 0 {
                 distance = ride.gps.distance.value
             }
             

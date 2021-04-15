@@ -57,6 +57,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     //Used to determine if we've stopped pedaling or moving
     private var elapsedWattsTime = 0
     private var elapsedSpeedTime = 0
+    private var elapsedCadenceTime = 0
     
     let customFields = ["ROW1", "ROW2COL1", "ROW2COL2", "ROW3COL1", "ROW3COL2", "ROW4COL1", "ROW4COL2"]
     
@@ -217,7 +218,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         if reading.powerEvent {
             //Find ROWCOL for Watts
             metricField(fieldID: ViewController.WATTS, metric: String(reading.power))
-            metricField(fieldID: ViewController.CADENCE, metric: String(reading.cadence))
             elapsedWattsTime = 0
             
             if timerIsPaused == false {
@@ -226,6 +226,11 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 let averageWatts = totalWatts / wattCounter
                 metricField(fieldID: ViewController.LAP_AVERAGE_WATTS, metric: String(averageWatts))
             }
+        }
+        
+        if reading.cadenceEvent {
+            metricField(fieldID: ViewController.CADENCE, metric: String(reading.cadence))
+            elapsedCadenceTime = 0
         }
     }
     
@@ -343,15 +348,18 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         elapsedWattsTime = elapsedWattsTime + 1
         elapsedSpeedTime = elapsedSpeedTime + 1
+        elapsedCadenceTime = elapsedCadenceTime + 1
         
         if elapsedWattsTime >= 3 {
             reading.power = 0
-            reading.cadence = 0
             metricField(fieldID: ViewController.WATTS, metric: "0")
-            metricField(fieldID: ViewController.CADENCE, metric: "0")
-            
         }
-        
+
+        if elapsedCadenceTime >= 3 {
+            reading.cadence = 0
+            metricField(fieldID: ViewController.CADENCE, metric: "0")
+        }
+
         if elapsedSpeedTime >= 3 {
             reading.speed = 0
             metricField(fieldID: ViewController.SPEED, metric: "0")

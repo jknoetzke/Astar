@@ -74,3 +74,4 @@ struct MeasurementFlags: OptionSet {
     static let AccumulatedEnergyPresent         = MeasurementFlags(rawValue: 1 << 11)
     static let OffsetCompensationIndicator      = MeasurementFlags(rawValue: 1 << 12)
 }
+

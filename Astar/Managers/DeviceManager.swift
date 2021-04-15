@@ -58,6 +58,9 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     var bleDelegate: BluetoothDelegate?
     var fullScan = false
     
+    var leftWatts:Int = 0
+    var rightWatts:Int = 0
+    var cadence = 0.0
     
     var deviceCount = 0
     
@@ -334,84 +337,144 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         guard let characteristicData = characteristic.value else { return }
        
-        var cadence = 0.0
+        var measurement = MeasurementData()
+        
         var crankRev = 0.0
         var crankTime = 0.0
-        var watts:Int = 0
         
-        var crankEvent = false
+        var watts = 0
+        var cadence = 0
+        
+        var powerEvent = false
+        var cadenceEvent = false
+        
+        let bytes = characteristicData.map { $0 }
+        var index: Int = 0
+        
+        var leftRightPercent = 0.0
+        
+        let rawFlags: UInt16 = UInt16(bytes[index++=]) | UInt16(bytes[index++=]) << 8
+        let flags = MeasurementFlags(rawValue: rawFlags)
+        
+        if flags.contains(.PedalPowerBalancePresent) && bytes.count >= index {
+            measurement.pedalPowerBalance = bytes[index++=]
+            measurement.pedalPowerBalanceReference = rawFlags & 0x2 == 0x2
+        }
         
         // the first 16bits contains the data for the flags
         // The next 16bits make up the power reading
         let byteArray = [UInt8](characteristicData)
-        print(byteArray)
+        //print(byteArray)
 
+        
+        
         switch byteArray[0] {
         case POWER_CRANK:
             let byteArray1 = Int(byteArray[2])
             let byteArray2 = Int(byteArray[3])
             let overFlow = byteArray2 * 255
-            watts = byteArray1+overFlow
+            leftWatts = byteArray1+overFlow
             
             crankRev = Double(byteArray[6]) + (Double(byteArray[7]) * 255.0)
             crankTime = Double((UInt16(byteArray[9]) << 8) + UInt16(byteArray[8]))
             
-            crankEvent = true
+            powerEvent = true
+            cadenceEvent = true
+            
         case POWER_TRAINER:
             let byteArray1 = Int(byteArray[2])
             let byteArray2 = Int(byteArray[3])
             let overFlow = byteArray2 * 255
-            watts = byteArray1+overFlow
+            leftWatts = byteArray1+overFlow
             
             crankRev = Double(byteArray[11]) + Double((byteArray[12]) * 255)
             crankTime = Double((UInt16(byteArray[14]) << 8) + UInt16(byteArray[13]))
             
-            crankEvent = true
+            powerEvent = true
+            cadenceEvent = true
+            
         case POWER_HUB:
             let byteArray1 = Int(byteArray[2])
             let byteArray2 = Int(byteArray[3])
             let overFlow = byteArray2 * 255
-            watts = byteArray1+overFlow
+            leftWatts = byteArray1+overFlow
          
-            crankEvent = true
-        case POWER_DUAL_CRANK_1, POWER_DUAL_CRANK_2:
+            powerEvent = true
+            cadenceEvent = true
+            
+        case POWER_DUAL_CRANK_1:
             let byteArray1 = Int(byteArray[2])
             let byteArray2 = Int(byteArray[3])
             let overFlow = byteArray2 * 255
-            watts = byteArray1+overFlow
+            let tmpWatts = byteArray1+overFlow
+            
+            leftWatts = (tmpWatts + rightWatts) / 2
+            
+            watts = leftWatts
             
             crankRev = Double(byteArray[7]) + (Double(byteArray[8]) * 255.0)
             crankTime = Double((UInt16(byteArray[10]) << 8) + UInt16(byteArray[9]))
             
-            crankEvent = true
-     
+            let combined:Double = Double(leftWatts + rightWatts)
+            
+            
+            let left:Double = Double(leftWatts)
+            if combined != 0 {
+                leftRightPercent = left / combined
+                leftRightPercent = leftRightPercent * 100.0
+            }
+            
+            powerEvent = true
+            cadenceEvent = true
+            
+        case POWER_DUAL_CRANK_2:
+            let byteArray1 = Int(byteArray[2])
+            let byteArray2 = Int(byteArray[3])
+            let overFlow = byteArray2 * 255
+            rightWatts = byteArray1+overFlow
+            
+            watts = (rightWatts + leftWatts) / 2
+            
+            powerEvent = true
+
         default:
             return
         }
         
         //This is for cadence
-        let cumulativeRevs = rollOver(current: crankRev, previous: reading.previousCrankCount, max: UInt16.max)
-        let cumulativeTime = rollOver(current: crankTime, previous: reading.previousCrankTimeEvent, max: UInt16.max)
-        
-        if (reading.previousCrankTimeEvent != crankTime) || (reading.previousCrankCount != crankRev) {
-            if cumulativeTime != 0 {
-                cadence = Double((60 * cumulativeRevs / cumulativeTime) * 1024 )
+        if byteArray[0] != POWER_DUAL_CRANK_2 {
+            let cumulativeRevs = rollOver(current: crankRev, previous: reading.previousCrankCount, max: UInt16.max)
+            let cumulativeTime = rollOver(current: crankTime, previous: reading.previousCrankTimeEvent, max: UInt16.max)
+            
+            if (reading.previousCrankTimeEvent != crankTime) || (reading.previousCrankCount != crankRev) {
+                if cumulativeTime != 0 {
+                    cadence = Int(Double((60 * cumulativeRevs / cumulativeTime) * 1024 ))
+                }
+                reading.cadence = cadence
             }
+            
         }
-
         //Store the values and pass it along.
         reading.power = Int(watts)
-        reading.cadence = Int(cadence)
         reading.deviceType = DeviceType.PowerMeter
-        reading.powerEvent = crankEvent
+        reading.powerEvent = powerEvent
+        reading.cadenceEvent = cadenceEvent
+        reading.leftPercent = leftRightPercent
+        reading.rightPercent = abs(leftRightPercent - 100)
+
+        print("leftPercent: \(reading.leftPercent)")
+        print("rightPercent: \(reading.rightPercent)")
+        
         
         updateRide(ride: reading)
         
         reading = PeripheralData()
         
-        if crankRev > reading.previousCrankCount {
-            reading.previousCrankCount = crankRev
-            reading.previousCrankTimeEvent = crankTime
+        if byteArray[0] != POWER_DUAL_CRANK_2 {
+            if crankRev > reading.previousCrankCount {
+                reading.previousCrankCount = crankRev
+                reading.previousCrankTimeEvent = crankTime
+            }
         }
     }
     
