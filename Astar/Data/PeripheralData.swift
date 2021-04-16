@@ -6,12 +6,15 @@
 //
 
 import Foundation
+import CoreBluetooth
 
 
 struct DeviceInfo {
     var uuid:String?
     var name:String?
     var description:String?
+    var device: CBPeripheral?
+    var pedalPowerBalancePresent = false
 }
 
 public enum DeviceType: String {

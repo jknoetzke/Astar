@@ -269,6 +269,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         lapCounter = lapCounter + 1
         metricField(fieldID: ViewController.LAP, metric: String(lapCounter))
         
+      //  deviceManager.calibratePowermeter()
+        
+        
         totalWatts = 0
         wattCounter = 0
         lapDistance = 0
@@ -489,9 +492,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     }
 }
 
-
-
-
 extension NSLayoutConstraint {
     
     override public var description: String {
@@ -499,4 +499,3 @@ extension NSLayoutConstraint {
         return "Bug ! id: \(id), constant: \(constant)" //you may print whatever you want here
     }
 }
-
