@@ -29,12 +29,10 @@ let BATTERY_LEVEL_STATE = "2A1B"
 let MANUFACTURER_NAME = "2A29"
 
 let POWER_CRANK:UInt8 = 44
-let POWER_DUAL_CRANK_1:UInt8 = 45
-let POWER_DUAL_CRANK_2:UInt8 = 47
+let POWER_DUAL_CRANK_1:UInt8 = 47
+let POWER_DUAL_CRANK_2:UInt8 = 45
 let POWER_TRAINER:UInt8 = 39
 let POWER_HUB:UInt8 = 52
-
-
 
 class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
@@ -67,6 +65,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     var rightWatts:Int = 0
     var cadence = 0.0
     
+   
     var deviceCount = 0
     
     static let deviceManagerInstance = DeviceManager()
@@ -248,9 +247,9 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             for characteristic in service.characteristics! as [CBCharacteristic] {
                 switch characteristic.uuid.uuidString {
                 case POWER_CONTROL:
-                   // var rawArray:[UInt8] = [0x0C];
-                   // let data = NSData(bytes: &rawArray, length: rawArray.count)
-                   // peripheral.writeValue(data as Data, for: characteristic, type: CBCharacteristicWriteType.withResponse)
+                      //var rawArray:[UInt8] = [0x0C];
+                     // let data = NSData(bytes: &rawArray, length: rawArray.count)
+                     // peripheral.writeValue(data as Data, for: characteristic, type: CBCharacteristicWriteType.withResponse)
                     print("POWER CONTROL")
                     
                 case POWER_MEASUREMENT:
@@ -259,7 +258,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                         peripheral.setNotifyValue(true, for: characteristic)
                     }
                 case POWER_FEATURE:
-                    
                     if characteristic.properties.contains(.notify) {
                         print("POWER FEATURE")
                         peripheral.setNotifyValue(true, for: characteristic)
@@ -270,7 +268,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                     }
                 default:
                     print(characteristic)
-                    peripheral.setNotifyValue(true, for: characteristic)
+                  //  peripheral.setNotifyValue(true, for: characteristic)
                 }
             }
             
@@ -352,14 +350,15 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         var crankRev = 0.0
         var crankTime = 0.0
         
+        var leftPercent = 0.0
+        var rightPercent = 0.0
+
         var watts = 0
         var cadence = 0
         
         var powerEvent = false
         var cadenceEvent = false
-
-        var leftRightPercent = 0.0
-
+        
         let n = devices.firstIndex { $0.device == characteristic.service.peripheral }
         let device = devices[n!]
         
@@ -409,21 +408,29 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             leftWatts = byteArray1+overFlow
             
             if (device.pedalPowerBalancePresent) {
+                let leftRightBalance = byteArray[4]
+                print("Left Right Balance: \(leftRightBalance)")
+                //Get the alternate pedal watts
+                let byteArray1 = Int(byteArray[2])
+                let byteArray2 = Int(byteArray[3])
+                let overFlow = byteArray2 * 255
+                let tmpLeftWatts = byteArray1+overFlow
+                
                 watts = leftWatts
+                if rightWatts + leftWatts != 0 {
+                   // leftRightPercent = Double(tmpLeftWatts / (rightWatts + tmpLeftWatts)) * 100.0
+                }
+                
             } else {
                 watts = (leftWatts + rightWatts)
+                if watts != 0 {
+                    leftPercent = Double(Double(leftWatts) / Double(watts)) * 100.0
+                    rightPercent = abs(leftPercent - 100)
+                }
             }
             
             crankRev = Double(byteArray[7]) + (Double(byteArray[8]) * 255.0)
             crankTime = Double((UInt16(byteArray[10]) << 8) + UInt16(byteArray[9]))
-            
-            let combined:Double = Double(leftWatts + rightWatts)
-            
-            let left:Double = Double(leftWatts)
-            if combined != 0 {
-                leftRightPercent = left / combined
-                leftRightPercent = leftRightPercent * 100.0
-            }
             
             powerEvent = true
             
@@ -436,8 +443,15 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             
             if (device.pedalPowerBalancePresent) {
                 watts = rightWatts
+                if rightWatts + leftWatts != 0 {
+                    rightPercent = Double(Double(rightWatts) / (Double(watts))) * 100.0
+                }
             } else {
                 watts = (leftWatts + rightWatts)
+                if watts != 0 {
+                    rightPercent = Double(Double(rightWatts) / Double(watts)) * 100.0
+                    leftPercent = abs(rightPercent - 100)
+                }
             }
             
             powerEvent = true
@@ -465,15 +479,9 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         reading.powerEvent = powerEvent
         reading.cadence = cadence
         reading.cadenceEvent = cadenceEvent
-        reading.leftPercent = leftRightPercent
-        if leftRightPercent > 100 {
-            let delta = leftRightPercent - 100
-            reading.rightPercent = 100 - delta
-        } else {
-            let delta = 100 - leftRightPercent
-            reading.leftPercent = 100 + delta
-        }
-        
+        reading.leftPercent = leftPercent
+        reading.rightPercent = rightPercent
+
         updateRide(ride: reading)
         
         let prevCrankCount = reading.previousCrankCount

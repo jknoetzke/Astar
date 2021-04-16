@@ -220,7 +220,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             //Find ROWCOL for Watts
             metricField(fieldID: ViewController.WATTS, metric: String(reading.power))
             let leftSide = String(format: "%.0f", reading.leftPercent)
-            let rightSide = String(format: "%.0f", reading.leftPercent)
+            let rightSide = String(format: "%.0f", reading.rightPercent)
             metricField(fieldID: ViewController.LEFTRIGHT, metric: String(leftSide + "/" + rightSide))
             elapsedWattsTime = 0
 
@@ -268,10 +268,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         lapCounter = lapCounter + 1
         metricField(fieldID: ViewController.LAP, metric: String(lapCounter))
-        
-      //  deviceManager.calibratePowermeter()
-        
-        
+     
         totalWatts = 0
         wattCounter = 0
         lapDistance = 0
