@@ -409,10 +409,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             leftWatts = byteArray1+overFlow
             
             if (device.pedalPowerBalancePresent) {
-                print("CRANK1 left: \(leftWatts)")
-                print("CRANK1 right: \(rightWatts)")
-
-                watts = (leftWatts + rightWatts) / 2
+                watts = leftWatts
             } else {
                 watts = (leftWatts + rightWatts)
             }
@@ -438,10 +435,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             rightWatts = byteArray1+overFlow
             
             if (device.pedalPowerBalancePresent) {
-                print("CRANK2 left: \(leftWatts)")
-                print("CRANK2 right: \(rightWatts)")
-
-                watts = (leftWatts + rightWatts) / 2
+                watts = rightWatts
             } else {
                 watts = (leftWatts + rightWatts)
             }
