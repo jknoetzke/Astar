@@ -54,7 +54,7 @@ struct RideDetailsView: View {
                     MetricsView(rideMetric: rideMetric)
                     Spacer()
                 }
-                RideBarChart(ride: rideData)
+              RideBarChart(ride: rideData)
                 .frame(width: 340, height: 380)
                 
                 Text(String(format: "Samples smoothed to %.0f seconds", smoothRideTime))
@@ -166,7 +166,9 @@ struct RideBarChart: View {
         let thresholdLimit = Double(maxWatts) / Double(FTP)!
         let limitBar = (Double(maxWatts) / thresholdLimit) * 1.95
         let limit = DataPoint(value: Double(limitBar), label: LocalizedStringKey("FTP:  \(FTP)" ), legend: threshold)
-        BarChartView(dataPoints: points, limit: limit )
+        if points.count != 0 {
+            BarChartView(dataPoints: points, limit: limit )
+        }
     }
 }
 
@@ -214,6 +216,7 @@ func loadPoints(rides: [PeripheralData], points: [DataPoint], legendDict: [Int :
         }
 
         if count == smoother {
+ 
             let watts = totalWatts / count
 
             if maxWatts < watts {
@@ -233,5 +236,10 @@ func loadPoints(rides: [PeripheralData], points: [DataPoint], legendDict: [Int :
     totalRideTime = rides.last!.timeStamp.timeIntervalSince(firstTimestamp)
     smoothRideTime = (totalRideTime / Double(smoother))
     
-    return points
+    if(totalWatts != 0) {
+        return points
+    } else {
+        points.removeAll()
+        return points
+    }
 }

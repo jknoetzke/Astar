@@ -409,12 +409,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             
             if (device.pedalPowerBalancePresent) {
                 let leftRightBalance = byteArray[4]
-                print("Left Right Balance: \(leftRightBalance)")
-                //Get the alternate pedal watts
-                let byteArray1 = Int(byteArray[2])
-                let byteArray2 = Int(byteArray[3])
-                let overFlow = byteArray2 * 255
-                let tmpLeftWatts = byteArray1+overFlow
+                print("Left Right Balance CRANK1: \(leftRightBalance)")
                 
                 watts = leftWatts
                 if rightWatts + leftWatts != 0 {
@@ -442,10 +437,9 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             rightWatts = byteArray1+overFlow
             
             if (device.pedalPowerBalancePresent) {
+                let leftRightBalance = byteArray[4]
+                print("Left Right Balance CRANK 2: \(leftRightBalance)")
                 watts = rightWatts
-                if rightWatts + leftWatts != 0 {
-                    rightPercent = Double(Double(rightWatts) / (Double(watts))) * 100.0
-                }
             } else {
                 watts = (leftWatts + rightWatts)
                 if watts != 0 {

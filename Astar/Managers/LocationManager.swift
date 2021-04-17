@@ -68,12 +68,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
                 
                 speed = (newLocation.speed * 3600) / 1000
                 gpsData.lastLocation = lastLocation
-            }
-            locationList.append(newLocation)
-            
-            if( newLocation.verticalAccuracy > 20) {
                 altitude = newLocation.altitude
             }
+            locationList.append(newLocation)
         }
         
         gpsData.distance = distance
