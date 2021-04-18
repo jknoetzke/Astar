@@ -48,14 +48,17 @@ struct RideDetailsView: View {
                     .scaledToFit()
                     .layoutPriority(-1)
                     .cornerRadius(16)
-                    .padding()
+                    
+
                 Spacer()
                 HStack(alignment: .lastTextBaseline) {
                     MetricsView(rideMetric: rideMetric)
                     Spacer()
                 }
-              RideBarChart(ride: rideData)
+                RideBarChart(ride: rideData)
                 .frame(width: 340, height: 380)
+                .scaledToFill()
+                .padding()
                 
                 Text(String(format: "Samples smoothed to %.0f seconds", smoothRideTime))
                     .font(.footnote)
@@ -155,7 +158,7 @@ struct RideBarChart: View {
         legendDict[7] =  anaerobic
         legendDict[8] =  neuro
 
-        points = loadPoints(rides: ride, points: points, legendDict: legendDict, FTP: Double(FTP)!)
+        loadPoints(rides: ride, legendDict: legendDict, FTP: Double(FTP)!)
    
     }
     
@@ -195,17 +198,24 @@ func legend(watts: Int, FTP: Double, legendDict: [Int : Legend]) -> Legend {
 }
 
 
-func loadPoints(rides: [PeripheralData], points: [DataPoint], legendDict: [Int : Legend], FTP: Double) -> [DataPoint] {
+func loadPoints(rides: [PeripheralData], legendDict: [Int : Legend], FTP: Double) -> [DataPoint] {
     
     var count = 1
-    var points = points
     var totalWatts = 0
     let smoother = rides.count / 25
     let timeSmoother = rides.count / 3
     var timeLabel = ""
     let firstTimestamp = (rides.first?.timeStamp)!
     var totalCount = 0
+    points.removeAll()
     
+    maxWatts = 0
+    totalRideTime = 0.0
+    smoothRideTime = 0.0
+    
+    
+    maxWatts = 0
+
     for ride in rides {
         
         totalCount += 1
@@ -236,7 +246,7 @@ func loadPoints(rides: [PeripheralData], points: [DataPoint], legendDict: [Int :
     totalRideTime = rides.last!.timeStamp.timeIntervalSince(firstTimestamp)
     smoothRideTime = (totalRideTime / Double(smoother))
     
-    if(totalWatts != 0) {
+    if(maxWatts != 0) {
         return points
     } else {
         points.removeAll()
