@@ -96,12 +96,12 @@ class RideCalculator {
                 }
                 
                 
-                let rideMetric = RideMetric(rideID: rideID, avgWatts: Int16(iWatts), calories: Int16(cal2), distance: Int16(ride.gps.distance.value - lapDistance) / 1000, rideTime: ride.timeStamp.timeIntervalSince(lapRideTime), elevation: Int16(lapElevation), heartRate: Int16(iHeartRate), speed: Int16(iSpeed), lapNumber: Int16(ride.lap))
+                let rideMetric = RideMetric(rideID: rideID, avgWatts: Int16(iWatts), calories: Int16(cal2), distance: Int16(distance - lapDistance) / 1000, rideTime: ride.timeStamp.timeIntervalSince(lapRideTime), elevation: Int16(lapElevation), heartRate: Int16(iHeartRate), speed: Int16(iSpeed), lapNumber: Int16(ride.lap))
                 
                 
                 lapArray.append(rideMetric)
                 
-                lapDistance = ride.gps.distance.value
+                lapDistance = distance
                 currentLap = ride.lap
                 lapRideTime = ride.timeStamp
                 lapCounter = 0

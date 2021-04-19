@@ -10,7 +10,7 @@ import SwiftUICharts
 
 let coreData = CoreDataServices.sharedCoreDataService
 
-var points = [DataPoint]()
+
 var legendDict:[Int:Legend] = [:]
 let activeRecovery = Legend(color: .blue, label: "Active Recovery", order: 1)
 let endurance = Legend(color: .purple, label: "Endurance", order: 2)
@@ -55,10 +55,11 @@ struct RideDetailsView: View {
                     MetricsView(rideMetric: rideMetric)
                     Spacer()
                 }
+                Spacer()
                 RideBarChart(ride: rideData)
-                .frame(width: 340, height: 380)
-                .scaledToFill()
-                .padding()
+              //  .frame(width: 340, height: 340)
+                .scaledToFit()
+                //.padding()
                 
                 Text(String(format: "Samples smoothed to %.0f seconds", smoothRideTime))
                     .font(.footnote)
@@ -143,6 +144,7 @@ struct RideBarChart: View {
     @AppStorage("FTP") var FTP: String = "230"
     
     var ride: [PeripheralData]
+    var points = [DataPoint]()
     
     let defaults = UserDefaults.standard
     
@@ -158,17 +160,15 @@ struct RideBarChart: View {
         legendDict[7] =  anaerobic
         legendDict[8] =  neuro
 
-        loadPoints(rides: ride, legendDict: legendDict, FTP: Double(FTP)!)
+        points = loadPoints(rides: ride, legendDict: legendDict, FTP: Double(FTP)!)
    
     }
     
     
     var body: some View {
 
-        //let thresholdLimit = maxWatts / Int(FTP)!
-        let thresholdLimit = Double(maxWatts) / Double(FTP)!
-        let limitBar = (Double(maxWatts) / thresholdLimit) * 1.95
-        let limit = DataPoint(value: Double(limitBar), label: LocalizedStringKey("FTP:  \(FTP)" ), legend: threshold)
+        let limitBar = 180.0
+        let limit = DataPoint(value: limitBar, label: LocalizedStringKey("FTP:  \(FTP)" ), legend: threshold)
         if points.count != 0 {
             BarChartView(dataPoints: points, limit: limit )
         }
@@ -207,7 +207,7 @@ func loadPoints(rides: [PeripheralData], legendDict: [Int : Legend], FTP: Double
     var timeLabel = ""
     let firstTimestamp = (rides.first?.timeStamp)!
     var totalCount = 0
-    points.removeAll()
+    var points = [DataPoint]()
     
     maxWatts = 0
     totalRideTime = 0.0
