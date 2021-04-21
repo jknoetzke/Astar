@@ -43,7 +43,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var peripheralsInUse: [CBPeripheral]!
     
     private var calibPeripheral: CBPeripheral!
-    private var calib: CBCharacteristic!
+    private var calibCharacteristic: CBCharacteristic!
     
     //Devices Saved for regular use
     var savedDevices: [String] = []
@@ -128,9 +128,10 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     func calibratePowermeter() {
         
-        var rawArray:[UInt8] = [0x0C];
+        //var rawArray:[UInt8] = [0x0C]
+        var rawArray:[UInt8] = [0x10];
         let data = NSData(bytes: &rawArray, length: rawArray.count)
-        calibPeripheral.writeValue(data as Data, for: calib, type: CBCharacteristicWriteType.withResponse)
+        calibPeripheral.writeValue(data as Data, for: calibCharacteristic, type: CBCharacteristicWriteType.withResponse)
     }
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral,
@@ -247,11 +248,15 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             for characteristic in service.characteristics! as [CBCharacteristic] {
                 switch characteristic.uuid.uuidString {
                 case POWER_CONTROL:
-                      //var rawArray:[UInt8] = [0x0C];
-                     // let data = NSData(bytes: &rawArray, length: rawArray.count)
-                     // peripheral.writeValue(data as Data, for: characteristic, type: CBCharacteristicWriteType.withResponse)
                     print("POWER CONTROL")
-                    
+                    if characteristic.uuid.uuidString == "2A66" {
+                        calibPeripheral = peripheral
+                        calibCharacteristic = characteristic
+                    }
+
+                    if characteristic.properties.contains(.notify) {
+                        peripheral.setNotifyValue(true, for: characteristic)
+                    }
                 case POWER_MEASUREMENT:
                     if characteristic.properties.contains(.notify) {
                         print("POWER MEASUREMENT")
@@ -358,6 +363,8 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         var powerEvent = false
         var cadenceEvent = false
+        
+        updatePowerMeterValues(value: characteristicData)
         
         let n = devices.firstIndex { $0.device == characteristic.service.peripheral }
         let device = devices[n!]
@@ -525,12 +532,41 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         //            print("Chara String: \(chara.uuidString)")
         }
     }
+    func updatePowerMeterFeatures(_ peripheral:CBPeripheral, value: Data)
+    {
+        let features = readFeatures(value)
+        print("AccumulatedEnergySupported \(features.contains(.AccumulatedEnergySupported))")
+        print("AccumulatedTorqueSupported \(features.contains(.AccumulatedTorqueSupported))")
+        print("ChainLengthAdjustmentSupported \(features.contains(.ChainLengthAdjustmentSupported))")
+        print("ChainWeightAdjustmentSupported \(features.contains(.ChainWeightAdjustmentSupported))")
+        print("ContentMaskingSupported \(features.contains(.ContentMaskingSupported))")
+        print("CrankLengthAdjustmentSupported \(features.contains(.CrankLengthAdjustmentSupported))")
+        print("CrankRevolutionDataSupported \(features.contains(.CrankRevolutionDataSupported))")
+        print("ExtremeAnglesSupported \(features.contains(.ExtremeAnglesSupported))")
+        print("ExtremeMagnitudesSupported \(features.contains(.ExtremeMagnitudesSupported))")
+        print("FactoryCalibrationDateSupported \(features.contains(.FactoryCalibrationDateSupported))")
+        print("InstantaneousMeasurementDirectionSupported \(features.contains(.InstantaneousMeasurementDirectionSupported))")
+        print("MultipleSensorLocationsSupported \(features.contains(.MultipleSensorLocationsSupported))")
+        print("OffsetCompensationIndicatorSupported \(features.contains(.OffsetCompensationIndicatorSupported))")
+        print("OffsetCompensationSupported \(features.contains(.OffsetCompensationSupported))")
+        print("PedalPowerBalanceSupported \(features.contains(.PedalPowerBalanceSupported))")
+        print("SensorMeasurementContext \(features.contains(.SensorMeasurementContext))")
+        print("SpanLengthAdjustmentSupported \(features.contains(.SpanLengthAdjustmentSupported))")
+        print("TopAndBottomDeadSpotAnglesSupported \(features.contains(.TopAndBottomDeadSpotAnglesSupported))")
+        print("WheelRevolutionDataSupported \(features.contains(.WheelRevolutionDataSupported))")
+
+     
+        let n = devices.firstIndex { $0.device == peripheral }
+        devices[n!].pedalPowerBalancePresent = features.contains(.PedalPowerBalanceSupported)
+    }
     
-    func updatePowerMeterFeatures(_ peripheral:CBPeripheral, value:Data){
+    func updatePowerMeterValues(value:Data){
         var index: Int = 0
         let bytes = value.map { $0 }
         let rawFlags: UInt16 = UInt16(bytes[index++=]) | UInt16(bytes[index++=]) << 8
         let flags = MeasurementFlags(rawValue: rawFlags)
+        
+        /*
         print("AccumulatedEnergyPresent \(flags.contains(.AccumulatedEnergyPresent))")
         print("AccumulatedTorquePresent \(flags.contains(.AccumulatedTorquePresent))")
         print("BottomDeadSpotAnglePresent \(flags.contains(.BottomDeadSpotAnglePresent))")
@@ -538,14 +574,18 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         print("ExtremeAnglesPresent \(flags.contains(.ExtremeAnglesPresent))")
         print("ExtremeForceMagnitudesPresent \(flags.contains(.ExtremeForceMagnitudesPresent))")
         print("ExtremeTorqueMagnitudesPresent \(flags.contains(.ExtremeTorqueMagnitudesPresent))")
+       
         print("OffsetCompensationIndicator \(flags.contains(.OffsetCompensationIndicator))")
+        
         print("PedalPowerBalancePresent \(flags.contains(.PedalPowerBalancePresent))")
         print("TopDeadSpotAnglePresent \(flags.contains(.TopDeadSpotAnglePresent))")
         print("WheelRevolutionDataPresent \(flags.contains(.WheelRevolutionDataPresent))")
+    
+         */
+        if flags.contains(.OffsetCompensationIndicator) {
+            print("BINGO!!!!")
+        }
         
-        
-        let n = devices.firstIndex { $0.device == peripheral }
-        devices[n!].pedalPowerBalancePresent = flags.contains(.PedalPowerBalancePresent)
         
     }
     
