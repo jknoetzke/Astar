@@ -57,10 +57,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
             gpsData.currentLocation = newLocation
             currentLocation = newLocation
             
-            let howRecent = newLocation.timestamp.timeIntervalSinceNow
-            guard newLocation.horizontalAccuracy < 20 && abs(howRecent) < 10 else {
-                continue
-            }
+          //  let howRecent = newLocation.timestamp.timeIntervalSinceNow
+          //  guard newLocation.horizontalAccuracy < 20 && abs(howRecent) < 10 else {
+          //      continue
+          //  }
             
             if let lastLocation = locationList.last {
                 let delta = newLocation.distance(from: lastLocation)
