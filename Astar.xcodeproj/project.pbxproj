@@ -42,7 +42,7 @@
 		D08253BF256C63020023D6C5 /* RideResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BE256C63020023D6C5 /* RideResult.swift */; };
 		D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77B251A4AE200241E7E /* PeripheralData.swift */; };
 		D0AB73B4255F038E0090B1DF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AB73B3255F038E0090B1DF /* Extensions.swift */; };
-		D0BF2C1F2627038D002B3620 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF2C1E2627038D002B3620 /* Operators.swift */; };
+		D0AE8866263B360F00CB0307 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AE8865263B360F00CB0307 /* Operators.swift */; };
 		D0BF2C32262773A9002B3620 /* PowerMeterData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF2C31262773A9002B3620 /* PowerMeterData.swift */; };
 		D0BF2C452630A403002B3620 /* CompletedRide+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF2C442630A403002B3620 /* CompletedRide+CoreDataClass.swift */; };
 		D0BF2C482630A43A002B3620 /* CompletedRide+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF2C472630A43A002B3620 /* CompletedRide+CoreDataProperties.swift */; };
@@ -92,7 +92,7 @@
 		D08253BE256C63020023D6C5 /* RideResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideResult.swift; sourceTree = "<group>"; };
 		D093A77B251A4AE200241E7E /* PeripheralData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralData.swift; sourceTree = "<group>"; };
 		D0AB73B3255F038E0090B1DF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		D0BF2C1E2627038D002B3620 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operators.swift; path = "../../../../../../../Downloads/sensors-swift/Sources/SwiftySensors/Operators.swift"; sourceTree = "<group>"; };
+		D0AE8865263B360F00CB0307 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		D0BF2C31262773A9002B3620 /* PowerMeterData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PowerMeterData.swift; path = Astar/Utils/PowerMeterData.swift; sourceTree = SOURCE_ROOT; };
 		D0BF2C442630A403002B3620 /* CompletedRide+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CompletedRide+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D0BF2C472630A43A002B3620 /* CompletedRide+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CompletedRide+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -209,9 +209,9 @@
 		D0AB73B2255F03780090B1DF /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				D0BF2C1E2627038D002B3620 /* Operators.swift */,
 				D0AB73B3255F038E0090B1DF /* Extensions.swift */,
 				D06D79852527BCE4001961E3 /* TCXHandler.swift */,
+				D0AE8865263B360F00CB0307 /* Operators.swift */,
 				D01A9682256459E10061B9B2 /* RideCalculator.swift */,
 			);
 			path = Utils;
@@ -376,7 +376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0FF57AA2540CC5500265638 /* StravaData.swift in Sources */,
-				D0BF2C1F2627038D002B3620 /* Operators.swift in Sources */,
+				D0AE8866263B360F00CB0307 /* Operators.swift in Sources */,
 				D057645E258A2EF4009D6DBC /* CustomTableViewCell.swift in Sources */,
 				D0BF2C32262773A9002B3620 /* PowerMeterData.swift in Sources */,
 				D05374462536467700C6FB91 /* CyclingAnalyticsData.swift in Sources */,
@@ -563,7 +563,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Astar/Astar.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -571,7 +571,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astarios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astarbike;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -586,7 +586,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Astar/Astar.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -594,7 +594,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astarios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astarbike;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

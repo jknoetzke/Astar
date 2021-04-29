@@ -35,7 +35,7 @@ class TCXHandler {
             ride.cadence = 0
         }
         
-        extensionArray.append(Extension(activityTrackpointExtension: ActivityTrackpointExtension(speed: ride.speed, runCadence: nil, watts: UInt16(ride.power), cadenceSensor: nil), activityLapExtension: nil, activityGoals: nil))
+        extensionArray.append(Extension(activityTrackpointExtension: ActivityTrackpointExtension(speed: ride.gps.speed, runCadence: nil, watts: UInt16(ride.power), cadenceSensor: nil), activityLapExtension: nil, activityGoals: nil))
         
         return extensionArray
     }
@@ -49,6 +49,7 @@ class TCXHandler {
         var maxSpeed = 0.0
         var cadence = 0.0
         var heartRate = 0.0
+        var lapDistance = 0.0
         
         var firstRecordedTime: Date?
         var lastRecordedTime: Date?
@@ -69,12 +70,12 @@ class TCXHandler {
                     firstRecordedTime = ride.timeStamp
                 }
                 
-                if ride.speed > maxSpeed {
-                    maxSpeed = ride.speed
+                if ride.gps.speed > maxSpeed {
+                    maxSpeed = ride.gps.speed
                 }
                 totalWatts += Double(ride.power)
                 totalHR += Double(ride.heartRate)
-                totalSpeed += ride.speed
+                totalSpeed += ride.gps.speed
 
                 totalCadence += Double(ride.cadence)
                 
@@ -127,12 +128,12 @@ class TCXHandler {
                 let calories = UInt16(cal2)
                 
                 let heartBeatsPerMinute = HeartRateInBeatsPerMinute(heartRate: UInt8(iHeartRate))
-                let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime ?? 0), distance: ride.gps.distance.value, maximumSpeed: maxSpeed, calories: calories, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(iCadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
+                let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime ?? 0), distance: ride.gps.distance.value - lapDistance, maximumSpeed: maxSpeed, calories: calories, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(iCadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
                 
                 activityLap.append(lap)
                 allTracks.removeAll()
                 tracks.removeAll()
-                
+                lapDistance = ride.gps.distance.value
                 //Reset
                 counter = 1
                 previousLap = ride.lap

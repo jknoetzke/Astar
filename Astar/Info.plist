@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.shampoo.astarbike</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -30,7 +34,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>strava</string>
@@ -39,6 +43,12 @@
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>We require access to your Bluetooth Sensors in order to be able to read the various speed, power heartrate etc..</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>We require access to your Bluetooth Sensors in order to be able to read the various speed, power heartrate etc..</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>We will be sharing the distance you cycled.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>We will be sharing the distance you cycled.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We require your location to record your ride.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -63,10 +73,6 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
-	<key>NSHealthShareUsageDescription</key>
-	<string>We will be sharing the distance you cycled.</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>We will be sharing the distance you cycled.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

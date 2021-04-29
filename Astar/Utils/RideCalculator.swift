@@ -44,7 +44,7 @@ class RideCalculator {
             lapAverageWatts += ride.power
             
             lapHeartRate += Double(ride.heartRate)
-            lapSpeed += ride.speed
+            lapSpeed += ride.gps.speed
             
             //Did we increase in elevation ?
             if ride.gps.altitude > previousElevation && previousElevation != 0 {

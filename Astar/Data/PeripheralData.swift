@@ -17,21 +17,12 @@ struct DeviceInfo {
     var pedalPowerBalancePresent = false
 }
 
-public enum DeviceType: String {
-    case HeartRate = "HeartRate";
-    case SpeedCadence = "SpeedCadence";
-    case PowerMeter = "PowerMeter";
-    case UNKNOWN = "Unknown";
-}
-
 public class PeripheralData: NSObject {
     var rideID: UUID!
-    var speed:Double = 0.0;
     var heartRate = 0
     var power: Int = 0
     var cadence:Int = 0;
     var timeStamp = Date()
-    var deviceType = DeviceType.PowerMeter
     var previousCrankTimeEvent  = 0.0
     var previousCrankCount = 0.0
     var lap = 0

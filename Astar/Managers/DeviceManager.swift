@@ -477,7 +477,6 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
         //Store the values and pass it along.
         reading.power = Int(watts)
-        reading.deviceType = DeviceType.PowerMeter
         reading.powerEvent = powerEvent
         reading.cadence = cadence
         reading.cadenceEvent = cadenceEvent

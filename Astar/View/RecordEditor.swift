@@ -8,36 +8,38 @@
 import SwiftUI
 
 
-var fields = ["Watts", "Heart Rate", "Speed", "Ride Time", "Cadence", "Lap #", "Lap AVG Watts", "Distance", "Lap Speed", "L/R Balance"]
-var metrics = ["220", "146", "35", "1:24:43", "112", "2", "243", "25", "34", "52/48"]
+var fields = ["Watts", "Heart Rate", "Speed", "Ride Time", "Cadence", "Lap #", "Lap AVG Watts", "Distance", "Lap Speed", "L/R Balance", "Elevation", "AVG Speed"]
+var metrics = ["220", "146", "35", "1:24:43", "112", "2", "243", "25", "34", "52/48", "243", "23"]
 
 struct RecordEditor: View {
- 
+    
     var body: some View {
         NavigationView {
-            ZStack {
-                Color.blue
-                    .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                
-                HStack {
-                    VStack {
-                        Row1()
-                        Spacer()
-                        HStack {
-                            Row2Col1()
-                            Row2Col2()
+            GeometryReader { g in
+                ZStack {
+                    Color.blue
+                        .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                    
+                    HStack {
+                        VStack {
+                            Row1()
+                            Spacer()
+                            HStack {
+                                Row2Col1()
+                                Row2Col2()
+                            }
+                            Spacer()
+                            HStack {
+                                Row3Col1()
+                                Row3Col2()
+                            }
+                            Spacer()
+                            HStack {
+                                Row4Col1()
+                                Row4Col2()
+                            }
+                            
                         }
-                        Spacer()
-                        HStack {
-                            Row3Col1()
-                            Row3Col2()
-                        }
-                        Spacer()
-                        HStack {
-                            Row4Col1()
-                            Row4Col2()
-                        }
-                        
                     }
                 }
             }
