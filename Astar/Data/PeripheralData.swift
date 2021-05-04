@@ -31,5 +31,6 @@ public class PeripheralData: NSObject {
     var hrEvent = false
     var leftPercent = 0.0
     var rightPercent = 0.0
+    var elevation = 0.0
     var gps: GPSData = GPSData()
 }

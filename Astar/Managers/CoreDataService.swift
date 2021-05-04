@@ -97,7 +97,7 @@ class CoreDataServices: ObservableObject {
             dataRide.heartrate = Int16(ride.heartRate)
             dataRide.timestamp =  ride.timeStamp
             dataRide.ride_id = rideID
-            dataRide.altitude = Double(ride.gps.altitude)
+            dataRide.altitude = ride.elevation
             
             do {
                 try context.save()
@@ -130,7 +130,7 @@ class CoreDataServices: ObservableObject {
             for data in result as! [NSManagedObject] {
                 aRide.power = data.value(forKey: "watts") as! Int
                 aRide.heartRate = data.value(forKey: "heartrate") as! Int
-                gpsData.altitude = data.value(forKey: "altitude") as! Double
+                aRide.elevation = data.value(forKey: "altitude") as! Double
                 aRide.cadence = data.value(forKey: "cadence") as! Int
                 aRide.lap = data.value(forKey: "lap") as! Int
                 gps.latitude = data.value(forKey: "latitude") as! Double
