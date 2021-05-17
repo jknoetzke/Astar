@@ -153,8 +153,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 if self.previousElevation < altitude.doubleValue {
                     elevationGained = elevationGained +  (altitude.doubleValue - previousElevation)
                     reading.elevation = elevationGained
-                    previousElevation = altitude.doubleValue
+                    print("ElevationGained: \(elevationGained)")
                 }
+                previousElevation = altitude.doubleValue
             })
         }
     }

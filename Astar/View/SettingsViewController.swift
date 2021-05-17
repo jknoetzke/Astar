@@ -41,7 +41,8 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         if devices.firstIndex(where: {$0.id == device.id}) == nil {
             devices.append(device)
             allSettings.append(device)
-            deviceTableView.reloadData()
+            //deviceTableView.reloadData()
+            deviceTableView.reloadSections(IndexSet(integer: DEVICES_SECTION), with: .automatic)
        }
 
     }
