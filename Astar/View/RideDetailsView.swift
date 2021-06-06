@@ -24,6 +24,8 @@ let vo2max = Legend(color: .gray, label: "VO2Max", order: 6)
 let anaerobic =  Legend(color: .orange, label: "Anaerobic", order: 7)
 let neuro =  Legend(color: .red, label: "Neuromuscular", order: 8)
 
+let elevationLegend = Legend(color: .gray, label: "Elevation", order: 3)
+
 var maxWatts = 0
 var totalRideTime = 0.0
 var smoothRideTime = 0.0
@@ -50,27 +52,31 @@ struct RideDetailsView: View {
                     .scaledToFit()
                     .layoutPriority(-1)
                     .cornerRadius(16)
-                    
+                
                 Spacer()
                 HStack(alignment: .lastTextBaseline) {
                     MetricsView(rideMetric: rideMetric)
                     Spacer()
                 }
                 Spacer()
+                //Watts
                 RideBarChart(ride: rideData)
-                .scaledToFit()
-
+                    .scaledToFit()
+                
+                //Elevation
+                let elevationPoints = loadElevationPoints(rides: rideData)
+                LineChartView(dataPoints: elevationPoints)
+                    .frame(maxHeight: 240)
+                
                 Text(String(format: "Samples smoothed to %.0f seconds", smoothRideTime))
                     .font(.footnote)
-
-
-                Spacer()
+                
+                
+                // Spacer()
                 if rideMetric.laps != nil {
                     LapView(laps: rideMetric)
                 }
             }
-           
-
         }
     }
 }
@@ -171,21 +177,15 @@ struct RideBarChart: View {
         legendDict[7] =  anaerobic
         legendDict[8] =  neuro
         
-        points = loadPoints(rides: ride, legendDict: legendDict, FTP: Double(FTP)!)
-   
     }
     
     
     var body: some View {
-
         let limitBar = 180.0
         let limit = DataPoint(value: limitBar, label: LocalizedStringKey("FTP:  \(FTP)" ), legend: threshold)
-        let elevationPoints = loadElevationPoints(rides: ride)
+        let points = loadPoints(rides: ride, legendDict: legendDict, FTP: Double(FTP)!)
         if points.count != 0 {
             BarChartView(dataPoints: points, limit: limit )
-        }
-        if elevationPoints.count != 0 {
-            LineChartView(dataPoints: points)
         }
     }
 }
@@ -232,7 +232,7 @@ func loadPoints(rides: [PeripheralData], legendDict: [Int : Legend], FTP: Double
     
     
     maxWatts = 0
-
+    
     for ride in rides {
         
         totalCount += 1
@@ -241,11 +241,11 @@ func loadPoints(rides: [PeripheralData], legendDict: [Int : Legend], FTP: Double
             timeLabel = formatTime(timeInterval: timeSplit)
             totalCount = 0
         }
-
+        
         if count == smoother {
- 
+            
             let watts = totalWatts / count
-
+            
             if maxWatts < watts {
                 maxWatts = watts
             }
@@ -278,69 +278,57 @@ func loadElevationPoints(rides: [PeripheralData]) -> [DataPoint] {
     var points = [DataPoint]()
     var totalElevation = 0.0
     
-    let extraHigh = Legend(color: .yellow, label: "Build Fitness", order: 4)
-    let high = Legend(color: .green, label: "Fat Burning", order: 3)
-    let medium = Legend(color: .blue, label: "Warm Up", order: 2)
-    let low = Legend(color: .gray, label: "Low", order: 1)
+    let timeSmoother = rides.count / 3
+    var timeLabel = ""
+    let firstTimestamp = (rides.first?.timeStamp)!
+    var totalCount = 0
+    
+    //var fakeInitialElevation = 55.0
+    
+    //let maxElevation = rides.max { $0.elevation < $1.elevation }
     
     for ride in rides {
-   
+        
+        totalCount += 1
+        if timeSmoother == totalCount {
+            let timeSplit = ride.timeStamp.timeIntervalSince(firstTimestamp)
+            timeLabel = formatTime(timeInterval: timeSplit)
+            totalCount = 0
+        }
+        
         totalElevation += ride.elevation
         count += 1
         if count == smoother {
             
-          //  points.append(DataPoint(value: totalElevation / Double(count)))
+            let elevationGained = totalElevation / Double(count) + 50.0
+            points.append(DataPoint(value: elevationGained, label: LocalizedStringKey(timeLabel), legend: elevationLegend))
             count = 0
-            
+            totalElevation = 0
+            timeLabel = ""
         }
-    
     }
     
+    totalRideTime = rides.last!.timeStamp.timeIntervalSince(firstTimestamp)
+    smoothRideTime = (totalRideTime / Double(smoother))
+
     
     return points
 }
 
-
 struct ElevationChart: View {
     
-
-    var ride: [PeripheralData]
-
     
-
+    var ride: [PeripheralData]
     var points: [DataPoint]
     
     init(ride: [PeripheralData]) {
-
+        
         self.ride = ride
         points = loadElevationPoints(rides: ride)
-        
-        /*
-        points = [
-            .init(value: 70, label: "1", legend: low),
-            .init(value: 90, label: "2", legend: warmUp),
-            .init(value: 91, label: "3", legend: warmUp),
-            .init(value: 92, label: "4", legend: warmUp),
-            .init(value: 130, label: "5", legend: fatBurning),
-            .init(value: 124, label: "6", legend: fatBurning),
-            .init(value: 135, label: "7", legend: fatBurning),
-            .init(value: 133, label: "8", legend: fatBurning),
-            .init(value: 136, label: "9", legend: fatBurning),
-            .init(value: 138, label: "10", legend: fatBurning),
-            .init(value: 150, label: "11", legend: buildFitness),
-            .init(value: 151, label: "12", legend: buildFitness),
-            .init(value: 150, label: "13", legend: buildFitness)
-        ]
-       */
     }
     
     
     var body: some View {
-    
-
-
         LineChartView(dataPoints: points)
-    
     }
-
 }

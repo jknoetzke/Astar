@@ -46,6 +46,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     @IBOutlet weak var ROW4COL1: UILabel!
     @IBOutlet weak var ROW4COL2: UILabel!
     
+    var firstGPSEvent = true
+    
     var metrics = [UILabel]()
     
     private var reading = PeripheralData()
@@ -150,10 +152,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 print("Relative Altitude: \(data.relativeAltitude)")
                 //print("Relative Pressure: \(data?.pressure)")
                 let altitude = data.relativeAltitude
+                reading.elevation = Double(truncating: altitude)
                 if self.previousElevation < altitude.doubleValue {
                     elevationGained = elevationGained +  (altitude.doubleValue - previousElevation)
-                    reading.elevation = elevationGained
-                    print("ElevationGained: \(elevationGained)")
+                    reading.elevationGained = elevationGained
                 }
                 previousElevation = altitude.doubleValue
             })
@@ -295,6 +297,11 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         reading.gps = gps
         
+        if firstGPSEvent == true && rideArray.count >= 1 {
+            rideArray.first?.elevationGained = gps.elevation!
+            firstGPSEvent = false
+        }
+        
         speedCounter+=1
         totalSpeed += gps.speed
         let averageSpeed = totalSpeed / speedCounter
@@ -338,6 +345,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     @IBAction func startClicked(_ sender: Any) {
         
         if timerIsPaused {
+            
             rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
             startTime = DispatchTime.now()
             lapTime = DispatchTime.now()

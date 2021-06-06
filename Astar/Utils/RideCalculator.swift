@@ -70,7 +70,7 @@ class RideCalculator {
                     iSpeed = 0
                 }
                 
-                let rideMetric = RideMetric(rideID: rideID, avgWatts: Int16(iWatts), calories: Int16(cal2), distance: Int16(distance - lapDistance) / 1000, rideTime: ride.timeStamp.timeIntervalSince(lapRideTime), elevation: Int16(ride.elevation - lapElevation), heartRate: Int16(iHeartRate), speed: Int16(iSpeed), lapNumber: Int16(ride.lap))
+                let rideMetric = RideMetric(rideID: rideID, avgWatts: Int16(iWatts), calories: Int16(cal2), distance: Int16(distance - lapDistance) / 1000, rideTime: ride.timeStamp.timeIntervalSince(lapRideTime), elevation: Int16(ride.elevationGained - lapElevation), heartRate: Int16(iHeartRate), speed: Int16(iSpeed), lapNumber: Int16(ride.lap))
                 
                 
                 lapArray.append(rideMetric)
@@ -83,6 +83,7 @@ class RideCalculator {
                 lapSpeed = 0
                 lapHeartRate = 0
                 lapAverageWatts = 0
+                lapElevation = ride.elevationGained
             }
             
             
@@ -93,7 +94,7 @@ class RideCalculator {
         let cal1 = avgWatts * rideTime! / 3600
         let cal2 = cal1 * 3.60
         
-        var rideMetric = RideMetric(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16( distance / 1000.0 ), rideTime: rideTime!, rideDate: Date(), elevation: Int16(rideArray.last!.elevation))
+        var rideMetric = RideMetric(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16( distance / 1000.0 ), rideTime: rideTime!, rideDate: Date(), elevation: Int16(rideArray.last!.elevationGained - rideArray.first!.elevationGained))
         
         rideMetric.laps = lapArray
         
