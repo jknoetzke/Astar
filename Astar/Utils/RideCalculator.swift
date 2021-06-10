@@ -31,14 +31,6 @@ class RideCalculator {
         
         for ride in rideArray {
             
-            //First one is just to set the starting elevation.
-            //The rider didn't actually gain that elevation.
-            //This was used to help with the graph.
-            if counter == 0 {
-                ride.elevationGained = 0
-            }
-            counter += 1
-            lapCounter += 1
             
             if ride.gps.distance.value != 0 {
                 distance = ride.gps.distance.value
@@ -90,8 +82,11 @@ class RideCalculator {
                 lapHeartRate = 0
                 lapAverageWatts = 0
                 lapElevation = ride.elevationGained
+                
             }
-            
+            counter += 1
+            lapCounter += 1
+
             
         }
         
@@ -100,7 +95,7 @@ class RideCalculator {
         let cal1 = avgWatts * rideTime! / 3600
         let cal2 = cal1 * 3.60
         
-        var rideMetric = RideMetric(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16( distance / 1000.0 ), rideTime: rideTime!, rideDate: Date(), elevation: Int16(rideArray.last!.elevationGained - rideArray.first!.elevationGained))
+        var rideMetric = RideMetric(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16( distance / 1000.0 ), rideTime: rideTime!, rideDate: Date(), elevation: Int16(rideArray.last!.elevationGained))
         
         rideMetric.laps = lapArray
         
