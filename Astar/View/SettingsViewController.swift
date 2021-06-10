@@ -256,6 +256,8 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         switch(sender.tag) {
         case METRIC_ROW :
             defaults.set(switchState, forKey: "metric")
+            let viewController = self.tabBarController!.viewControllers![1] as! ViewController
+            viewController.imperialFlag = sender.isOn
             break
         case STRAVA_ROW :
             defaults.set(switchState, forKey: "strava")

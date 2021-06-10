@@ -18,6 +18,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var rideArray =  [PeripheralData]()
     private var stravaFlag  = false
     private var cyclingAnalyticsFlag = false
+    var imperialFlag = true
     
     private var currentRideID = 0
     
@@ -313,15 +314,35 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             let tmpTime = DispatchTime.now().uptimeNanoseconds - lapTime!.uptimeNanoseconds
             let elapsedTime = Double(tmpTime) / 3600000000000
             
-            metricField(fieldID: ViewController.LAP_AVERAGE_SPEED, metric: String(format: "%.0f", ((gps.distance.value / 1000) - lapDistance) / elapsedTime))
+            if imperialFlag {
+                metricField(fieldID: ViewController.LAP_AVERAGE_SPEED, metric: String(format: "%.0f", ((gps.distance.value / 1000) - lapDistance) / elapsedTime))
+            }
+            else {
+                metricField(fieldID: ViewController.LAP_AVERAGE_SPEED, metric: String(format: "%.0f", (((gps.distance.value / 1000) - lapDistance) *  0.6213712) / elapsedTime))
+            }
             
         }
-        metricField(fieldID: ViewController.SPEED, metric: String(format: "%.0f", gps.speed))
-        metricField(fieldID: ViewController.DISTANCE, metric: String(format: "%.0f", gps.distance.value/1000.0))
-        
-        metricField(fieldID: ViewController.ELEVATION_GAINED, metric: String(format: "%.0f", elevationGained))
-        metricField(fieldID: ViewController.ELEVATION, metric: String(format: "%.0f", gps.elevation!))
+        if imperialFlag {
+            metricField(fieldID: ViewController.SPEED, metric: String(format: "%.0f", gps.speed * 0.6213712))
+            metricField(fieldID: ViewController.DISTANCE, metric: String(format: "%.0f", (gps.distance.value/1000.0) * 0.6213712))
+        }
+        else
+        {
+            metricField(fieldID: ViewController.SPEED, metric: String(format: "%.0f", gps.speed))
+            metricField(fieldID: ViewController.DISTANCE, metric: String(format: "%.0f", gps.distance.value/1000.0))
 
+        }
+        
+        if imperialFlag {
+            metricField(fieldID: ViewController.ELEVATION_GAINED, metric: String(format: "%.0f", elevationGained * 3.28084))
+            metricField(fieldID: ViewController.ELEVATION, metric: String(format: "%.0f", gps.elevation! * 3.28084))
+
+        }
+        else
+        {
+            metricField(fieldID: ViewController.ELEVATION_GAINED, metric: String(format: "%.0f", elevationGained))
+            metricField(fieldID: ViewController.ELEVATION, metric: String(format: "%.0f", gps.elevation!))
+        }
         
         elapsedSpeedTime = 0
         
@@ -501,6 +522,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             defaults.set(5, forKey: "ROW4COL1")
             defaults.set(6, forKey: "ROW4COL2")
         }
+        
+        imperialFlag = defaults.bool(forKey: "metric")
     }
     
     func getDocumentsDirectory() -> URL {

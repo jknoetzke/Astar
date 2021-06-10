@@ -89,13 +89,18 @@ struct ActivityView: View {
     
     struct DistanceView: View {
         let ride: CompletedRide
+        @AppStorage("metric") private var imperialFlag: Bool = false
         
         var body: some View {
             VStack() {
                 Text("Distance").fixedSize().font(.system(size:10))
-                Text(String(ride.distance)+"km").fixedSize()
-               
-
+                if imperialFlag {
+                    Text(String(format: "%.0f", Double(ride.distance) * 0.6213712)+"mi")
+                }
+                else
+                {
+                    Text(String(ride.distance)+"km").fixedSize()
+                }
             }
         }
     }
@@ -114,12 +119,19 @@ struct ActivityView: View {
     
     struct ElevationView: View {
         let ride: CompletedRide
-        
+        @AppStorage("metric") private var imperialFlag: Bool = false
+
         var body: some View {
             HStack(alignment: .lastTextBaseline) {
                 VStack() {
                     Text("Elevation").fixedSize().font(.system(size:10))
-                    Text(String(ride.elevation)).fixedSize()
+                    if imperialFlag {
+                        Text(String(format: "%.0f", Double(ride.elevation) * 3.28084)).fixedSize()
+                    }
+                    else
+                    {
+                        Text(String(ride.elevation)).fixedSize()
+                    }
                 }
             }
         }

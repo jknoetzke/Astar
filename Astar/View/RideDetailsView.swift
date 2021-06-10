@@ -81,9 +81,12 @@ struct RideDetailsView: View {
     }
 }
 
+
 struct LapView: View {
     
     let laps:CompletedRide
+    @AppStorage("metric") private var imperialFlag: Bool = false
+    
     
     var body: some View {
         Text("Laps")
@@ -103,12 +106,24 @@ struct LapView: View {
                 Spacer()
                 VStack(alignment: .leading) {
                     Text("Distance:").fixedSize().font(.system(size:10))
-                    Text(String(lap.distance)).fixedSize()
+                    if imperialFlag {
+                        Text(String(format: "%.0f", Double(lap.distance) * 0.6213712)).fixedSize()
+                    }
+                    else
+                    {
+                        Text(String(lap.distance)).fixedSize()
+                    }
                 }
                 Spacer()
                 VStack(alignment: .leading) {
                     Text("Elevation:").fixedSize().font(.system(size:10))
-                    Text(String(lap.elevation)).fixedSize()
+                    if imperialFlag {
+                        Text(String(format: "%.0f", Double(lap.elevation) * 3.28084)).fixedSize()
+                    }
+                    else
+                    {
+                        Text(String(lap.elevation)).fixedSize()
+                    }
                 }
                 Spacer()
                 VStack(alignment: .leading) {
@@ -124,6 +139,7 @@ struct LapView: View {
 struct MetricsView: View {
     
     let rideMetric: CompletedRide
+    @AppStorage("metric") private var imperialFlag: Bool = false
     
     var body: some View {
         VStack() {
@@ -138,20 +154,30 @@ struct MetricsView: View {
         Spacer()
         VStack() {
             Text("Distance:").fixedSize().font(.system(size:10))
-            Text(String(rideMetric.distance)).fixedSize()
+            if imperialFlag {
+                Text(String(format: "%.0f", Double(rideMetric.distance) * 0.6213712)).fixedSize()
+            }
+            else
+            {
+                Text(String(rideMetric.distance)).fixedSize()
+            }
         }
         Spacer()
         VStack() {
             Text("Elevation:").fixedSize().font(.system(size:10))
-            Text(String(rideMetric.elevation)).fixedSize()
+            if imperialFlag {
+                Text(String(format: "%.0f", Double(rideMetric.elevation) * 3.28084)).fixedSize()
+            }
+            else
+            {
+                Text(String(rideMetric.elevation)).fixedSize()
+            }
         }
         Spacer()
         VStack() {
             Text("Calories:").fixedSize().font(.system(size:10))
             Text(String(rideMetric.calories)).fixedSize()
         }
-        
-        
     }
 }
 
@@ -230,7 +256,6 @@ func loadPoints(rides: [PeripheralData], legendDict: [Int : Legend], FTP: Double
     totalRideTime = 0.0
     smoothRideTime = 0.0
     
-    
     maxWatts = 0
     
     for ride in rides {
@@ -282,7 +307,8 @@ func loadElevationPoints(rides: [PeripheralData]) -> [DataPoint] {
     var timeLabel = ""
     let firstTimestamp = (rides.first?.timeStamp)!
     var totalCount = 0
-
+    @AppStorage("metric")  var imperialFlag: Bool = false
+    
     //let maxElevation = rides.max { $0.elevation < $1.elevation }
     
     let startingElevation = rides.first?.elevation
@@ -302,7 +328,12 @@ func loadElevationPoints(rides: [PeripheralData]) -> [DataPoint] {
         totalElevation += ride.elevation + startingElevation!
         
         if count == smoother {
-            let elevationGained = totalElevation / Double(count)
+            var elevationGained = totalElevation / Double(count)
+            
+            if imperialFlag {
+                elevationGained = elevationGained * 3.28084
+            }
+            
             points.append(DataPoint(value: elevationGained, label: LocalizedStringKey(timeLabel), legend: elevationLegend))
             count = 0
             totalElevation = 0
