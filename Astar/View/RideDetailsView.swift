@@ -195,7 +195,7 @@ struct RideBarChart: View {
 func legend(watts: Int, FTP: Double, legendDict: [Int : Legend]) -> Legend {
     
     switch watts {
-    
+        
     case 0..<Int(FTP * 0.55): //Recovery
         return legendDict[1]!
     case Int(FTP * 0.55)..<Int(FTP * 0.75): //Endurance
@@ -274,7 +274,7 @@ func loadPoints(rides: [PeripheralData], legendDict: [Int : Legend], FTP: Double
 func loadElevationPoints(rides: [PeripheralData]) -> [DataPoint] {
     
     var count = 1
-    let smoother = rides.count / 25
+    let smoother = rides.count / 15
     var points = [DataPoint]()
     var totalElevation = 0.0
     
@@ -282,35 +282,41 @@ func loadElevationPoints(rides: [PeripheralData]) -> [DataPoint] {
     var timeLabel = ""
     let firstTimestamp = (rides.first?.timeStamp)!
     var totalCount = 0
-    
-    //var fakeInitialElevation = 55.0
-    
+
     //let maxElevation = rides.max { $0.elevation < $1.elevation }
+    
+    let startingElevation = rides.first?.elevation
+//    let startingElevation = 44.5
     
     for ride in rides {
         
-        totalCount += 1
         if timeSmoother == totalCount {
             let timeSplit = ride.timeStamp.timeIntervalSince(firstTimestamp)
             timeLabel = formatTime(timeInterval: timeSplit)
             totalCount = 0
         }
         
-        totalElevation += ride.elevation
-        count += 1
+        if totalCount == 0 {
+            points.append(DataPoint(value: startingElevation!, label: LocalizedStringKey(timeLabel), legend: elevationLegend))
+        }
+        totalElevation += ride.elevation + startingElevation!
+        
         if count == smoother {
-            
-            let elevationGained = totalElevation / Double(count) + 50.0
+            let elevationGained = totalElevation / Double(count)
             points.append(DataPoint(value: elevationGained, label: LocalizedStringKey(timeLabel), legend: elevationLegend))
             count = 0
             totalElevation = 0
             timeLabel = ""
         }
+        
+        count += 1
+        totalCount += 1
+        
     }
     
     totalRideTime = rides.last!.timeStamp.timeIntervalSince(firstTimestamp)
     smoothRideTime = (totalRideTime / Double(smoother))
-
+    
     
     return points
 }

@@ -30,6 +30,13 @@ class RideCalculator {
         var lapSpeed = 0.0
         
         for ride in rideArray {
+            
+            //First one is just to set the starting elevation.
+            //The rider didn't actually gain that elevation.
+            //This was used to help with the graph.
+            if counter == 0 {
+                ride.elevationGained = 0
+            }
             counter += 1
             lapCounter += 1
             
@@ -79,7 +86,6 @@ class RideCalculator {
                 currentLap = ride.lap
                 lapRideTime = ride.timeStamp
                 lapCounter = 0
-                lapElevation = 0
                 lapSpeed = 0
                 lapHeartRate = 0
                 lapAverageWatts = 0

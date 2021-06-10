@@ -149,8 +149,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 
                 guard error == nil else { return }
                 guard let data = data else { return }
-                print("Relative Altitude: \(data.relativeAltitude)")
-                //print("Relative Pressure: \(data?.pressure)")
                 let altitude = data.relativeAltitude
                 reading.elevation = Double(truncating: altitude)
                 if self.previousElevation < altitude.doubleValue {
@@ -298,7 +296,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         reading.gps = gps
         
         if firstGPSEvent == true && rideArray.count >= 1 {
-            rideArray.first?.elevationGained = gps.elevation!
+            rideArray.first?.elevation = gps.elevation!
             firstGPSEvent = false
         }
         
