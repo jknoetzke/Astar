@@ -314,18 +314,18 @@ func loadElevationPoints(rides: [PeripheralData]) -> [DataPoint] {
     let startingElevation = rides.first?.elevation
 //    let startingElevation = 44.5
     
-    for ride in rides {
+    for (index, rides) in rides.enumerated() {
         
         if timeSmoother == totalCount {
-            let timeSplit = ride.timeStamp.timeIntervalSince(firstTimestamp)
+            let timeSplit = rides.timeStamp.timeIntervalSince(firstTimestamp)
             timeLabel = formatTime(timeInterval: timeSplit)
             totalCount = 0
         }
-        
-        if totalCount == 0 {
+
+        if index == 0 {
             points.append(DataPoint(value: startingElevation!, label: LocalizedStringKey(timeLabel), legend: elevationLegend))
         }
-        totalElevation += ride.elevation + startingElevation!
+        totalElevation += rides.elevation + startingElevation!
         
         if count == smoother {
             var elevationGained = totalElevation / Double(count)
