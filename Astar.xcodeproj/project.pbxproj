@@ -41,6 +41,7 @@
 		D08253BC256C62F30023D6C5 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BA256C62F30023D6C5 /* ActivityView.swift */; };
 		D08253BF256C63020023D6C5 /* RideResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BE256C63020023D6C5 /* RideResult.swift */; };
 		D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093A77B251A4AE200241E7E /* PeripheralData.swift */; };
+		D0982ADB2675907F00AFF782 /* BlankInitialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0982ADA2675907F00AFF782 /* BlankInitialView.swift */; };
 		D0AB73B4255F038E0090B1DF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AB73B3255F038E0090B1DF /* Extensions.swift */; };
 		D0AE8866263B360F00CB0307 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AE8865263B360F00CB0307 /* Operators.swift */; };
 		D0BF2C32262773A9002B3620 /* PowerMeterData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0BF2C31262773A9002B3620 /* PowerMeterData.swift */; };
@@ -91,6 +92,7 @@
 		D08253BA256C62F30023D6C5 /* ActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		D08253BE256C63020023D6C5 /* RideResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideResult.swift; sourceTree = "<group>"; };
 		D093A77B251A4AE200241E7E /* PeripheralData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralData.swift; sourceTree = "<group>"; };
+		D0982ADA2675907F00AFF782 /* BlankInitialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankInitialView.swift; sourceTree = "<group>"; };
 		D0AB73B3255F038E0090B1DF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D0AE8865263B360F00CB0307 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		D0BF2C31262773A9002B3620 /* PowerMeterData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PowerMeterData.swift; path = Astar/Utils/PowerMeterData.swift; sourceTree = SOURCE_ROOT; };
@@ -194,6 +196,7 @@
 		D06DD7A72577D94F00D0D760 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D0982ADA2675907F00AFF782 /* BlankInitialView.swift */,
 				D08253BA256C62F30023D6C5 /* ActivityView.swift */,
 				D06B089F2535F82400553105 /* SettingsViewController.swift */,
 				D06B089E2535F82400553105 /* MapViewController.swift */,
@@ -378,6 +381,7 @@
 				D0FF57AA2540CC5500265638 /* StravaData.swift in Sources */,
 				D0AE8866263B360F00CB0307 /* Operators.swift in Sources */,
 				D057645E258A2EF4009D6DBC /* CustomTableViewCell.swift in Sources */,
+				D0982ADB2675907F00AFF782 /* BlankInitialView.swift in Sources */,
 				D0BF2C32262773A9002B3620 /* PowerMeterData.swift in Sources */,
 				D05374462536467700C6FB91 /* CyclingAnalyticsData.swift in Sources */,
 				D08253BF256C63020023D6C5 /* RideResult.swift in Sources */,

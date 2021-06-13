@@ -11,11 +11,11 @@ import CoreData
 
 
 struct ActivityView: View {
-
+    
     let persistenceController = PersistenceController.shared
-
+    
     @Environment(\.managedObjectContext) private var viewContext
-
+    
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \CompletedRide.ride_date, ascending: false)],
         animation: .default)
@@ -23,29 +23,36 @@ struct ActivityView: View {
     
     var body: some View {
         
-        NavigationView {
+        if completedRide.count == 0 {
+            BlankInitialView()
+        }
+        else
+        {
             
-            List(completedRide, id: \.ride_date) { ride in
-                ZStack {
-                    NavigationLink(
-                        destination: RideDetailsView(rideMetric: ride)) {
-                        EmptyView()
-                    }.buttonStyle(PlainButtonStyle())
-                    VStack(alignment: .center) {
-                        DateView(ride: ride)
-                        Spacer()
-                       ImageView(ride: ride)
-                       HStack(alignment: .lastTextBaseline) {
-                           RideTimeView(ride: ride)
-                           DistanceView(ride: ride)
-                           WattsView(ride:ride)
-                           ElevationView(ride: ride)
-                           CaloriesView(ride: ride)
-                       }
-                    }
-                }
-                .navigationTitle("Rides")
+            NavigationView {
                 
+                List(completedRide, id: \.ride_date) { ride in
+                    ZStack {
+                        NavigationLink(
+                            destination: RideDetailsView(rideMetric: ride)) {
+                            EmptyView()
+                        }.buttonStyle(PlainButtonStyle())
+                        VStack(alignment: .center) {
+                            DateView(ride: ride)
+                            Spacer()
+                            ImageView(ride: ride)
+                            HStack(alignment: .lastTextBaseline) {
+                                RideTimeView(ride: ride)
+                                DistanceView(ride: ride)
+                                WattsView(ride:ride)
+                                ElevationView(ride: ride)
+                                CaloriesView(ride: ride)
+                            }
+                        }
+                    }
+                    .navigationTitle("Rides")
+                    
+                }
             }
         }
     }
@@ -58,13 +65,13 @@ struct ActivityView: View {
                 .resizable()
                 .scaledToFit()
                 .layoutPriority(-1)
-                //.frame(width: 340, height: 300)
+            //.frame(width: 340, height: 300)
                 .cornerRadius(16)
                 .padding()
         }
     }
     
-        
+    
     struct RideTimeView: View {
         let ride: CompletedRide
         
@@ -120,7 +127,7 @@ struct ActivityView: View {
     struct ElevationView: View {
         let ride: CompletedRide
         @AppStorage("metric") private var imperialFlag: Bool = false
-
+        
         var body: some View {
             HStack(alignment: .lastTextBaseline) {
                 VStack() {
