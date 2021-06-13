@@ -493,6 +493,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 reading.cadence = tmpReading.cadence
                 reading.heartRate = tmpReading.heartRate
                 reading.elevation = tmpReading.elevation
+                reading.elevationGained = tmpReading.elevationGained
             }
         }
     }
