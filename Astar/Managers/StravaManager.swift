@@ -132,7 +132,7 @@ class StravaManager {
         }
     }
     
-    func uploadRide(xml: String) {
+    func uploadRide(xml: String, title:String) {
         print("Uploading Ride with accessToken: \(accessToken)")
         let semaphore = DispatchSemaphore (value: 0)
         
@@ -168,7 +168,15 @@ class StravaManager {
         body += "--\(boundary)--\r\n";
         let postData = body.data(using: .utf8)
         
-        var request = URLRequest(url: URL(string: "https://www.strava.com/api/v3/uploads?&data_type=tcx")!,timeoutInterval: Double.infinity)
+        
+        
+        let queryItems = [URLQueryItem(name: "data_type", value: "tcx"), URLQueryItem(name: "name", value: title)]
+        var urlComps = URLComponents(string: "https://www.strava.com/api/v3/uploads")!
+        urlComps.queryItems = queryItems
+        let url = urlComps.url!
+        
+        var request = URLRequest(url: url,timeoutInterval: Double.infinity)
+        
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.addValue("_strava4_session=rjfdlc1qrbkpmnhl3uces8nqf2ndh7to", forHTTPHeaderField: "Cookie")
         request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")

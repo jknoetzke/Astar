@@ -101,15 +101,16 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         /*
          let coreData = CoreDataServices()
-         let uuid = UUID(uuidString: "206C9586-8758-4CA6-8065-E1AFE7725158")
-         
-         print("UUID: \(uuid?.uuidString)")
+         let uuid = UUID(uuidString: "B1917595-5884-4C8D-BE82-A4D3FD501817")
          
          let tmpRideData = coreData.retrieveRide(rideID: uuid!)
          
-         let rideCalc = RideCalculator()
-         let rideMetric = rideCalc.calculateRideMetrics(rideArray: tmpRideData!, rideID: uuid!)
-         */
+        // let rideCalc = RideCalculator()
+        // let rideMetric = rideCalc.calculateRideMetrics(rideArray: tmpRideData!, rideID: uuid!)
+         
+        saveRide(tmpRideArray: tmpRideData!)
+        
+        */
         readUserPrefs()
         
         //Create an array of all metrics
@@ -118,7 +119,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         locationManager.startLocationUpdates()
         
         startAltimeter()
-        
+ 
         deviceManager.rideDelegate = self
         locationManager.gpsDelegate = self
         self.tabBarController?.delegate = self
@@ -534,36 +535,49 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     
     private func saveRide(tmpRideArray: [PeripheralData]) {
         
+       
         let coreDataServices = CoreDataServices.sharedCoreDataService
         
         let rideID = UUID() //Create the unique ID for the ride
         //Save the Ride itself
         coreDataServices.saveRide(tmpRideArray: tmpRideArray, rideID: rideID)
-        
+
         //Save The map
         let mapViewController = tabBarController!.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
         mapViewController.generateImageFromMap(ride: tmpRideArray, rideID: rideID)
         
         //Upload to Strava and Cycling Analytics
+  
         if stravaFlag || cyclingAnalyticsFlag {
             let tcxHandler = TCXHandler()
             let xml = tcxHandler.encodeTCX(rideArray: tmpRideArray)
+            
             if cyclingAnalyticsFlag {
                 uploadToCyclingAnalytics(xml: xml)
             }
             if stravaFlag {
-                uploadToStrava(xml:xml)
+                showInputDialog(title: "Strava Title",
+                                subtitle: "Please enter the title of your ride.",
+                                actionTitle: "OK",
+                                cancelTitle: "Cancel",
+                                inputPlaceholder: "Title",
+                                inputKeyboardType: .default, actionHandler:
+                                    { [self] (input:String?) in
+                                            print("The new title is \(input ?? "")")
+                    self.uploadToStrava(xml:xml, title: input!)
+                                        })
+                
             }
         }
     }
     
-    func uploadToStrava(xml: String) {
+    func uploadToStrava(xml: String, title: String) {
         let strava = StravaManager()
         
         strava.refresh() { (StravaData) in
             strava.storeTokens(tokenData: StravaData)
             DispatchQueue.main.async {
-                strava.uploadRide(xml:xml)
+                strava.uploadRide(xml:xml, title:title)
             }
         }
     }
@@ -588,5 +602,33 @@ extension NSLayoutConstraint {
     override public var description: String {
         let id = identifier ?? ""
         return "Bug ! id: \(id), constant: \(constant)" //you may print whatever you want here
+    }
+}
+
+extension UIViewController {
+    func showInputDialog(title:String? = nil,
+                         subtitle:String? = nil,
+                         actionTitle:String? = "Add",
+                         cancelTitle:String? = "Cancel",
+                         inputPlaceholder:String? = nil,
+                         inputKeyboardType:UIKeyboardType = UIKeyboardType.default,
+                         cancelHandler: ((UIAlertAction) -> Swift.Void)? = nil,
+                         actionHandler: ((_ text: String?) -> Void)? = nil) {
+        
+        let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
+        alert.addTextField { (textField:UITextField) in
+            textField.placeholder = inputPlaceholder
+            textField.keyboardType = inputKeyboardType
+        }
+        alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { (action:UIAlertAction) in
+            guard let textField =  alert.textFields?.first else {
+                actionHandler?(nil)
+                return
+            }
+            actionHandler?(textField.text)
+        }))
+        alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: cancelHandler))
+        
+        self.present(alert, animated: true, completion: nil)
     }
 }

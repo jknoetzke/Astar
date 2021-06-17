@@ -131,7 +131,6 @@ class TCXHandler {
                 let lap = ActivityLap(startTime: firstRecordedTime, totalTime: Double(totalElapsedTime ?? 0), distance: ride.gps.distance.value - lapDistance, maximumSpeed: maxSpeed, calories: calories, averageHeartRate: heartBeatsPerMinute, maximumHeartRate: heartBeatsPerMinute, intensity: .active, cadence: UInt8(iCadence), triggerMethod: .manual, track: allTracks, notes: nil, extensions: nil)
                 
                 activityLap.append(lap)
-                allTracks.removeAll()
                 tracks.removeAll()
                 lapDistance = ride.gps.distance.value
                 //Reset
