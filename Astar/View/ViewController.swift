@@ -104,13 +104,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         /*
          let coreData = CoreDataServices()
          let uuid = UUID(uuidString: "B1917595-5884-4C8D-BE82-A4D3FD501817")
-         
          let tmpRideData = coreData.retrieveRide(rideID: uuid!)
          
-        // let rideCalc = RideCalculator()
-        // let rideMetric = rideCalc.calculateRideMetrics(rideArray: tmpRideData!, rideID: uuid!)
-         
-        saveRide(tmpRideArray: tmpRideData!)
+         saveRide(tmpRideArray: tmpRideData!)
         
         */
         readUserPrefs()

@@ -132,6 +132,7 @@ class TCXHandler {
                 
                 activityLap.append(lap)
                 tracks.removeAll()
+                allTracks.removeAll()
                 lapDistance = ride.gps.distance.value
                 //Reset
                 counter = 1
