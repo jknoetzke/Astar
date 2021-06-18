@@ -81,6 +81,32 @@ class CoreDataServices: ObservableObject {
         
     }
     
+    func appendRide(tmpRide: PeripheralData, rideID: UUID) {
+        
+        var dataRide = Ride(context: context)
+
+        dataRide.ride_id = rideID
+        dataRide.cadence = Int16(tmpRide.cadence)
+        dataRide.watts = Int16(tmpRide.power)
+        dataRide.latitude = tmpRide.gps.location?.latitude ?? 0.0
+        dataRide.longitude = tmpRide.gps.location?.longitude ?? 0.0
+        dataRide.speed = Double(tmpRide.gps.speed)
+        dataRide.heartrate = Int16(tmpRide.heartRate)
+        dataRide.timestamp =  tmpRide.timeStamp
+        dataRide.ride_id = rideID
+        dataRide.altitude = tmpRide.elevation
+        
+        do {
+            try context.save()
+            dataRide = Ride(context: context)
+            
+        }catch {
+            print("Error saving to CoreData")
+        }
+        
+    }
+
+    
     
     func saveRide(tmpRideArray: [PeripheralData], rideID: UUID) {
         

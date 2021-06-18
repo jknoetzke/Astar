@@ -20,6 +20,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private var cyclingAnalyticsFlag = false
     var imperialFlag = true
     
+    private var rideID: UUID?
+    
     private var currentRideID = 0
     
     private var container: NSPersistentContainer!
@@ -439,6 +441,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         elevationGained = 0.0
         previousElevation = 0.0
+        lapDistance = 0.0
+        
+        rideID = nil
         
     }
     
@@ -482,6 +487,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 
                 reading.timeStamp = Date()
                 rideArray.append(reading)
+                
+                updateRideDB(rideData: reading)
                 
                 let tmpGPS = reading.gps
                 let tmpReading = reading
@@ -533,21 +540,30 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         return paths[0]
     }
     
+    private func updateRideDB(rideData: PeripheralData)
+    {
+        let coreDataServices = CoreDataServices.sharedCoreDataService
+        
+        if rideID == nil {
+            rideID = UUID()
+        }
+        
+        coreDataServices.appendRide(tmpRide: rideData, rideID: rideID!)
+    }
+    
     private func saveRide(tmpRideArray: [PeripheralData]) {
         
        
-        let coreDataServices = CoreDataServices.sharedCoreDataService
-        
-        let rideID = UUID() //Create the unique ID for the ride
+       // let coreDataServices = CoreDataServices.sharedCoreDataService
+        //let rideID = UUID() //Create the unique ID for the ride
         //Save the Ride itself
-        coreDataServices.saveRide(tmpRideArray: tmpRideArray, rideID: rideID)
+        //coreDataServices.saveRide(tmpRideArray: tmpRideArray, rideID: rideID)
 
         //Save The map
-        let mapViewController = tabBarController!.viewControllers![2] as! MapViewController // or whatever tab index you're trying to access
-        mapViewController.generateImageFromMap(ride: tmpRideArray, rideID: rideID)
+        let mapViewController = tabBarController!.viewControllers![2] as! MapViewController
+        mapViewController.generateImageFromMap(ride: tmpRideArray, rideID: rideID!)
         
         //Upload to Strava and Cycling Analytics
-  
         if stravaFlag || cyclingAnalyticsFlag {
             let tcxHandler = TCXHandler()
             let xml = tcxHandler.encodeTCX(rideArray: tmpRideArray)
