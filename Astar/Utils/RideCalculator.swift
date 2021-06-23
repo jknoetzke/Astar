@@ -21,7 +21,7 @@ class RideCalculator {
         var lapArray = [RideMetric]()
         
         //Lap vars
-        var lapCounter = 0.0
+        var lapCounter = 1.0
         var lapAverageWatts = 0
         var lapElevation = 0.0
         var lapDistance = 0.0
