@@ -295,7 +295,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         reading.gps = gps
         
-        if firstGPSEvent == true && rideArray.count >= 1 {
+        if firstGPSEvent == true && rideArray.count >= 1 && gps.elevation != 0 {
             rideArray.first?.elevation = gps.elevation!
             firstGPSEvent = false
         }
