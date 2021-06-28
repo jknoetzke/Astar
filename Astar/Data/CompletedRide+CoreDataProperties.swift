@@ -20,6 +20,7 @@ extension CompletedRide {
     @NSManaged public var calories: Int16
     @NSManaged public var distance: Int16
     @NSManaged public var elevation: Int16
+    @NSManaged public var initial_elevation: Int16
     @NSManaged public var map_image: Data?
     @NSManaged public var ride_date: Date?
     @NSManaged public var ride_id: UUID?
