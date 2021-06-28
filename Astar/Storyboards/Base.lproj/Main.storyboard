@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Q2K-RP-Gug">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19115.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Q2K-RP-Gug">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19107.4"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -274,7 +275,7 @@
                                                 <rect key="frame" x="188" y="0.0" width="187" height="133"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z62-HF-01r">
-                                                        <rect key="frame" x="25" y="9.6666666666666572" width="138" height="114"/>
+                                                        <rect key="frame" x="25" y="9.6666666666666643" width="138" height="113.66666666666667"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="34"/>
                                                         <state key="normal" title="Lap" backgroundImage="repeat" catalog="system"/>
                                                         <connections>
@@ -436,7 +437,7 @@
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReusableCell" id="zOS-Rz-bD7">
-                                                <rect key="frame" x="0.0" y="24.333333969116211" width="375" height="43.666667938232422"/>
+                                                <rect key="frame" x="0.0" y="50" width="375" height="43.666667938232422"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zOS-Rz-bD7" id="muG-9g-bhU">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.666667938232422"/>
@@ -500,7 +501,7 @@
                     <navigationItem key="navigationItem" id="Cgp-kk-flQ">
                         <barButtonItem key="rightBarButtonItem" id="ugL-Yd-GUr">
                             <connections>
-                                <segue destination="aPF-WX-p0h" kind="show" identifier="RecordEditorSegue" id="o2D-y7-FZ7"/>
+                                <segue destination="aPF-WX-p0h" kind="presentation" identifier="RecordEditorSegue" id="o2D-y7-FZ7"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -561,7 +562,7 @@
         <image name="house" catalog="system" width="128" height="106"/>
         <image name="map" catalog="system" width="128" height="110"/>
         <image name="record.circle" catalog="system" width="128" height="121"/>
-        <image name="repeat" catalog="system" width="128" height="99"/>
+        <image name="repeat" catalog="system" width="128" height="98"/>
         <image name="slider.horizontal.3" catalog="system" width="128" height="100"/>
         <image name="start" width="1000" height="1000"/>
         <systemColor name="systemBackgroundColor">

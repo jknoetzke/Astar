@@ -459,7 +459,11 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             powerEvent = true
             
         default:
-            return
+            let byteArray1 = Int(byteArray[2])
+            let byteArray2 = Int(byteArray[3])
+            let overFlow = byteArray2 * 255
+            watts = byteArray1+overFlow
+            powerEvent = true
         }
         
         //This is for cadence

@@ -21,7 +21,7 @@ class RideCalculator {
         var lapArray = [RideMetric]()
         
         //Lap vars
-        var lapCounter = 0.0
+        var lapCounter = 1.0
         var lapAverageWatts = 0
         var lapElevation = 0.0
         var lapDistance = 0.0
@@ -95,7 +95,7 @@ class RideCalculator {
         let cal1 = avgWatts * rideTime! / 3600
         let cal2 = cal1 * 3.60
         
-        var rideMetric = RideMetric(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16( distance / 1000.0 ), rideTime: rideTime!, rideDate: Date(), elevation: Int16(rideArray.last!.elevationGained))
+        var rideMetric = RideMetric(avgWatts: Int16(avgWatts), calories: Int16(cal2), distance: Int16( distance / 1000.0 ), rideTime: rideTime!, rideDate: Date(), elevation: Int16(rideArray.last!.elevationGained), initialElevation: Int16(rideArray.first!.elevation))
         
         rideMetric.laps = lapArray
         

@@ -17,6 +17,7 @@ struct RideMetric {
     var rideTime = 0.0
     var rideDate = Date()
     var elevation:Int16 = 0
+    var initialElevation:Int16 = 0
     var heartRate:Int16 = 0
     var mapImage: UIImage?
     var speed:Int16 = 0
@@ -49,6 +50,7 @@ class CoreDataServices: ObservableObject {
         
         completedRide.calories = tmpRideMetric.calories
         completedRide.distance = tmpRideMetric.distance
+        completedRide.initial_elevation = tmpRideMetric.initialElevation
         completedRide.ride_time = tmpRideMetric.rideTime
         completedRide.ride_date = Date()
         completedRide.average_watts = tmpRideMetric.avgWatts

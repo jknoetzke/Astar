@@ -64,7 +64,7 @@ struct RideDetailsView: View {
                     .scaledToFit()
                 
                 //Elevation
-                let elevationPoints = loadElevationPoints(rides: rideData)
+                let elevationPoints = loadElevationPoints(rides: rideData, initialElevation: rideMetric.initial_elevation)
                 LineChartView(dataPoints: elevationPoints)
                     .frame(maxHeight: 240)
                 
@@ -296,7 +296,7 @@ func loadPoints(rides: [PeripheralData], legendDict: [Int : Legend], FTP: Double
     }
 }
 
-func loadElevationPoints(rides: [PeripheralData]) -> [DataPoint] {
+func loadElevationPoints(rides: [PeripheralData], initialElevation:Int16) -> [DataPoint] {
     
     var count = 1
     let smoother = rides.count / 15
@@ -311,7 +311,7 @@ func loadElevationPoints(rides: [PeripheralData]) -> [DataPoint] {
     
     //let maxElevation = rides.max { $0.elevation < $1.elevation }
     
-    let startingElevation = rides.first?.elevation
+    let startingElevation = initialElevation
 //    let startingElevation = 44.5
     
     for (index, rides) in rides.enumerated() {
@@ -323,9 +323,9 @@ func loadElevationPoints(rides: [PeripheralData]) -> [DataPoint] {
         }
 
         if index == 0 {
-            points.append(DataPoint(value: startingElevation!, label: LocalizedStringKey(timeLabel), legend: elevationLegend))
+            points.append(DataPoint(value: Double(startingElevation), label: LocalizedStringKey(timeLabel), legend: elevationLegend))
         }
-        totalElevation += rides.elevation + startingElevation!
+        totalElevation += rides.elevation + Double(startingElevation)
         
         if count == smoother {
             var elevationGained = totalElevation / Double(count)
@@ -350,22 +350,4 @@ func loadElevationPoints(rides: [PeripheralData]) -> [DataPoint] {
     
     
     return points
-}
-
-struct ElevationChart: View {
-    
-    
-    var ride: [PeripheralData]
-    var points: [DataPoint]
-    
-    init(ride: [PeripheralData]) {
-        
-        self.ride = ride
-        points = loadElevationPoints(rides: ride)
-    }
-    
-    
-    var body: some View {
-        LineChartView(dataPoints: points)
-    }
 }
