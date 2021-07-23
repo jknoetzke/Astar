@@ -21,7 +21,6 @@
 		D03F02A525C99D7500607E5D /* TcxDataProtocol in Frameworks */ = {isa = PBXBuildFile; productRef = D03F02A425C99D7500607E5D /* TcxDataProtocol */; };
 		D03F02A825C9D5A700607E5D /* RecordingPreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03F02A725C9D5A700607E5D /* RecordingPreferencesManager.swift */; };
 		D05374462536467700C6FB91 /* CyclingAnalyticsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */; };
-		D0539B45257150B20008E651 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0539B44257150B20008E651 /* CloudKit.framework */; };
 		D055FA2E252F907000D5ECA4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D055FA2D252F907000D5ECA4 /* Constants.swift */; };
 		D057645E258A2EF4009D6DBC /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D057645C258A2EF4009D6DBC /* CustomTableViewCell.swift */; };
 		D057645F258A2EF4009D6DBC /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D057645D258A2EF4009D6DBC /* CustomTableViewCell.xib */; };
@@ -36,7 +35,6 @@
 		D06F20C125914DB10052C629 /* RecordEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F20C025914DB10052C629 /* RecordEditor.swift */; };
 		D07841602575599A00941B86 /* LapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078415F2575599A00941B86 /* LapViewModel.swift */; };
 		D078416525758EF200941B86 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = D078416425758EF200941B86 /* SwiftUICharts */; };
-		D079FB6F25967AC400682DE8 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D079FB6E25967AC400682DE8 /* HealthKit.framework */; };
 		D08253B7256C605C0023D6C5 /* ActivityFeedHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */; };
 		D08253BC256C62F30023D6C5 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BA256C62F30023D6C5 /* ActivityView.swift */; };
 		D08253BF256C63020023D6C5 /* RideResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253BE256C63020023D6C5 /* RideResult.swift */; };
@@ -71,6 +69,7 @@
 		D034189A2535F7DA001AD367 /* RideDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideDelegate.swift; sourceTree = "<group>"; };
 		D034189B2535F7DA001AD367 /* GPSDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSDelegate.swift; sourceTree = "<group>"; };
 		D03F02A725C9D5A700607E5D /* RecordingPreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RecordingPreferencesManager.swift; path = Astar/Managers/RecordingPreferencesManager.swift; sourceTree = SOURCE_ROOT; };
+		D04F59922697437600FC8B5F /* AstarDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AstarDebug.entitlements; sourceTree = "<group>"; };
 		D05374452536467700C6FB91 /* CyclingAnalyticsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclingAnalyticsData.swift; sourceTree = "<group>"; };
 		D0539B42257150AA0008E651 /* Astar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Astar.entitlements; sourceTree = "<group>"; };
 		D0539B44257150B20008E651 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -117,9 +116,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D078416525758EF200941B86 /* SwiftUICharts in Frameworks */,
-				D079FB6F25967AC400682DE8 /* HealthKit.framework in Frameworks */,
 				D03F02A525C99D7500607E5D /* TcxDataProtocol in Frameworks */,
-				D0539B45257150B20008E651 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +237,7 @@
 		D0D329072503BF2B003CC73A /* Astar */ = {
 			isa = PBXGroup;
 			children = (
+				D04F59922697437600FC8B5F /* AstarDebug.entitlements */,
 				D06DD7A72577D94F00D0D760 /* View */,
 				D06DD7A62577D8E500D0D760 /* Delegate */,
 				D0539B42257150AA0008E651 /* Astar.entitlements */,
@@ -502,6 +500,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -556,6 +555,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -565,17 +565,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Astar/Astar.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Astar/AstarDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 <<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 5;
 =======
 				CURRENT_PROJECT_VERSION = 9;
 >>>>>>> dev
+=======
+				CURRENT_PROJECT_VERSION = 10;
+>>>>>>> dev
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -596,13 +600,17 @@
 				CODE_SIGN_ENTITLEMENTS = Astar/Astar.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 <<<<<<< HEAD
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 5;
 =======
 				CURRENT_PROJECT_VERSION = 9;
 >>>>>>> dev
+=======
+				CURRENT_PROJECT_VERSION = 10;
+>>>>>>> dev
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

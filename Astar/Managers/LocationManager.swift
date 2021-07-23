@@ -37,7 +37,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
     override init() {
         locationManager.requestWhenInUseAuthorization()
         locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.startUpdatingLocation()
+        //locationManager.startUpdatingLocation()
         
     }
     

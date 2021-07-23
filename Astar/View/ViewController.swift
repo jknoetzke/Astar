@@ -114,10 +114,6 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         //Create an array of all metrics
         metrics = [ROW1Metric, ROW2COL1Metric, ROW2COL2Metric, ROW3COL1Metric, ROW3COL2Metric, ROW4COL1Metric, ROW4COL2Metric]
         
-        locationManager.startLocationUpdates()
-        
-        startAltimeter()
- 
         deviceManager.rideDelegate = self
         locationManager.gpsDelegate = self
         self.tabBarController?.delegate = self
@@ -158,6 +154,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 previousElevation = altitude.doubleValue
             })
         }
+    }
+    
+    func stopAltimeter() {
+        altimeter.stopRelativeAltitudeUpdates()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -364,6 +364,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         if timerIsPaused {
             
+            locationManager.startLocationUpdates()
+            startAltimeter()
+
+            
             rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
             startTime = DispatchTime.now()
             lapTime = DispatchTime.now()
@@ -420,6 +424,10 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     }
     
     func resetRide() {
+        
+        locationManager.stopUpdatingLocation()
+        stopAltimeter()
+
         rideArray.removeAll()
         timerIsPaused = true
         btnLap.isEnabled = false
@@ -483,8 +491,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 
                 reading.timeStamp = Date()
                 rideArray.append(reading)
-                
-                updateRideDB(rideData: reading)
+               
+                //Sucks too much battery..
+             //   updateRideDB(rideData: reading)
                 
                 let tmpGPS = reading.gps
                 let tmpReading = reading
@@ -550,14 +559,14 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     private func saveRide(tmpRideArray: [PeripheralData]) {
         
        
-       // let coreDataServices = CoreDataServices.sharedCoreDataService
-        //let rideID = UUID() //Create the unique ID for the ride
+        let coreDataServices = CoreDataServices.sharedCoreDataService
+        let rideID = UUID() //Create the unique ID for the ride
         //Save the Ride itself
-        //coreDataServices.saveRide(tmpRideArray: tmpRideArray, rideID: rideID)
+        coreDataServices.saveRide(tmpRideArray: tmpRideArray, rideID: rideID)
 
         //Save The map
         let mapViewController = tabBarController!.viewControllers![2] as! MapViewController
-        mapViewController.generateImageFromMap(ride: tmpRideArray, rideID: rideID!)
+        mapViewController.generateImageFromMap(ride: tmpRideArray, rideID: rideID)
         
         //Upload to Strava and Cycling Analytics
         if stravaFlag || cyclingAnalyticsFlag {
