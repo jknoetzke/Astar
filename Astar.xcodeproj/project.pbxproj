@@ -567,19 +567,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Astar/AstarDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-				CURRENT_PROJECT_VERSION = 5;
-=======
-				CURRENT_PROJECT_VERSION = 9;
->>>>>>> dev
-=======
-				CURRENT_PROJECT_VERSION = 10;
->>>>>>> dev
-=======
 				CURRENT_PROJECT_VERSION = 11;
->>>>>>> dev
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
@@ -603,19 +591,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Astar/Astar.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-				CURRENT_PROJECT_VERSION = 5;
-=======
-				CURRENT_PROJECT_VERSION = 9;
->>>>>>> dev
-=======
-				CURRENT_PROJECT_VERSION = 10;
->>>>>>> dev
-=======
 				CURRENT_PROJECT_VERSION = 11;
->>>>>>> dev
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
