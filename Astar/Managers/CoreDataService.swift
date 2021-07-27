@@ -88,11 +88,14 @@ class CoreDataServices: ObservableObject {
         var dataRide = Ride(context: context)
 
         dataRide.ride_id = rideID
+        if tmpRide.cadence > UInt16.max { tmpRide.cadence = 0 }
         dataRide.cadence = Int16(tmpRide.cadence)
+        if tmpRide.power > UInt16.max { tmpRide.power = 0 }
         dataRide.watts = Int16(tmpRide.power)
         dataRide.latitude = tmpRide.gps.location?.latitude ?? 0.0
         dataRide.longitude = tmpRide.gps.location?.longitude ?? 0.0
         dataRide.speed = Double(tmpRide.gps.speed)
+        if tmpRide.heartRate > UInt16.max { tmpRide.heartRate = 0 }
         dataRide.heartrate = Int16(tmpRide.heartRate)
         dataRide.timestamp =  tmpRide.timeStamp
         dataRide.ride_id = rideID
