@@ -75,12 +75,10 @@ class StravaManager {
     func authenticate() {
         if UIApplication.shared.canOpenURL(appOAuthUrlStravaScheme) {
             UIApplication.shared.open(appOAuthUrlStravaScheme, options: [:])
-            
-            //   } else {
-            //      authSession = ASWebAuthenticationSession(url: appOAuthUrlStravaScheme!, callbackURLScheme: "Astar://") { url, error in
-            
-            //    }
-            authSession?.start()
+            //        } else {
+            //authSession = ASWebAuthenticationSession(url: appOAuthUrlStravaScheme!, callbackURLScheme: "Astar://") { url, error in
+            //authSession?.start()
+            //      }
         }
     }
     

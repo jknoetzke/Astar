@@ -142,6 +142,7 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath)
         var switchTag = 0
         var switchState = false
+        var enableSwitch = true
         
         switch indexPath.section {
         case SETTINGS_SECTION:
@@ -163,6 +164,13 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
             cell.textLabel?.text =  uploads[indexPath.row].name
             switchTag = uploads[indexPath.row].tag
             if indexPath.row == 0 {
+                //Make sure User has Strava Installed
+                if let appURL = NSURL(string: "strava://") {
+                    let canOpen = UIApplication.shared.canOpenURL(appURL as URL)
+                    if canOpen == false {
+                        enableSwitch = false
+                    }
+                }
                 switchState = defaults.bool(forKey: "strava")
             } else if indexPath.row == 1 {
                 switchState = defaults.bool(forKey: "cycling_analytics")
@@ -187,6 +195,9 @@ class SettingsViewController : UIViewController, UITableViewDataSource, UITableV
         switchView.setOn(switchState, animated: true)
         switchView.tag = switchTag // for detect which row switch Changed
         switchView.addTarget(self, action: #selector(self.switchChanged(_:)), for: .valueChanged)
+        
+        switchView.isEnabled = enableSwitch
+        
         cell.accessoryView = switchView
         return cell
     }
