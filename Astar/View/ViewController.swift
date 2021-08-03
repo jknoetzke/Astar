@@ -557,17 +557,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     }
     
     private func saveRide(tmpRideArray: [PeripheralData]) {
-        
-       
-        let coreDataServices = CoreDataServices.sharedCoreDataService
-        let rideID = UUID() //Create the unique ID for the ride
-        //Save the Ride itself
-        coreDataServices.saveRide(tmpRideArray: tmpRideArray, rideID: rideID)
 
-        //Save The map
-        let mapViewController = tabBarController!.viewControllers![2] as! MapViewController
-        mapViewController.generateImageFromMap(ride: tmpRideArray, rideID: rideID)
-        
         //Upload to Strava and Cycling Analytics
         if stravaFlag || cyclingAnalyticsFlag {
             let tcxHandler = TCXHandler()
@@ -590,6 +580,16 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 
             }
         }
+        
+        let coreDataServices = CoreDataServices.sharedCoreDataService
+        let rideID = UUID() //Create the unique ID for the ride
+        //Save the Ride itself
+        coreDataServices.saveRide(tmpRideArray: tmpRideArray, rideID: rideID)
+
+        //Save The map
+        let mapViewController = tabBarController!.viewControllers![2] as! MapViewController
+        mapViewController.generateImageFromMap(ride: tmpRideArray, rideID: rideID)
+        
     }
     
     func uploadToStrava(xml: String, title: String) {
