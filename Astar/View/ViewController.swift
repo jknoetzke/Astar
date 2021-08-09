@@ -389,6 +389,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { action in
                 print("Save Ride")
                 self.saveRide(tmpRideArray: self.rideArray)
+                self.locationManager.stopUpdatingLocation()
                 print("Ride Saved.. Resetting")
                 self.resetRide()
                 print("Ride Reset")
@@ -399,6 +400,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             }))
             alert.addAction(UIAlertAction(title: "Discard Ride", style: .destructive, handler: { action in
                 print("Discarded Ride")
+                self.locationManager.stopUpdatingLocation()
                 self.resetRide()
             }))
             

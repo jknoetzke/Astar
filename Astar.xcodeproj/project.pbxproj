@@ -33,6 +33,7 @@
 		D06D79862527BCE4001961E3 /* TCXHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D79852527BCE4001961E3 /* TCXHandler.swift */; };
 		D06D7998252CED17001961E3 /* GPSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06D7997252CED17001961E3 /* GPSData.swift */; };
 		D06F20C125914DB10052C629 /* RecordEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F20C025914DB10052C629 /* RecordEditor.swift */; };
+		D071FE2726C17C930094394A /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D071FE2626C17C930094394A /* CloudKit.framework */; };
 		D07841602575599A00941B86 /* LapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078415F2575599A00941B86 /* LapViewModel.swift */; };
 		D078416525758EF200941B86 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = D078416425758EF200941B86 /* SwiftUICharts */; };
 		D08253B7256C605C0023D6C5 /* ActivityFeedHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */; };
@@ -84,6 +85,7 @@
 		D06D79852527BCE4001961E3 /* TCXHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCXHandler.swift; sourceTree = "<group>"; };
 		D06D7997252CED17001961E3 /* GPSData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSData.swift; sourceTree = "<group>"; };
 		D06F20C025914DB10052C629 /* RecordEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEditor.swift; sourceTree = "<group>"; };
+		D071FE2626C17C930094394A /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		D078415F2575599A00941B86 /* LapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapViewModel.swift; sourceTree = "<group>"; };
 		D08253B6256C605C0023D6C5 /* ActivityFeedHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityFeedHostingController.swift; sourceTree = "<group>"; };
 		D08253BA256C62F30023D6C5 /* ActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D071FE2726C17C930094394A /* CloudKit.framework in Frameworks */,
 				D078416525758EF200941B86 /* SwiftUICharts in Frameworks */,
 				D03F02A525C99D7500607E5D /* TcxDataProtocol in Frameworks */,
 			);
@@ -124,6 +127,7 @@
 		4854A358B909476D69A44E28 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D071FE2626C17C930094394A /* CloudKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -563,7 +567,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Astar/AstarDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
@@ -572,7 +576,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astarbike;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -588,7 +592,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Astar/Astar.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2BY8MZ9P4A;
 				INFOPLIST_FILE = Astar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
@@ -596,7 +600,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shampoo.astarbike;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

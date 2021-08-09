@@ -43,6 +43,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate  {
     
     func stopUpdatingLocation() {
         locationManager.stopUpdatingLocation()
+        locationManager.delegate = nil
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
