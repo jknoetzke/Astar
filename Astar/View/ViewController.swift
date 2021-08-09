@@ -107,8 +107,8 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
          let tmpRideData = coreData.retrieveRide(rideID: uuid!)
          
          saveRide(tmpRideArray: tmpRideData!)
-        
-        */
+         
+         */
         readUserPrefs()
         
         //Create an array of all metrics
@@ -138,7 +138,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         altimeterQueue = OperationQueue()
         altimeterQueue.qualityOfService = .background
         altimeterQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
-
+        
         altimeter = CMAltimeter()
         if CMAltimeter.isRelativeAltitudeAvailable() {
             altimeter.startRelativeAltitudeUpdates(to: altimeterQueue, withHandler: { [self] data, error in
@@ -159,7 +159,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     func stopAltimeter() {
         altimeter.stopRelativeAltitudeUpdates()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         deviceManager.stopScanning()
@@ -329,13 +329,13 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         {
             metricField(fieldID: ViewController.SPEED, metric: String(format: "%.0f", gps.speed))
             metricField(fieldID: ViewController.DISTANCE, metric: String(format: "%.0f", gps.distance.value/1000.0))
-
+            
         }
         
         if imperialFlag {
             metricField(fieldID: ViewController.ELEVATION_GAINED, metric: String(format: "%.0f", elevationGained * 3.28084))
             metricField(fieldID: ViewController.ELEVATION, metric: String(format: "%.0f", gps.elevation! * 3.28084))
-
+            
         }
         else
         {
@@ -366,7 +366,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
             
             locationManager.startLocationUpdates()
             startAltimeter()
-
+            
             
             rideTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
             startTime = DispatchTime.now()
@@ -429,7 +429,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         
         locationManager.stopUpdatingLocation()
         stopAltimeter()
-
+        
         rideArray.removeAll()
         timerIsPaused = true
         btnLap.isEnabled = false
@@ -493,9 +493,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                 
                 reading.timeStamp = Date()
                 rideArray.append(reading)
-               
+                
                 //Sucks too much battery..
-             //   updateRideDB(rideData: reading)
+                //   updateRideDB(rideData: reading)
                 
                 let tmpGPS = reading.gps
                 let tmpReading = reading
@@ -559,7 +559,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
     }
     
     private func saveRide(tmpRideArray: [PeripheralData]) {
-
+        
         //Upload to Strava and Cycling Analytics
         if stravaFlag || cyclingAnalyticsFlag {
             let tcxHandler = TCXHandler()
@@ -576,9 +576,9 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
                                 inputPlaceholder: "Title",
                                 inputKeyboardType: .default, actionHandler:
                                     { [self] (input:String?) in
-                                            print("The new title is \(input ?? "")")
-                    self.uploadToStrava(xml:xml, title: input!)
-                                        })
+                                        print("The new title is \(input ?? "")")
+                                        self.uploadToStrava(xml:xml, title: input!)
+                                    })
                 
             }
         }
@@ -587,7 +587,7 @@ class ViewController: UIViewController, RideDelegate, GPSDelegate, UITabBarContr
         let rideID = UUID() //Create the unique ID for the ride
         //Save the Ride itself
         coreDataServices.saveRide(tmpRideArray: tmpRideArray, rideID: rideID)
-
+        
         //Save The map
         let mapViewController = tabBarController!.viewControllers![2] as! MapViewController
         mapViewController.generateImageFromMap(ride: tmpRideArray, rideID: rideID)
