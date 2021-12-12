@@ -366,7 +366,7 @@ class DeviceManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         
         updatePowerMeterValues(value: characteristicData)
         
-        let n = devices.firstIndex { $0.device == characteristic.service.peripheral }
+        let n = devices.firstIndex { $0.device == characteristic.service?.peripheral }
         let device = devices[n!]
         
         // the first 16bits contains the data for the flags
