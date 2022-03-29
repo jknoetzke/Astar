@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		816214B827F3661F00C1C0B2 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816214B727F3661F00C1C0B2 /* CoreDataService.swift */; };
 		D00147042550DDBF0015B672 /* BluetoothData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00147032550DDBF0015B672 /* BluetoothData.swift */; };
 		D00147072550DE9F0015B672 /* BluetoothDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00147062550DE9F0015B672 /* BluetoothDelegate.swift */; };
-		D01A9680256459A30061B9B2 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01A967F256459A30061B9B2 /* CoreDataService.swift */; };
 		D01A9683256459E10061B9B2 /* RideCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01A9682256459E10061B9B2 /* RideCalculator.swift */; };
 		D01A968A2566964D0061B9B2 /* RideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01A96892566964D0061B9B2 /* RideViewModel.swift */; };
 		D02BE893257517A700509E50 /* RideDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02BE892257517A700509E50 /* RideDetailsView.swift */; };
@@ -58,9 +58,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		816214B727F3661F00C1C0B2 /* CoreDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		D00147032550DDBF0015B672 /* BluetoothData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothData.swift; sourceTree = "<group>"; };
 		D00147062550DE9F0015B672 /* BluetoothDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDelegate.swift; sourceTree = "<group>"; };
-		D01A967F256459A30061B9B2 /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoreDataService.swift; path = /Users/justin/Projects/Astar/Astar/Managers/CoreDataService.swift; sourceTree = "<absolute>"; };
 		D01A9682256459E10061B9B2 /* RideCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideCalculator.swift; sourceTree = "<group>"; };
 		D01A96892566964D0061B9B2 /* RideViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideViewModel.swift; sourceTree = "<group>"; };
 		D02BE892257517A700509E50 /* RideDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailsView.swift; sourceTree = "<group>"; };
@@ -167,8 +167,8 @@
 		D055FA602534B7AE00D5ECA4 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				816214B727F3661F00C1C0B2 /* CoreDataService.swift */,
 				D03F02A725C9D5A700607E5D /* RecordingPreferencesManager.swift */,
-				D01A967F256459A30061B9B2 /* CoreDataService.swift */,
 				D06B08A62535F84400553105 /* CyclingAnalyticsManager.swift */,
 				D06B08AE2535F85C00553105 /* DeviceManager.swift */,
 				D0BF2C31262773A9002B3620 /* PowerMeterData.swift */,
@@ -404,8 +404,8 @@
 				D03F02A825C9D5A700607E5D /* RecordingPreferencesManager.swift in Sources */,
 				D07841602575599A00941B86 /* LapViewModel.swift in Sources */,
 				D093A77C251A4AE200241E7E /* PeripheralData.swift in Sources */,
+				816214B827F3661F00C1C0B2 /* CoreDataService.swift in Sources */,
 				D0FF579E253F840A00265638 /* StravaManager.swift in Sources */,
-				D01A9680256459A30061B9B2 /* CoreDataService.swift in Sources */,
 				D06B08AA2535F84400553105 /* LocationManager.swift in Sources */,
 				D034189E2535F7DA001AD367 /* RideDelegate.swift in Sources */,
 				D06F20C125914DB10052C629 /* RecordEditor.swift in Sources */,

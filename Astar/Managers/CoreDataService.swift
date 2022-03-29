@@ -1,9 +1,6 @@
-//
+
 //  CoreDataService.swift
-//  
-//
 //  Created by Justin Knoetzke on 2020-11-17.
-//
 
 import CoreData
 import MapKit
